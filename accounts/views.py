@@ -2,13 +2,13 @@ from django.contrib import messages, auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, RedirectView
-from accounts.forms import *
+from accounts.forms import DoctorRegistrationForm, PatientRegistrationForm, UserLoginForm
 from accounts.models import User
 
 
-class RegisterEmployeeView(CreateView):
+class RegisterDoctorView(CreateView):
     model = User
-    form_class = EmployeeRegistrationForm
+    form_class = DoctorRegistrationForm
     template_name = "accounts/employee/register.html"
     success_url = "/"
 
@@ -33,10 +33,9 @@ class RegisterEmployeeView(CreateView):
             return render(request, "accounts/employee/register.html", {"form": form})
 
 
-class RegisterEmployerView(CreateView):
-    model = User
-    form_class = EmployerRegistrationForm
-    template_name = "accounts/employer/register.html"
+class RegisterPatientView(CreateView):
+    form_class = PatientRegistrationForm
+    template_name = "accounts/register.html"
     success_url = "/"
 
     extra_context = {"title": "Register"}
@@ -57,7 +56,7 @@ class RegisterEmployerView(CreateView):
             user.save()
             return redirect("accounts:login")
         else:
-            return render(request, "accounts/employer/register.html", {"form": form})
+            return render(request, "accounts/register.html", {"form": form})
 
 
 class LoginView(FormView):

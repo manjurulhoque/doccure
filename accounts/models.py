@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from .managers import UserManager
-
 ROLE = (
     ("doctor", "Doctor"),
     ("patient", "patient"),
@@ -13,27 +11,24 @@ class User(AbstractUser):
     """
         Custom user model with extra fields
     """
-    username = None
+    username = models.CharField(max_length=30, unique=True)
     role = models.CharField(choices=ROLE, max_length=20, default="patient", error_messages={"required": "Role must be provided"})
     email = models.EmailField(
-        unique=True,
-        blank=False,
+        blank=True,
         error_messages={
             "unique": "A user with that email already exists.",
         },
     )
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
     def __unicode__(self):
-        return self.email
-
-    objects = UserManager()
+        return self.username
 
 
 class Profile(models.Model):
     """
         User profile
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

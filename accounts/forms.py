@@ -68,63 +68,23 @@ class DoctorRegistrationForm(UserCreationForm):
 
 
 class PatientRegistrationForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super(PatientRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields["first_name"].label = "Company Name"
-        self.fields["last_name"].label = "Company Address"
-        self.fields["password1"].label = "Password"
-        self.fields["password2"].label = "Confirm Password"
-
-        self.fields["first_name"].widget.attrs.update(
-            {
-                "placeholder": "Enter Company Name",
-            }
-        )
-        self.fields["last_name"].widget.attrs.update(
-            {
-                "placeholder": "Enter Company Address",
-            }
-        )
-        self.fields["email"].widget.attrs.update(
-            {
-                "placeholder": "Enter Email",
-            }
-        )
-        self.fields["password1"].widget.attrs.update(
-            {
-                "placeholder": "Enter Password",
-            }
-        )
-        self.fields["password2"].widget.attrs.update(
-            {
-                "placeholder": "Confirm Password",
-            }
-        )
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "password1", "password2"]
-        error_messages = {
-            "first_name": {
-                "required": "First name is required",
-                "max_length": "Name is too long",
-            },
-            "last_name": {
-                "required": "Last name is required",
-                "max_length": "Last Name is too long",
-            },
-        }
+        fields = ["first_name", "last_name", "username", "password1", "password2"]
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
-        user.role = "employer"
+        user.role = "patient"
         if commit:
             user.save()
         return user
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField()
+    username = forms.CharField()
     password = forms.CharField(
         label="Password",
         strip=False,
@@ -134,15 +94,15 @@ class UserLoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
-        self.fields["email"].widget.attrs.update({"placeholder": "Enter Email"})
+        self.fields["username"].widget.attrs.update({"placeholder": "Enter Username"})
         self.fields["password"].widget.attrs.update({"placeholder": "Enter Password"})
 
     def clean(self, *args, **kwargs):
-        email = self.cleaned_data.get("email")
+        username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
 
-        if email and password:
-            self.user = authenticate(email=email, password=password)
+        if password and password:
+            self.user = authenticate(username=username, password=password)
 
             if self.user is None:
                 raise forms.ValidationError("User Does Not Exist.")

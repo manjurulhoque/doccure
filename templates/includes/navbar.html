@@ -35,7 +35,7 @@
                     </ul>
                 </li>
                 <li class="login-link">
-                    <a href="login.html">Login / Signup</a>
+                    <a href="{% url 'accounts:login' %}">Login / Signup</a>
                 </li>
             </ul>
         </div>
@@ -46,11 +46,11 @@
                 </div>
                 <div class="header-contact-detail">
                     <p class="contact-header">Contact</p>
-                    <p class="contact-info-header"> +1 315 369 5943</p>
+                    <p class="contact-info-header"> +8801224242</p>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link header-login" href="login.html">login / Signup </a>
+                <a class="nav-link header-login" href="{% url 'accounts:login' %}">login / Signup </a>
             </li>
         </ul>
     </nav>
