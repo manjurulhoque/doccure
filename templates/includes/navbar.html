@@ -69,7 +69,7 @@
                 <li class="nav-item dropdown has-arrow logged-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <span class="user-img">
-                            <img class="rounded-circle" src="{% static 'assets/img/patients/patient.jpg' %}" width="31" alt="{{ user.username }}">
+                            <img class="rounded-circle" src="{{ user.profile.avatar.url }}" width="31" alt="{{ user.username }}">
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
