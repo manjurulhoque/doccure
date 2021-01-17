@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from accounts.managers import CustomUserManager
+from utils.file_utils import profile_photo_directory_path
+
 ROLE = (
     ("doctor", "Doctor"),
     ("patient", "patient"),
@@ -23,6 +26,8 @@ class User(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
+    objects = CustomUserManager()
+
     def __unicode__(self):
         return self.username
 
@@ -32,3 +37,4 @@ class Profile(models.Model):
         User profile
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    avatar = models.ImageField(default="defaults/user.png", upload_to=profile_photo_directory_path)

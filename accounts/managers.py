@@ -1,7 +1,7 @@
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import BaseUserManager, UserManager
 
 
-class UserManager(BaseUserManager):
+class MyUserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
     use_in_migrations = True
@@ -33,3 +33,12 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
+
+class CustomUserManager(UserManager):
+    """
+        Custom manager to get related user profile
+    """
+
+    def get(self, *args, **kwargs):
+        return super().select_related('profile').get(*args, **kwargs)
