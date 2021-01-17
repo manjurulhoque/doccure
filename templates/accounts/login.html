@@ -20,17 +20,45 @@
                                 <div class="login-header">
                                     <h3>Login <span>Doccure</span></h3>
                                 </div>
+
+                                {% if form.errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
                                 <form action="" method="post">
                                     {% csrf_token %}
 
                                     <div class="form-group form-focus">
-                                        <input type="text" id="id_username" class="form-control floating" name="username">
+                                        <input type="text" id="id_username" class="form-control floating" name="username" value="{{ form.username.value|default:"" }}">
                                         <label class="focus-label" for="id_username">Username</label>
                                     </div>
+                                    {% if 'username' in form.errors %}
+                                        {% for error in form.username.errors %}
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <a href="#" class="close" data-dismiss="alert"
+                                                   aria-label="close">&times;</a>
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                     <div class="form-group form-focus">
                                         <input type="password" id="id_password" class="form-control floating" name="password">
                                         <label class="focus-label" for="id_password">Password</label>
                                     </div>
+                                    {% if 'password' in form.errors %}
+                                        {% for error in form.password.errors %}
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <a href="#" class="close" data-dismiss="alert"
+                                                   aria-label="close">&times;</a>
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                     <div class="text-right">
                                         <a class="forgot-link" href="#">Forgot Password?</a>
                                     </div>
