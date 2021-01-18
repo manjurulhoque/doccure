@@ -8,7 +8,7 @@ from utils.file_utils import profile_photo_directory_path
 
 ROLE = (
     ("doctor", "Doctor"),
-    ("patient", "patient"),
+    ("patient", "Patient"),
 )
 
 
@@ -40,6 +40,9 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(default="defaults/user.png", upload_to=profile_photo_directory_path)
+
+    def __str__(self):
+        return "Profile of {}".format(self.user.username)
 
     @property
     def image(self):
