@@ -1,7 +1,7 @@
 from django.contrib import messages, auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView, RedirectView
+from django.views.generic import CreateView, FormView, RedirectView, UpdateView
 from accounts.forms import DoctorRegistrationForm, PatientRegistrationForm, UserLoginForm
 from accounts.models import User
 
@@ -97,7 +97,6 @@ class LogoutView(RedirectView):
     """
     Provides users the ability to logout
     """
-
     url = "/login"
 
     def get(self, request, *args, **kwargs):

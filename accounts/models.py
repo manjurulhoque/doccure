@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -38,3 +40,7 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(default="defaults/user.png", upload_to=profile_photo_directory_path)
+
+    @property
+    def image(self):
+        return self.avatar.url if self.avatar.storage.exists(self.avatar.name) else "{}defaults/user.png".format(settings.MEDIA_URL)
