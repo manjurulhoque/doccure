@@ -9,7 +9,7 @@ from mixins.custom_mixins import PatientRequiredMixin
 from patients.forms import PatientProfileForm
 
 
-class PatientDashboardView(TemplateView):
+class PatientDashboardView(PatientRequiredMixin, TemplateView):
     template_name = "patients/dashboard.html"
 
     def get_context_data(self, **kwargs):

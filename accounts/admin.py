@@ -1,11 +1,12 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 
 from .models import User, Profile
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     list_display = ['username', 'role']
     list_filter = ("role",)
     search_fields = ("first_name", "last_name", "username",)

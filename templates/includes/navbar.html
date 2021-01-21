@@ -64,7 +64,7 @@
                 <li class="nav-item">
                     <a class="nav-link header-login" href="{% url 'accounts:login' %}">Login / Signup </a>
                 </li>
-            {% elif user.role == 'patient' %}
+            {% else %}
                 <!-- User Menu -->
                 <li class="nav-item dropdown has-arrow logged-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -79,11 +79,19 @@
                             </div>
                             <div class="user-text">
                                 <h6>{{ user.username }}</h6>
-                                <p class="text-muted mb-0">Patient</p>
+                                {% if user.role == "patient" %}
+                                    <p class="text-muted mb-0">Patient</p>
+                                {% else %}
+                                    <p class="text-muted mb-0">Doctor</p>
+                                {% endif %}
                             </div>
                         </div>
-                        <a class="dropdown-item" href="{% url 'patients:dashboard' %}">Dashboard</a>
-                        <a class="dropdown-item" href="{% url 'patients:profile-setting' %}">Profile Settings</a>
+                        {% if user.role == "patient" %}
+                            <a class="dropdown-item" href="{% url 'patients:dashboard' %}">Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'patients:profile-setting' %}">Profile Settings</a>
+                        {% elif user.role == "doctor" %}
+                            <a class="dropdown-item" href="{% url 'doctors:dashboard' %}">Dashboard</a>
+                        {% endif %}
                         <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
                     </div>
                 </li>
