@@ -99,3 +99,5 @@ AUTH_USER_MODEL = "accounts.User"
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+TIME_INPUT_FORMATS = ['%I:%M %p',]

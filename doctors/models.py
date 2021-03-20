@@ -7,6 +7,9 @@ class TimeRange(models.Model):
     start = models.TimeField()
     end = models.TimeField()
 
+    class Meta:
+        unique_together = ('start', 'end')
+
 
 class Saturday(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
