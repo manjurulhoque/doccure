@@ -1,0 +1,327 @@
+{% extends 'includes/doctor-sidebar.html' %}
+{% load static %}
+
+{% block css %}
+
+    <link rel="stylesheet" href="{% static 'assets/css/doctor.css' %}">
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{% static 'assets/js/doctor.js' %}"></script>
+
+{% endblock %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Set Appointments Schedule</h3>
+                </div>
+
+
+                <div class="box-body">
+                    <form method="post" class="validate-form" action="" role="form">
+
+                        {% csrf_token %}
+
+                        <div class="row main_item">
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="7" name="day_6" class="custom-control-input day_option" id="switch-7" checked="">
+                                        <label class="custom-control-label" for="switch-7">Saturday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_7" id="row_60">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_6[]" value="02:30 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_6[]" value="04:30 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="60" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_6 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_7" style="display: block;">
+                                    <a href="#" data-id="6" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="1" name="day_0" class="custom-control-input day_option" id="switch-1" checked="">
+                                        <label class="custom-control-label" for="switch-1">Sunday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_1" id="row_48">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_0[]" value="12:00 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_0[]" value="12:30 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="48" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_0 col-md-12">
+                                </div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_1" style="display: block;">
+                                    <a href="#" data-id="0" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="2" name="day_1" class="custom-control-input day_option" id="switch-2" checked="">
+                                        <label class="custom-control-label" for="switch-2">Monday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_2" id="row_52">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_1[]" value="01:00 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_1[]" value="02:00 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="52" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_1 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_2" style="display: block;">
+                                    <a href="#" data-id="1" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="3" name="day_2" class="custom-control-input day_option" id="switch-3" checked="">
+                                        <label class="custom-control-label" for="switch-3">Tuesday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_3" id="row_54">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_2[]" value="01:30 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_2[]" value="02:30 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="54" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_2 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_3" style="display: block;">
+                                    <a href="#" data-id="2" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="4" name="day_3" class="custom-control-input day_option" id="switch-4" checked="">
+                                        <label class="custom-control-label" for="switch-4">Wednesday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_4" id="row_57">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_3[]" value="01:30 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_3[]" value="03:00 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="57" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_3 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_4" style="display: block;">
+                                    <a href="#" data-id="3" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="5" name="day_4" class="custom-control-input day_option" id="switch-5" checked="">
+                                        <label class="custom-control-label" for="switch-5">Thursday</label>
+                                    </div>
+                                </div>
+
+                                <div class="hour-item col-md-12 hideable_5" id="row_59">
+                                    <div class="row">
+                                        <div class="col-sm-5 pr-0 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="start_time_4[]" value="02:00 AM" placeholder="Start time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control timepicker" name="end_time_4[]" value="04:00 AM" placeholder="End time" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2 mb-2 mt-2"><a data-id="59" href="" class="del_time_row delete_item text-danger"><i class="fa fa-trash"></i></a></div>
+                                    </div>
+                                </div>
+
+                                <div class="houritem_4 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_5" style="display: block;">
+                                    <a href="#" data-id="4" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+
+                            <div class="item-rows w-100 mb-20">
+
+                                <div class="form-group col-md-12 mb-0">
+                                    <div class="custom-control custom-switch pt-10">
+                                        <input type="checkbox" value="6" name="day_5" class="custom-control-input day_option" id="switch-6" aria-invalid="false">
+                                        <label class="custom-control-label" for="switch-6">Friday</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="houritem_5 col-md-12"></div>
+
+                                <div class="form-group col-sm-12 mt-2 hideable_6" style="display: none;">
+                                    <a href="#" data-id="5" class="add_time_row"><i class="fa fa-plus-circle"></i> Add new time</a>
+                                </div>
+
+                                <div class="day_highliter"></div>
+                                <div class="day_divider"></div>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary"><i class="ficon flaticon-check"></i> Update</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
