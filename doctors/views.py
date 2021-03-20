@@ -13,4 +13,6 @@ class DoctorDashboardView(DoctorRequiredMixin, TemplateView):
 
 
 def schedule_timings(request):
+    if request.method == 'POST':
+        print(request.POST)
     return render(request, 'doctors/schedule-timings.html')

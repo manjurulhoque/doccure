@@ -22,7 +22,7 @@ $(document).ready(function () {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-clock"></i></span>
                             </div>
-                            <input type="text" class="form-control timepicker" name="start_time_` + val + `[]" value="" autocomplete="off">
+                            <input type="text" class="form-control timepicker" name="start_time_` + val + `" value="" autocomplete="off">
                         </div>
                     </div>
 
@@ -31,7 +31,7 @@ $(document).ready(function () {
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-clock"></i></span>
                             </div>
-                            <input type="text" class="form-control timepicker" name="end_time_` + val + `[]" value="" autocomplete="off">
+                            <input type="text" class="form-control timepicker" name="end_time_` + val + `" value="" autocomplete="off">
                         </div>
                     </div>
 
