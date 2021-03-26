@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
+from decorators import user_is_doctor
 from doctors.models import *
 from mixins.custom_mixins import DoctorRequiredMixin
 
@@ -25,6 +26,7 @@ class DoctorDashboardView(DoctorRequiredMixin, TemplateView):
 
 
 @login_required
+@user_is_doctor
 def schedule_timings(request):
     if request.method == 'POST':
         data = request.POST
