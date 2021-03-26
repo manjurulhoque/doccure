@@ -24,6 +24,8 @@ class User(AbstractUser):
             "unique": "A user with that email already exists.",
         },
     )
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
@@ -32,6 +34,14 @@ class User(AbstractUser):
 
     def __unicode__(self):
         return self.username
+
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip() or self.username
 
 
 class Profile(models.Model):
