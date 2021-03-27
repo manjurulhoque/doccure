@@ -7,8 +7,7 @@ class Education(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="educations")
     college = models.CharField(max_length=300)
     degree = models.CharField(max_length=100)
-    from_year = models.IntegerField()
-    to_year = models.IntegerField()
+    year_of_completion = models.IntegerField()
 
     class Meta:
         verbose_name = "Education"

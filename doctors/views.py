@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
@@ -27,7 +28,7 @@ class DoctorDashboardView(DoctorRequiredMixin, TemplateView):
 
 @login_required
 @user_is_doctor
-def schedule_timings(request):
+def schedule_timings(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         data = request.POST
         for i in range(7):
