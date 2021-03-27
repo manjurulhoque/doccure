@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
 from decorators import user_is_doctor
-from doctors.models import *
+from doctors.models.general import *
 from mixins.custom_mixins import DoctorRequiredMixin
 
 d = {
