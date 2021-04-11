@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.generic import UpdateView
 from django.views.generic.base import TemplateView
 
 from decorators import user_is_doctor
+from doctors.forms import DoctorProfileForm
 from doctors.models.general import *
 from mixins.custom_mixins import DoctorRequiredMixin
 
@@ -45,3 +47,12 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                         day.time_range.add(time_range)
 
     return render(request, 'doctors/schedule-timings.html')
+
+
+class DoctorProfileUpdateView(DoctorRequiredMixin, UpdateView):
+    model = User
+    template_name = "doctors/profile-settings.html"
+    form_class = DoctorProfileForm
+
+    def get_object(self, queryset=None):
+        return self.request.user
