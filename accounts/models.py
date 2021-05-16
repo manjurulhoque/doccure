@@ -44,7 +44,10 @@ class User(AbstractUser):
         return full_name.strip() or self.username
 
     def get_doctor_profile(self):
-        return reverse('doctors:doctor-profile', kwargs={'pk': self.pk})
+        """
+            Return doctor profile URL
+        """
+        return reverse('doctors:doctor-profile', kwargs={'username': self.username})
 
 
 class Profile(models.Model):

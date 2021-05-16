@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, Http404
 from django.shortcuts import render
 from django.views import generic
 from django.views.generic.base import TemplateView
@@ -72,6 +72,10 @@ class DoctorProfileView(generic.DetailView):
         slug = self.kwargs.get(self.slug_url_kwarg)
 
         slug_field = self.get_slug_field()
-        obj = queryset.get(**{slug_field: slug})
+
+        try:
+            obj = queryset.select_related('profile').get(**{slug_field: slug})
+        except User.DoesNotExist:
+            raise Http404
 
         return obj
