@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import UpdateView
+from django.views import generic
 from django.views.generic.base import TemplateView
 
 from decorators import user_is_doctor
@@ -49,10 +49,29 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
     return render(request, 'doctors/schedule-timings.html')
 
 
-class DoctorProfileUpdateView(DoctorRequiredMixin, UpdateView):
+class DoctorProfileUpdateView(DoctorRequiredMixin, generic.UpdateView):
     model = User
     template_name = "doctors/profile-settings.html"
     form_class = DoctorProfileForm
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class DoctorProfileView(generic.DetailView):
+    context_object_name = 'doctor'
+    model = User
+    slug_url_kwarg = 'username'
+    slug_field = "username"
+    template_name = 'doctors/profile.html'
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        slug = self.kwargs.get(self.slug_url_kwarg)
+
+        slug_field = self.get_slug_field()
+        obj = queryset.get(**{slug_field: slug})
+
+        return obj

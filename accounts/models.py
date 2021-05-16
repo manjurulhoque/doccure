@@ -2,6 +2,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 from accounts.managers import CustomUserManager
 from utils.file_utils import profile_photo_directory_path
@@ -35,13 +36,15 @@ class User(AbstractUser):
     def __unicode__(self):
         return self.username
 
-
     def get_full_name(self):
         """
-        Return the first_name plus the last_name, with a space in between.
+            Return the first_name plus the last_name, with a space in between.
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip() or self.username
+
+    def get_doctor_profile(self):
+        return reverse('doctors:doctor-profile', kwargs={'pk': self.pk})
 
 
 class Profile(models.Model):
