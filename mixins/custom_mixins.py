@@ -6,7 +6,9 @@ class PatientRequiredMixin(LoginRequiredMixin):
     permission_denied_message = "You are not authorized to view this page"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated and request.user.role != "patient":
+        if not request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        if request.user.role != "patient":
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
@@ -16,6 +18,8 @@ class DoctorRequiredMixin(LoginRequiredMixin):
     permission_denied_message = "You are not authorized to view this page"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated and request.user.role != "doctor":
+        if not request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        if request.user.role != "doctor":
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
