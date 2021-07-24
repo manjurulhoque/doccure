@@ -14,6 +14,7 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),
     path('patients/', include("patients.urls")),
     path('doctors/', include("doctors.urls")),
+    path('bookings/', include("bookings.urls")),
     path('', include("core.urls")),
 
     path('__debug__/', include(debug_toolbar.urls)),
