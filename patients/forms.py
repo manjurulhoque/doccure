@@ -5,8 +5,9 @@ from accounts.models import User
 
 class PatientProfileForm(forms.ModelForm):
     """
-        Patent profile update form
+    Patent profile update form
     """
+
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     avatar = forms.ImageField(required=False)

@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class PatientRequiredMixin(LoginRequiredMixin):
     """Verify that the current user is authenticated and user is patient"""
+
     permission_denied_message = "You are not authorized to view this page"
 
     def dispatch(self, request, *args, **kwargs):
@@ -15,6 +16,7 @@ class PatientRequiredMixin(LoginRequiredMixin):
 
 class DoctorRequiredMixin(LoginRequiredMixin):
     """Verify that the current user is authenticated and user is patient"""
+
     permission_denied_message = "You are not authorized to view this page"
 
     def dispatch(self, request, *args, **kwargs):

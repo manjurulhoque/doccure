@@ -3,7 +3,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, RedirectView, UpdateView
-from accounts.forms import DoctorRegistrationForm, PatientRegistrationForm, UserLoginForm
+from accounts.forms import (
+    DoctorRegistrationForm,
+    PatientRegistrationForm,
+    UserLoginForm,
+)
 from accounts.models import User
 
 
@@ -31,7 +35,9 @@ class RegisterDoctorView(CreateView):
             user.save()
             return redirect("accounts:login")
         else:
-            return render(request, "accounts/employee/register.html", {"form": form})
+            return render(
+                request, "accounts/employee/register.html", {"form": form}
+            )
 
 
 class RegisterPatientView(CreateView):
@@ -98,6 +104,7 @@ class LogoutView(RedirectView):
     """
     Provides users the ability to logout
     """
+
     url = reverse_lazy("accounts:login")
 
     def get(self, request, *args, **kwargs):

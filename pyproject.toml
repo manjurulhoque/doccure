@@ -1,0 +1,21 @@
+[tool.black]
+# Line length to use for formatting
+line-length = 79
+
+# Whether to skip formatting of certain files
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | .vscode
+  | venv
+  | migrations
+)/
+'''

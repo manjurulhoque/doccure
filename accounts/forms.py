@@ -73,7 +73,13 @@ class PatientRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "password1", "password2"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "password1",
+            "password2",
+        ]
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -94,8 +100,12 @@ class UserLoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
-        self.fields["username"].widget.attrs.update({"placeholder": "Enter Username"})
-        self.fields["password"].widget.attrs.update({"placeholder": "Enter Password"})
+        self.fields["username"].widget.attrs.update(
+            {"placeholder": "Enter Username"}
+        )
+        self.fields["password"].widget.attrs.update(
+            {"placeholder": "Enter Password"}
+        )
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")

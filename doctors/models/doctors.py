@@ -4,7 +4,9 @@ from accounts.models import User
 
 
 class Education(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="educations")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="educations"
+    )
     college = models.CharField(max_length=300)
     degree = models.CharField(max_length=100)
     year_of_completion = models.IntegerField()
@@ -14,11 +16,15 @@ class Education(models.Model):
         verbose_name_plural = "Doctor Educations"
 
     def __str__(self) -> str:
-        return f"{self.user.get_full_name()} -> {self.college} -> {self.degree}"
+        return (
+            f"{self.user.get_full_name()} -> {self.college} -> {self.degree}"
+        )
 
 
 class Experience(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="experiences"
+    )
     institution = models.CharField(max_length=300)
     from_year = models.IntegerField()
     to_year = models.IntegerField()
@@ -33,7 +39,9 @@ class Experience(models.Model):
 
 
 class Specialization(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="specializations")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="specializations"
+    )
     title = models.CharField(max_length=100)
 
     def __str__(self) -> str:

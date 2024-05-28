@@ -10,12 +10,11 @@ admin.site.index_title = "Welcome to Doccure Doctore and Patient Portal"
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include("accounts.urls")),
-    path('patients/', include("patients.urls")),
-    path('doctors/', include("doctors.urls")),
-    path('bookings/', include("bookings.urls")),
-    path('', include("core.urls")),
-
-    path('__debug__/', include(debug_toolbar.urls)),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("patients/", include("patients.urls")),
+    path("doctors/", include("doctors.urls")),
+    path("bookings/", include("bookings.urls")),
+    path("", include("core.urls")),
+    path("__debug__/", include(debug_toolbar.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -28,8 +28,8 @@ class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         user = form.save()
-        if form.cleaned_data.get('avatar'):
-            user.profile.avatar = form.cleaned_data['avatar']
+        if form.cleaned_data.get("avatar"):
+            user.profile.avatar = form.cleaned_data["avatar"]
             user.profile.save()
 
         return HttpResponsePermanentRedirect(self.get_success_url())

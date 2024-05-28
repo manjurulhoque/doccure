@@ -37,8 +37,8 @@ class MyUserManager(BaseUserManager):
 
 class CustomUserManager(UserManager):
     """
-        Custom manager to get related user profile
+    Custom manager to get related user profile
     """
 
     def get(self, *args, **kwargs):
-        return super().select_related('profile').get(*args, **kwargs)
+        return super().select_related("profile").get(*args, **kwargs)

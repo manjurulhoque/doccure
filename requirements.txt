@@ -1,9 +1,11 @@
 appdirs==1.4.4
 asgiref==3.8.1
+black==24.4.2
 CacheControl==0.14.0
 certifi==2024.2.2
 chardet==5.2.0
 charset-normalizer==3.3.2
+click==8.1.7
 colorama==0.4.6
 contextlib2==21.6.0
 distlib==0.3.8
@@ -15,9 +17,12 @@ idna==3.7
 ipaddr==2.2.0
 lockfile==0.12.2
 msgpack==1.0.8
+mypy-extensions==1.0.0
 packaging==24.0
+pathspec==0.12.1
 pep517==0.13.1
 pillow==10.3.0
+platformdirs==4.2.2
 progress==1.6
 pyparsing==3.1.2
 pytoml==0.1.21

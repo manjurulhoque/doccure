@@ -8,7 +8,7 @@ class TimeRange(models.Model):
     end = models.TimeField()
 
     class Meta:
-        unique_together = ('start', 'end')
+        unique_together = ("start", "end")
 
 
 class Saturday(models.Model):

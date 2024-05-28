@@ -12,7 +12,7 @@ class BookingTemplateView(PatientRequiredMixin, TemplateView):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         try:
-            doctor = User.objects.get(username=kwargs['username'])
+            doctor = User.objects.get(username=kwargs["username"])
         except User.DoesNotExist:
             raise Http404
         return render(request, self.template_name, {"doctor": doctor})

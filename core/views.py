@@ -5,5 +5,9 @@ from accounts.models import User
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    doctors = User.objects.select_related('profile').filter(role="doctor").filter(is_superuser=False)
-    return render(request, 'home.html', {"doctors": doctors})
+    doctors = (
+        User.objects.select_related("profile")
+        .filter(role="doctor")
+        .filter(is_superuser=False)
+    )
+    return render(request, "home.html", {"doctors": doctors})
