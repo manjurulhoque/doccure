@@ -14,7 +14,7 @@ from accounts.models import User
 class RegisterDoctorView(CreateView):
     model = User
     form_class = DoctorRegistrationForm
-    template_name = "accounts/employee/register.html"
+    template_name = "accounts/register.html"
     success_url = "/"
 
     extra_context = {"title": "Register"}
@@ -36,7 +36,7 @@ class RegisterDoctorView(CreateView):
             return redirect("accounts:login")
         else:
             return render(
-                request, "accounts/employee/register.html", {"form": form}
+                request, "accounts/register.html", {"form": form}
             )
 
 

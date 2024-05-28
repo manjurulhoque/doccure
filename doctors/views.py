@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, Http404
+from django.http import HttpRequest, HttpResponse, Http404, HttpResponsePermanentRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
 
@@ -28,6 +31,12 @@ class DoctorDashboardView(DoctorRequiredMixin, TemplateView):
         return context
 
 
+def convert_to_24_hour_format(time_str):
+    if time_str == '00:00 AM':
+        time_str = '12:00 AM'
+    return datetime.strptime(time_str, "%I:%M %p").time()
+
+
 @login_required
 @user_is_doctor
 def schedule_timings(request: HttpRequest) -> HttpResponse:
@@ -38,8 +47,8 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                 start_times = data.getlist(f"start_time_{i}", default=[])
                 end_times = data.getlist(f"end_time_{i}", default=[])
                 for index in range(len(start_times)):
-                    start = start_times[index]
-                    end = end_times[index]
+                    start = convert_to_24_hour_format(start_times[index])
+                    end = convert_to_24_hour_format(end_times[index])
                     time_range, time_created = TimeRange.objects.get_or_create(
                         start=start, end=end
                     )
@@ -48,9 +57,11 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                     )
                     ranges = day.time_range
                     if time_range.id not in list(
-                        ranges.values_list("id", flat=True)
+                            ranges.values_list("id", flat=True)
                     ):
                         day.time_range.add(time_range)
+
+        return HttpResponsePermanentRedirect(reverse_lazy("doctors:schedule-timings"))
 
     return render(request, "doctors/schedule-timings.html")
 

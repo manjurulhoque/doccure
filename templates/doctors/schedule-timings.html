@@ -1,5 +1,6 @@
 {% extends 'includes/doctor-sidebar.html' %}
 {% load static %}
+{% load time_filters %}
 
 {% block css %}
 
@@ -54,7 +55,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="start_time_0" value="{{ time.start|time:"H:i A" }}" placeholder="Start time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="start_time_0" value="{{ time.start|time_12hr }}" placeholder="Start time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -63,7 +64,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="end_time_0" value="{{ time.end|time:"H:i A" }}" placeholder="End time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="end_time_0" value="{{ time.end|time_12hr }}" placeholder="End time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -102,7 +103,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time:"H:i A" }}" placeholder="Start time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time_12hr }}" placeholder="Start time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -111,7 +112,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time:"H:i A" }}" placeholder="End time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time_12hr }}" placeholder="End time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -286,7 +287,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time:"H:i A" }}" placeholder="Start time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time_12hr }}" placeholder="Start time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -295,7 +296,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time:"H:i A" }}" placeholder="End time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time_12hr }}" placeholder="End time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -333,7 +334,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time:"H:i A" }}" placeholder="Start time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="start_time_1" value="{{ time.start|time_12hr }}" placeholder="Start time" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -342,7 +343,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fa fa-clock"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time:"H:i A" }}" placeholder="End time" autocomplete="off">
+                                                    <input type="text" class="form-control timepicker" name="end_time_1" value="{{ time.end|time_12hr }}" placeholder="End time" autocomplete="off">
                                                 </div>
                                             </div>
 
