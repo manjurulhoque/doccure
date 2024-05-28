@@ -101,4 +101,6 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-TIME_INPUT_FORMATS = ['%I:%M %p',]
+TIME_INPUT_FORMATS = ['%I:%M %p', ]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
