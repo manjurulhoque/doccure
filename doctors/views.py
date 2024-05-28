@@ -96,3 +96,8 @@ class DoctorProfileView(generic.DetailView):
             raise Http404
 
         return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["today"] = datetime.now().strftime("%-d %b %Y")
+        return context

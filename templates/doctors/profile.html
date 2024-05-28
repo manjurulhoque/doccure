@@ -1,11 +1,30 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load time_filters %}
 
 {% block content %}
 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Doctor Profile</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">Doctor Profile</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+
     <!-- Page Content -->
-    <div class="content">
+    <div class="content" style="min-height: 482.875px;">
         <div class="container">
 
             <!-- Doctor Widget -->
@@ -20,7 +39,8 @@
                                 <h4 class="doc-name">Dr. Darren Elder</h4>
                                 <p class="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
                                 <p class="doc-department">
-                                    <img src="{% static 'assets/img/specialities/specialities-05.png' %}" class="img-fluid"
+                                    <img src="{% static 'assets/img/specialities/specialities-05.png' %}"
+                                         class="img-fluid"
                                          alt="Speciality">Dentist
                                 </p>
                                 <div class="rating">
@@ -50,18 +70,20 @@
                                 <a href="javascript:void(0)" class="btn btn-white fav-btn">
                                     <i class="far fa-bookmark"></i>
                                 </a>
-                                <a href="chat.html" class="btn btn-white msg-btn">
+                                <a href="javascript:void(0)" class="btn btn-white msg-btn">
                                     <i class="far fa-comment-alt"></i>
                                 </a>
-                                <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+                                <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal"
+                                   data-target="#voice_call">
                                     <i class="fas fa-phone"></i>
                                 </a>
-                                <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
+                                <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal"
+                                   data-target="#video_call">
                                     <i class="fas fa-video"></i>
                                 </a>
                             </div>
                             <div class="clinic-booking">
-                                <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                <a class="apt-btn" href="javascript:void(0)">Book Appointment</a>
                             </div>
                         </div>
                     </div>
@@ -81,6 +103,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#doc_reviews" data-toggle="tab">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#doc_business_hours" data-toggle="tab">Business Hours</a>
                             </li>
                         </ul>
                     </nav>
@@ -113,7 +138,8 @@
                                                         </div>
                                                         <div class="experience-content">
                                                             <div class="timeline-content">
-                                                                <a href="#/" class="name">American Dental Medical University</a>
+                                                                <a href="#/" class="name">American Dental Medical
+                                                                    University</a>
                                                                 <div>BDS</div>
                                                                 <span class="time">1998 - 2003</span>
                                                             </div>
@@ -139,7 +165,8 @@
                                                         </div>
                                                         <div class="experience-content">
                                                             <div class="timeline-content">
-                                                                <a href="#/" class="name">Glowing Smiles Family Dental Clinic</a>
+                                                                <a href="#/" class="name">Glowing Smiles Family Dental
+                                                                    Clinic</a>
                                                                 <span class="time">2010 - Present (5 years)</span>
                                                             </div>
                                                         </div>
@@ -165,8 +192,10 @@
                                                         <div class="timeline-content">
                                                             <p class="exp-year">July 2019</p>
                                                             <h4 class="exp-title">Humanitarian Award</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
-                                                                tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                                Proin a ipsum
+                                                                tellus. Interdum et malesuada fames ac ante ipsum primis
+                                                                in faucibus.</p>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -177,9 +206,12 @@
                                                     <div class="experience-content">
                                                         <div class="timeline-content">
                                                             <p class="exp-year">March 2011</p>
-                                                            <h4 class="exp-title">Certificate for International Volunteer Service</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
-                                                                tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                                                            <h4 class="exp-title">Certificate for International
+                                                                Volunteer Service</h4>
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                                Proin a ipsum
+                                                                tellus. Interdum et malesuada fames ac ante ipsum primis
+                                                                in faucibus.</p>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -190,9 +222,12 @@
                                                     <div class="experience-content">
                                                         <div class="timeline-content">
                                                             <p class="exp-year">May 2008</p>
-                                                            <h4 class="exp-title">The Dental Professional of The Year Award</h4>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
-                                                                tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                                                            <h4 class="exp-title">The Dental Professional of The Year
+                                                                Award</h4>
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                                Proin a ipsum
+                                                                tellus. Interdum et malesuada fames ac ante ipsum primis
+                                                                in faucibus.</p>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -257,7 +292,8 @@
                                                         <i class="fas fa-star"></i>
                                                     </div>
                                                 </div>
-                                                <p class="recommended"><i class="far fa-thumbs-up"></i> I recommend the doctor</p>
+                                                <p class="recommended"><i class="far fa-thumbs-up"></i> I recommend the
+                                                    doctor</p>
                                                 <p class="comment-content">
                                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -301,7 +337,8 @@
                                                         </div>
                                                         <p class="comment-content">
                                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                                            sed do eiusmod tempor incididunt ut labore et dolore magna
+                                                            aliqua.
                                                             Ut enim ad minim veniam.
                                                             Curabitur non nulla sit amet nisl tempus
                                                         </p>
@@ -447,6 +484,125 @@
 
                         </div>
                         <!-- /Reviews Content -->
+
+                        <!-- Business Hours Content -->
+                        <div role="tabpanel" id="doc_business_hours" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+
+                                    <!-- Business Hours Widget -->
+                                    <div class="widget business-widget">
+                                        <div class="widget-content">
+                                            <div class="listing-hours">
+                                                {#                                                <div class="listing-day current">#}
+                                                {#                                                    <div class="day">Today <span>{{ today }}</span></div>#}
+                                                {#                                                    <div class="time-items">#}
+                                                {#                                                        <span class="open-status">#}
+                                                {#                                                            <span class="badge bg-success-light">Open Now</span>#}
+                                                {#                                                        </span>#}
+                                                {#                                                        <span class="time">07:00 AM - 09:00 PM</span>#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                <div class="listing-day">
+                                                    <div class="day">Saturday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.saturday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day closed">
+                                                    <div class="day">Sunday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.sunday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day">
+                                                    <div class="day">Monday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.monday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day">
+                                                    <div class="day">Tuesday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.tuesday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day">
+                                                    <div class="day">Wednesday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.wednesday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day">
+                                                    <div class="day">Thursday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.thursday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="listing-day">
+                                                    <div class="day">Friday</div>
+                                                    <div class="time-items">
+                                                        {% for time_range in doctor.friday.time_range.all %}
+                                                            <span class="time">{{ time_range.start|time_12hr }}
+                                                                - {{ time_range.end|time_12hr }}</span>
+                                                        {% empty %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Business Hours Widget -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Business Hours Content -->
 
                     </div>
                 </div>
