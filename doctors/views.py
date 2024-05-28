@@ -6,10 +6,14 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
+from rest_framework.generics import UpdateAPIView
+from rest_framework.response import Response
 
 from decorators import user_is_doctor
 from doctors.forms import DoctorProfileForm
+from doctors.models import Education
 from doctors.models.general import *
+from doctors.serializers import EducationSerializer
 from mixins.custom_mixins import DoctorRequiredMixin
 
 d = {
@@ -101,3 +105,34 @@ class DoctorProfileView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context["today"] = datetime.now().strftime("%-d %b %Y")
         return context
+
+
+class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        serializer.save(user_id=self.request.user.id)
+
+    def update(self, request, *args, **kwargs):
+        # instance = self.get_object()
+        data = request.POST
+        degrees = data.getlist('degree', default=[])
+        colleges = data.getlist('college', default=[])
+        years = data.getlist('year_of_completion', default=[])
+        for i in range(len(degrees)):
+            degree = degrees[i]
+            college = colleges[i]
+            year_of_completion = years[i]
+            serializer = self.get_serializer(data={
+                'degree': degree,
+                'college': college,
+                'year_of_completion': year_of_completion,
+            })
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+        return Response([])

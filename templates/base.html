@@ -28,10 +28,12 @@
     <script src="{% static 'assets/js/respond.min.js' %}"></script>
     <![endif]-->
 
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
     {% block css %}{% endblock %}
 
 </head>
-<body class="account-page">
+<body class="account-page" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
 <!-- Main Wrapper -->
 <div class="main-wrapper">
@@ -59,6 +61,13 @@
 
 <!-- Custom JS -->
 <script src="{% static 'assets/js/script.js' %}"></script>
+
+<script>
+    // hook up csrf tokens to all htmx requests
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
+</script>
 
 </body>
 

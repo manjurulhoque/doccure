@@ -4,10 +4,10 @@
     // Pricing Options Show
 
     $('#pricing_select input[name="rating_option"]').on('click', function () {
-        if ($(this).val() == 'price_free') {
+        if ($(this).val() === 'price_free') {
             $('#custom_price_cont').hide();
         }
-        if ($(this).val() == 'custom_price') {
+        if ($(this).val() === 'custom_price') {
             $('#custom_price_cont').show();
         } else {
         }
@@ -22,25 +22,25 @@
 
     $(".add-education").on('click', function () {
 
-        var educationcontent = '<div class="row form-row education-cont">' +
+        let education_content = '<div class="row form-row education-cont">' +
             '<div class="col-12 col-md-10 col-lg-11">' +
             '<div class="row form-row">' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>Degree</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="degree" required>' +
             '</div>' +
             '</div>' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>College/Institute</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="college" required>' +
             '</div>' +
             '</div>' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>Year of Completion</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="year_of_completion" required>' +
             '</div>' +
             '</div>' +
             '</div>' +
@@ -48,7 +48,7 @@
             '<div class="col-12 col-md-2 col-lg-1"><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div>' +
             '</div>';
 
-        $(".education-info").append(educationcontent);
+        $(".education-info").append(education_content);
         return false;
     });
 
@@ -61,7 +61,7 @@
 
     $(".add-experience").on('click', function () {
 
-        var experiencecontent = '<div class="row form-row experience-cont">' +
+        let experiencecontent = '<div class="row form-row experience-cont">' +
             '<div class="col-12 col-md-10 col-lg-11">' +
             '<div class="row form-row">' +
             '<div class="col-12 col-md-6 col-lg-4">' +

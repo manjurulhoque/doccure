@@ -161,11 +161,13 @@
                     <div class="upload-wrap">
                         <div class="upload-images">
                             <img src="assets/img/features/feature-01.jpg" alt="Upload Image">
-                            <a href="javascript:void(0);" class="btn btn-icon btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                            <a href="javascript:void(0);" class="btn btn-icon btn-danger btn-sm"><i
+                                    class="far fa-trash-alt"></i></a>
                         </div>
                         <div class="upload-images">
                             <img src="assets/img/features/feature-02.jpg" alt="Upload Image">
-                            <a href="javascript:void(0);" class="btn btn-icon btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                            <a href="javascript:void(0);" class="btn btn-icon btn-danger btn-sm"><i
+                                    class="far fa-trash-alt"></i></a>
                         </div>
                     </div>
                 </div>
@@ -229,11 +231,13 @@
             <div class="form-group mb-0">
                 <div id="pricing_select">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="price_free" name="rating_option" class="custom-control-input" value="price_free" checked>
+                        <input type="radio" id="price_free" name="rating_option" class="custom-control-input"
+                               value="price_free" checked>
                         <label class="custom-control-label" for="price_free">Free</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="price_custom" name="rating_option" value="custom_price" class="custom-control-input">
+                        <input type="radio" id="price_custom" name="rating_option" value="custom_price"
+                               class="custom-control-input">
                         <label class="custom-control-label" for="price_custom">Custom Price (Taka)</label>
                     </div>
                 </div>
@@ -242,7 +246,8 @@
 
             <div class="row custom_price_cont" id="custom_price_cont" style="display: none;">
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="custom_rating_input" name="custom_rating_count" value="" placeholder="20">
+                    <input type="text" class="form-control" id="custom_rating_input" name="custom_rating_count" value=""
+                           placeholder="20">
                     <small class="form-text text-muted">Custom price you can add</small>
                 </div>
             </div>
@@ -257,12 +262,15 @@
             <h4 class="card-title">Services and Specialization</h4>
             <div class="form-group">
                 <label>Services</label>
-                <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" value="Tooth cleaning " id="services">
+                <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services"
+                       name="services" value="Tooth cleaning " id="services">
                 <small class="form-text text-muted">Note : Type & Press enter to add new services</small>
             </div>
             <div class="form-group mb-0">
                 <label>Specialization </label>
-                <input class="input-tags form-control" type="text" data-role="tagsinput" placeholder="Enter Specialization" name="specialist" value="Children Care,Dental Care" id="specialist">
+                <input class="input-tags form-control" type="text" data-role="tagsinput"
+                       placeholder="Enter Specialization" name="specialist" value="Children Care,Dental Care"
+                       id="specialist">
                 <small class="form-text text-muted">Note : Type & Press enter to add new specialization</small>
             </div>
         </div>
@@ -271,36 +279,57 @@
 
     <!-- Education -->
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" id="education-form">
             <h4 class="card-title">Education</h4>
             <div class="education-info">
-                <div class="row form-row education-cont">
-                    <div class="col-12 col-md-10 col-lg-11">
-                        <div class="row form-row">
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="form-group">
-                                    <label>Degree</label>
-                                    <input type="text" class="form-control">
+                {% for education in user.educations.all %}
+                    <div class="row form-row education-cont">
+                        <div class="col-12 col-md-10 col-lg-11">
+                            <div class="row form-row">
+                                <input type="number" hidden class="form-control" name="id" value="{{ education.id }}">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label>Degree</label>
+                                        <input type="text" class="form-control" name="degree" required
+                                               value="{{ education.degree }}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="form-group">
-                                    <label>College/Institute</label>
-                                    <input type="text" class="form-control">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label>College/Institute</label>
+                                        <input type="text" class="form-control" name="college" required
+                                               value="{{ education.college }}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="form-group">
-                                    <label>Year of Completion</label>
-                                    <input type="text" class="form-control">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label>Year of Completion</label>
+                                        <input type="number" class="form-control" name="year_of_completion" required
+                                               value="{{ education.year_of_completion }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% if forloop.counter != 1 %}
+                            <div class="col-12 col-md-2 col-lg-1">
+                                <label class="d-md-block d-sm-none d-none">&nbsp;</label>
+                                <a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a>
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
+                {% endfor %}
             </div>
             <div class="add-more">
                 <a href="javascript:void(0);" class="add-education"><i class="fa fa-plus-circle"></i> Add More</a>
+                <button
+                        class="btn btn-primary btn-sm pull-right"
+                        hx-put="{% url 'doctors:update-education' %}"
+                        hx-target=".education-info"
+                        hx-include="#education-form"
+                >
+                    <i class="fa fa-plus-circle"></i>
+                    Update
+                </button>
             </div>
         </div>
     </div>
