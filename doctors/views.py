@@ -193,7 +193,6 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         data = request.POST
-        print(data)
         ids = data.getlist("id", default=[])
         institutions = data.getlist("institution", default=[])
         from_years = data.getlist("from_year", default=[])

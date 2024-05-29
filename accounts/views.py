@@ -1,14 +1,19 @@
 from django.contrib import messages, auth
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, RedirectView, UpdateView
+from rest_framework.generics import UpdateAPIView
+
 from accounts.forms import (
     DoctorRegistrationForm,
     PatientRegistrationForm,
     UserLoginForm,
 )
 from accounts.models import User
+from accounts.serializers import BasicUserInformationSerializer
+from utils.htmx import render_toast_message_for_api
 
 
 class RegisterDoctorView(CreateView):
@@ -109,3 +114,33 @@ class LogoutView(RedirectView):
         auth.logout(request)
         messages.success(request, "You are now logged out")
         return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
+    serializer_class = BasicUserInformationSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        user = self.request.user
+        data = self.request.data
+        serializer = self.get_serializer(data=data)
+        print(data)
+        if not serializer.is_valid():
+            print(serializer.errors)
+            return render_toast_message_for_api("Information", "Something went wrong when updating", "error")
+        try:
+            user.first_name = data.get("first_name")
+            user.last_name = data.get("last_name")
+            user.save()
+
+            # store profile information
+            user_profile = user.profile
+            user_profile.dob = data.get("dob")
+            user_profile.phone = data.get("phone")
+            user_profile.save()
+            return render_toast_message_for_api("Information", "Updated successfully", "success")
+        except Exception as ex:
+            print(str(ex))
+            return render_toast_message_for_api("Information", "Something went wrong when updating", "error")

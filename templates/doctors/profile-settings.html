@@ -54,7 +54,7 @@
 
     <!-- Basic Information -->
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" id="basic-profile-data">
             <h4 class="card-title">Basic Information</h4>
             <div class="row form-row">
                 <div class="col-md-12">
@@ -88,38 +88,48 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>First Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" value="{{ user.first_name }}">
+                        <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Last Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" value="{{ user.last_name }}">
+                        <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="phone" value="{{ user.profile.phone }}">
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <select class="form-control select">
-                            <option>Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                </div>
+                {#                <div class="col-md-6">#}
+                {#                    <div class="form-group">#}
+                {#                        <label>Gender</label>#}
+                {#                        <select class="form-control select">#}
+                {#                            <option>Select</option>#}
+                {#                            <option>Male</option>#}
+                {#                            <option>Female</option>#}
+                {#                        </select>#}
+                {#                    </div>#}
+                {#                </div>#}
                 <div class="col-md-6">
                     <div class="form-group mb-0">
                         <label>Date of Birth</label>
-                        <input type="text" class="form-control">
+                        <input type="date" class="form-control" name="dob" value="{{ user.profle.dob }}">
                     </div>
                 </div>
             </div>
+            <button
+                    class="btn btn-primary btn-sm pull-right"
+                    hx-put="{% url 'accounts:update-basic-information' %}"
+                    hx-include="#basic-profile-data"
+                    hx-disabled-elt="this"
+                    hx-swap="none"
+            >
+                <i class="fa fa-plus-circle"></i>
+                Update
+            </button>
         </div>
     </div>
     <!-- /Basic Information -->
@@ -350,25 +360,29 @@
                                            value="{{ experience.id }}">
                                     <div class="form-group">
                                         <label>Hospital Name</label>
-                                        <input type="text" class="form-control" name="institution" value="{{ experience.institution }}">
+                                        <input type="text" class="form-control" name="institution"
+                                               value="{{ experience.institution }}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label>From</label>
-                                        <input type="text" class="form-control" name="from_year" value="{{ experience.from_year }}">
+                                        <input type="text" class="form-control" name="from_year"
+                                               value="{{ experience.from_year }}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label>To</label>
-                                        <input type="text" class="form-control" name="to_year" value="{{ experience.to_year }}">
+                                        <input type="text" class="form-control" name="to_year"
+                                               value="{{ experience.to_year }}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label>Designation</label>
-                                        <input type="text" class="form-control" name="designation" value="{{ experience.designation }}">
+                                        <input type="text" class="form-control" name="designation"
+                                               value="{{ experience.designation }}">
                                     </div>
                                 </div>
                             </div>
