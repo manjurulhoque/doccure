@@ -40,7 +40,7 @@
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>Year of Completion</label>' +
-            '<input type="text" class="form-control" name="year_of_completion" required>' +
+            '<input type="number" class="form-control" name="year_of_completion" required>' +
             '</div>' +
             '</div>' +
             '</div>' +

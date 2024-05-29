@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
+from rest_framework import status
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 
@@ -118,21 +120,42 @@ class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
         serializer.save(user_id=self.request.user.id)
 
     def update(self, request, *args, **kwargs):
-        # instance = self.get_object()
         data = request.POST
+        ids = data.getlist('id', default=[])
         degrees = data.getlist('degree', default=[])
         colleges = data.getlist('college', default=[])
         years = data.getlist('year_of_completion', default=[])
         for i in range(len(degrees)):
-            degree = degrees[i]
-            college = colleges[i]
-            year_of_completion = years[i]
-            serializer = self.get_serializer(data={
-                'degree': degree,
-                'college': college,
-                'year_of_completion': year_of_completion,
-            })
-            serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
+            try:
+                instance = self.request.user.educations.get(id=ids[i])
+                degree = degrees[i]
+                college = colleges[i]
+                year_of_completion = years[i]
+                serializer = self.get_serializer(instance, data={
+                    'degree': degree,
+                    'college': college,
+                    'year_of_completion': year_of_completion,
+                }, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+            except:
+                degree = degrees[i]
+                college = colleges[i]
+                year_of_completion = years[i]
+                serializer = self.get_serializer(data={
+                    'degree': degree,
+                    'college': college,
+                    'year_of_completion': year_of_completion,
+                })
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
 
-        return Response([])
+        response = Response({'success': True})
+        response.headers['HX-Trigger'] = json.dumps({
+            "show-toast": {
+                "level": "success",
+                "title": "Education",
+                "message": "Successfully updated",
+            }
+        })
+        return response

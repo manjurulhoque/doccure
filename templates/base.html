@@ -18,6 +18,7 @@
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
@@ -61,12 +62,18 @@
 
 <!-- Custom JS -->
 <script src="{% static 'assets/js/script.js' %}"></script>
+<script defer type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
     // hook up csrf tokens to all htmx requests
     document.body.addEventListener('htmx:configRequest', (event) => {
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-    })
+    });
+
+    document.addEventListener('show-toast', event => {
+        const {level, message, title} = event.detail;
+        toastr[level](message, title);
+    });
 </script>
 
 </body>

@@ -324,8 +324,9 @@
                 <button
                         class="btn btn-primary btn-sm pull-right"
                         hx-put="{% url 'doctors:update-education' %}"
-                        hx-target=".education-info"
                         hx-include="#education-form"
+                        hx-disabled-elt="this"
+                        hx-swap="none"
                 >
                     <i class="fa fa-plus-circle"></i>
                     Update
