@@ -61,31 +61,31 @@
 
     $(".add-experience").on('click', function () {
 
-        let experiencecontent = '<div class="row form-row experience-cont">' +
+        let experience_content = '<div class="row form-row experience-cont">' +
             '<div class="col-12 col-md-10 col-lg-11">' +
             '<div class="row form-row">' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>Hospital Name</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="institution">' +
             '</div>' +
             '</div>' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>From</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="from_year">' +
             '</div>' +
             '</div>' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>To</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="to_year">' +
             '</div>' +
             '</div>' +
             '<div class="col-12 col-md-6 col-lg-4">' +
             '<div class="form-group">' +
             '<label>Designation</label>' +
-            '<input type="text" class="form-control">' +
+            '<input type="text" class="form-control" name="designation">' +
             '</div>' +
             '</div>' +
             '</div>' +
@@ -93,7 +93,7 @@
             '<div class="col-12 col-md-2 col-lg-1"><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div>' +
             '</div>';
 
-        $(".experience-info").append(experiencecontent);
+        $(".experience-info").append(experience_content);
         return false;
     });
 

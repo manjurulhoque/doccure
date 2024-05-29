@@ -4,7 +4,9 @@ from .views import (
     DoctorDashboardView,
     schedule_timings,
     DoctorProfileUpdateView,
-    DoctorProfileView, UpdateEducationAPIView,
+    DoctorProfileView,
+    UpdateEducationAPIView,
+    UpdateExperienceAPIView,
 )
 
 app_name = "doctors"
@@ -20,5 +22,14 @@ urlpatterns = [
     path(
         "<str:username>/", DoctorProfileView.as_view(), name="doctor-profile"
     ),
-    path("update-education", UpdateEducationAPIView.as_view(), name="update-education")
+    path(
+        "update-education",
+        UpdateEducationAPIView.as_view(),
+        name="update-education",
+    ),
+    path(
+        "update-experience",
+        UpdateExperienceAPIView.as_view(),
+        name="update-experience",
+    ),
 ]

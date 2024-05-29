@@ -35,9 +35,7 @@ class RegisterDoctorView(CreateView):
             user.save()
             return redirect("accounts:login")
         else:
-            return render(
-                request, "accounts/register.html", {"form": form}
-            )
+            return render(request, "accounts/register.html", {"form": form})
 
 
 class RegisterPatientView(CreateView):

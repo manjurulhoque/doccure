@@ -4,7 +4,7 @@ from datetime import datetime
 register = template.Library()
 
 
-@register.filter(name='time_12hr')
+@register.filter(name="time_12hr")
 def time_12hr(value):
     """
     Convert a 24-hour time string or time object to 12-hour AM/PM format.

@@ -28,7 +28,8 @@ class Experience(models.Model):
     institution = models.CharField(max_length=300)
     from_year = models.IntegerField()
     to_year = models.IntegerField()
-    working_here = models.BooleanField("Currently working here")
+    working_here = models.BooleanField("Currently working here", default=False)
+    designation = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name = "Work & Experience"
