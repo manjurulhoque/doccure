@@ -140,12 +140,16 @@ class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
                 college = colleges[i]
                 year_of_completion = years[i]
                 designation = designations[i]
-                serializer = self.get_serializer(instance, data={
-                    'degree': degree,
-                    'college': college,
-                    'year_of_completion': year_of_completion,
-                    'designation': designation,
-                }, partial=True)
+                serializer = self.get_serializer(
+                    instance,
+                    data={
+                        "degree": degree,
+                        "college": college,
+                        "year_of_completion": year_of_completion,
+                        "designation": designation,
+                    },
+                    partial=True,
+                )
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
             except:
@@ -158,7 +162,7 @@ class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
                         "degree": degree,
                         "college": college,
                         "year_of_completion": year_of_completion,
-                        'designation': designation,
+                        "designation": designation,
                     }
                 )
                 serializer.is_valid(raise_exception=True)

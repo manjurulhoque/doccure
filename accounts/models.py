@@ -69,6 +69,9 @@ class Profile(models.Model):
     avatar = models.ImageField(
         default="defaults/user.png", upload_to=profile_photo_directory_path
     )
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
+    about = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return "Profile of {}".format(self.user.username)
