@@ -37,13 +37,3 @@ class Experience(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user.get_full_name()} -> {self.institution}"
-
-
-class Specialization(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="specializations"
-    )
-    title = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
-        return f"{self.user.get_full_name()} -> {self.title}"

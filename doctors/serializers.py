@@ -20,3 +20,9 @@ class RegistrationNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "registration_number"]
+
+
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "specialization"]

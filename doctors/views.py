@@ -12,20 +12,20 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import TemplateView
-from rest_framework import status
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 
 from decorators import user_is_doctor
 from doctors.forms import DoctorProfileForm
-from doctors.models import Education, Experience
+from doctors.models import Experience
 from doctors.models.general import *
 from doctors.serializers import (
     EducationSerializer,
     ExperienceSerializer,
-    RegistrationNumberSerializer,
+    RegistrationNumberSerializer, SpecializationSerializer,
 )
 from mixins.custom_mixins import DoctorRequiredMixin
+from utils.htmx import render_toast_message_for_api
 
 d = {
     0: Sunday,
@@ -72,7 +72,7 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                     )
                     ranges = day.time_range
                     if time_range.id not in list(
-                        ranges.values_list("id", flat=True)
+                            ranges.values_list("id", flat=True)
                     ):
                         day.time_range.add(time_range)
 
@@ -233,17 +233,9 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
 
-        response = Response({"success": True})
-        response.headers["HX-Trigger"] = json.dumps(
-            {
-                "show-toast": {
-                    "level": "success",
-                    "title": "Experience",
-                    "message": "Successfully updated",
-                }
-            }
+        return render_toast_message_for_api(
+            "Experience", "Updated successfully", "success"
         )
-        return response
 
 
 class UpdateRegistrationNumberAPIView(DoctorRequiredMixin, UpdateAPIView):
@@ -258,14 +250,24 @@ class UpdateRegistrationNumberAPIView(DoctorRequiredMixin, UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        response = Response({"success": True})
-        response.headers["HX-Trigger"] = json.dumps(
-            {
-                "show-toast": {
-                    "level": "success",
-                    "title": "BM&DC number",
-                    "message": "Successfully updated",
-                }
-            }
+        return render_toast_message_for_api(
+            "BM&DC number", "Updated successfully", "success"
         )
-        return response
+
+
+class UpdateSpecializationAPIView(DoctorRequiredMixin, UpdateAPIView):
+    serializer_class = SpecializationSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.POST
+        specialist = data.get('specialist')
+        instance.profile.specialization = specialist
+        instance.profile.save()
+
+        return render_toast_message_for_api(
+            "Specialization", "Updated successfully", "success"
+        )
