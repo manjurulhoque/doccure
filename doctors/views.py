@@ -20,7 +20,11 @@ from decorators import user_is_doctor
 from doctors.forms import DoctorProfileForm
 from doctors.models import Education, Experience
 from doctors.models.general import *
-from doctors.serializers import EducationSerializer, ExperienceSerializer
+from doctors.serializers import (
+    EducationSerializer,
+    ExperienceSerializer,
+    RegistrationNumberSerializer,
+)
 from mixins.custom_mixins import DoctorRequiredMixin
 
 d = {
@@ -217,6 +221,7 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
                 institution = institutions[i]
                 from_year = from_years[i]
                 to_year = to_years[i]
+                designation = designations[i]
                 serializer = self.get_serializer(
                     data={
                         "institution": institution,
@@ -234,6 +239,31 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
                 "show-toast": {
                     "level": "success",
                     "title": "Experience",
+                    "message": "Successfully updated",
+                }
+            }
+        )
+        return response
+
+
+class UpdateRegistrationNumberAPIView(DoctorRequiredMixin, UpdateAPIView):
+    serializer_class = RegistrationNumberSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        data = request.POST
+        serializer = self.get_serializer(instance=request.user, data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        response = Response({"success": True})
+        response.headers["HX-Trigger"] = json.dumps(
+            {
+                "show-toast": {
+                    "level": "success",
+                    "title": "BM&DC number",
                     "message": "Successfully updated",
                 }
             }

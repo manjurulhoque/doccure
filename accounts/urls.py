@@ -17,5 +17,9 @@ urlpatterns = [
     ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("login/", LoginView.as_view(), name="login"),
-    path("update-basic-information/", UpdateBasicUserInformationAPIView.as_view(), name="update-basic-information"),
+    path(
+        "update-basic-information/",
+        UpdateBasicUserInformationAPIView.as_view(),
+        name="update-basic-information",
+    ),
 ]

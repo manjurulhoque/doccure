@@ -7,6 +7,7 @@ from .views import (
     DoctorProfileView,
     UpdateEducationAPIView,
     UpdateExperienceAPIView,
+    UpdateRegistrationNumberAPIView,
 )
 
 app_name = "doctors"
@@ -31,5 +32,10 @@ urlpatterns = [
         "update-experience",
         UpdateExperienceAPIView.as_view(),
         name="update-experience",
+    ),
+    path(
+        "update-registration-number",
+        UpdateRegistrationNumberAPIView.as_view(),
+        name="update-registration-number",
     ),
 ]
