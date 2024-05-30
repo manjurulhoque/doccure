@@ -66,7 +66,7 @@
                             <div class="upload-img">
                                 <div class="change-photo-btn">
                                     <span><i class="fa fa-upload"></i> Upload Photo</span>
-                                    <input type="file" class="upload">
+                                    <input type="file" class="upload" name="avatar">
                                 </div>
                                 <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
                             </div>
@@ -116,7 +116,7 @@
                 <div class="col-md-6">
                     <div class="form-group mb-0">
                         <label>Date of Birth</label>
-                        <input type="date" class="form-control" name="dob" value="{{ user.profle.dob }}">
+                        <input type="date" class="form-control" id="dob" name="dob" value="{{ user.profile.dob | date:"m/d/Y" }}">
                     </div>
                 </div>
             </div>
@@ -185,53 +185,6 @@
         </div>
     </div>
     <!-- /Clinic Info -->
-
-    <!-- Contact Details -->
-    <div class="card contact-card">
-        <div class="card-body">
-            <h4 class="card-title">Contact Details</h4>
-            <div class="row form-row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Address Line 1</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Address Line 2</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">City</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">State / Province</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Country</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Postal Code</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Contact Details -->
 
     <!-- Pricing -->
     <div class="card">
@@ -415,33 +368,6 @@
     </div>
     <!-- /Experience -->
 
-    <!-- Awards -->
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Awards</h4>
-            <div class="awards-info">
-                <div class="row form-row awards-cont">
-                    <div class="col-12 col-md-5">
-                        <div class="form-group">
-                            <label>Awards</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-5">
-                        <div class="form-group">
-                            <label>Year</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="add-more">
-                <a href="javascript:void(0);" class="add-award"><i class="fa fa-plus-circle"></i> Add More</a>
-            </div>
-        </div>
-    </div>
-    <!-- /Awards -->
-
     <!-- Memberships -->
     <div class="card">
         <div class="card-body">
@@ -471,7 +397,7 @@
                 <div class="row form-row reg-cont">
                     <div class="col-12 col-md-5">
                         <div class="form-group">
-                            <label>Registrations</label>
+                            <label>BM&DC Full Registration Number</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
@@ -493,5 +419,26 @@
     <div class="submit-section submit-btn-bottom">
         <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const dobInput = document.getElementById('dob');
+            const originalDateValue = dobInput.value;
+
+            // Convert the displayed date format to yyyy-mm-dd for HTML5 date input
+            if (originalDateValue) {
+                const [month, day, year] = originalDateValue.split('/');
+                dobInput.value = `${year}-${month}-${day}`;
+            }
+
+            dobInput.addEventListener('blur', () => {
+                const date = new Date(dobInput.value);
+                if (!isNaN(date)) {
+                    const formattedDate = `${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}/${date.getFullYear()}`;
+                    dobInput.value = formattedDate;
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

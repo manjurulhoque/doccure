@@ -132,21 +132,18 @@ class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
         degrees = data.getlist("degree", default=[])
         colleges = data.getlist("college", default=[])
         years = data.getlist("year_of_completion", default=[])
-        designations = data.getlist("designation", default=[])
         for i in range(len(degrees)):
             try:
                 instance = self.request.user.educations.get(id=ids[i])
                 degree = degrees[i]
                 college = colleges[i]
                 year_of_completion = years[i]
-                designation = designations[i]
                 serializer = self.get_serializer(
                     instance,
                     data={
                         "degree": degree,
                         "college": college,
                         "year_of_completion": year_of_completion,
-                        "designation": designation,
                     },
                     partial=True,
                 )
@@ -156,13 +153,11 @@ class UpdateEducationAPIView(DoctorRequiredMixin, UpdateAPIView):
                 degree = degrees[i]
                 college = colleges[i]
                 year_of_completion = years[i]
-                designation = designations[i]
                 serializer = self.get_serializer(
                     data={
                         "degree": degree,
                         "college": college,
                         "year_of_completion": year_of_completion,
-                        "designation": designation,
                     }
                 )
                 serializer.is_valid(raise_exception=True)
@@ -197,18 +192,22 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
         institutions = data.getlist("institution", default=[])
         from_years = data.getlist("from_year", default=[])
         to_years = data.getlist("to_year", default=[])
+        designations = data.getlist("designation", default=[])
+
         for i in range(len(institutions)):
             try:
                 instance = self.request.user.educations.get(id=ids[i])
                 institution = institutions[i]
                 from_year = from_years[i]
                 to_year = to_years[i]
+                designation = designations[i]
                 serializer = self.get_serializer(
                     instance,
                     data={
                         "institution": institution,
                         "from_year": from_year,
                         "to_year": to_year,
+                        "designation": designation,
                     },
                     partial=True,
                 )
@@ -223,6 +222,7 @@ class UpdateExperienceAPIView(DoctorRequiredMixin, UpdateAPIView):
                         "institution": institution,
                         "from_year": from_year,
                         "to_year": to_year,
+                        "designation": designation,
                     }
                 )
                 serializer.is_valid(raise_exception=True)
