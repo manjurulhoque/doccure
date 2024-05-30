@@ -33,7 +33,7 @@ class User(AbstractUser):
     )
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
-    registration_number = models.IntegerField(max_length=6)
+    registration_number = models.IntegerField(max_length=6, null=True, blank=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
