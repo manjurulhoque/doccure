@@ -58,7 +58,7 @@
                                 <h4>Gender</h4>
                                 <div>
                                     <label class="custom_check">
-                                        <input type="checkbox" name="gender_type" checked>
+                                        <input type="checkbox" name="gender_type">
                                         <span class="checkmark"></span> Male Doctor
                                     </label>
                                 </div>
@@ -73,13 +73,13 @@
                                 <h4>Select Specialist</h4>
                                 <div>
                                     <label class="custom_check">
-                                        <input type="checkbox" name="select_specialist" checked>
+                                        <input type="checkbox" name="select_specialist">
                                         <span class="checkmark"></span> Urology
                                     </label>
                                 </div>
                                 <div>
                                     <label class="custom_check">
-                                        <input type="checkbox" name="select_specialist" checked>
+                                        <input type="checkbox" name="select_specialist">
                                         <span class="checkmark"></span> Neurology
                                     </label>
                                 </div>
@@ -126,18 +126,19 @@
                                 <div class="doctor-widget">
                                     <div class="doc-info-left">
                                         <div class="doctor-img">
-                                            <a href="doctor-profile.html">
-                                                <img src="assets/img/doctors/doctor-thumb-01.jpg" class="img-fluid"
-                                                     alt="User Image">
+                                            <a href="{% url 'doctors:doctor-profile' doctor.username %}">
+                                                <img src="{{ doctor.profile.image }}" class="img-fluid" alt="User Image">
                                             </a>
                                         </div>
                                         <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="doctor-profile.html">{{ doctor.get_full_name }}</a></h4>
+                                            <h4 class="doc-name">
+                                                <a href="{% url 'doctors:doctor-profile' doctor.username %}">{{ doctor.get_full_name }}</a>
+                                            </h4>
                                             <p class="doc-speciality"></p>
-                                            <h5 class="doc-department">
-                                                <img src="assets/img/specialities/specialities-05.png" class="img-fluid"
-                                                    alt="Speciality">Dentist
-                                            </h5>
+{#                                            <h5 class="doc-department">#}
+{#                                                <img src="assets/img/specialities/specialities-05.png" class="img-fluid"#}
+{#                                                    alt="Speciality">Dentist#}
+{#                                            </h5>#}
                                             <div class="rating">
                                                 <i class="fas fa-star filled"></i>
                                                 <i class="fas fa-star filled"></i>
@@ -152,27 +153,27 @@
                                                 </p>
                                                 <ul class="clinic-gallery">
                                                     <li>
-                                                        <a href="assets/img/features/feature-01.jpg"
+                                                        <a href="{% static 'assets/img/features/feature-01.jpg' %}"
                                                            data-fancybox="gallery">
-                                                            <img src="assets/img/features/feature-01.jpg" alt="Feature">
+                                                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" alt="Feature">
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="assets/img/features/feature-02.jpg"
+                                                        <a href="{% static 'assets/img/features/feature-02.jpg' %}"
                                                            data-fancybox="gallery">
-                                                            <img src="assets/img/features/feature-02.jpg" alt="Feature">
+                                                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" alt="Feature">
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="assets/img/features/feature-03.jpg"
+                                                        <a href="{% static 'assets/img/features/feature-03.jpg' %}"
                                                            data-fancybox="gallery">
-                                                            <img src="assets/img/features/feature-03.jpg" alt="Feature">
+                                                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" alt="Feature">
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="assets/img/features/feature-04.jpg"
+                                                        <a href="{% static 'assets/img/features/feature-04.jpg' %}"
                                                            data-fancybox="gallery">
-                                                            <img src="assets/img/features/feature-04.jpg" alt="Feature">
+                                                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" alt="Feature">
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -195,8 +196,8 @@
                                             </ul>
                                         </div>
                                         <div class="clinic-booking">
-                                            <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
-                                            <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                            <a class="view-pro-btn" href="{% url 'doctors:doctor-profile' doctor.username %}">View Profile</a>
+                                            <a class="apt-btn" href="{% url 'bookings:doctor-booking-view' doctor.username %}">Book Appointment</a>
                                         </div>
                                     </div>
                                 </div>
