@@ -7,12 +7,13 @@ from .views import (
     DoctorProfileView,
     UpdateEducationAPIView,
     UpdateExperienceAPIView,
-    UpdateRegistrationNumberAPIView, UpdateSpecializationAPIView,
+    UpdateRegistrationNumberAPIView, UpdateSpecializationAPIView, DoctorsListView,
 )
 
 app_name = "doctors"
 
 urlpatterns = [
+    path("", DoctorsListView.as_view(), name="list"),
     path("dashboard/", DoctorDashboardView.as_view(), name="dashboard"),
     path("schedule-timings/", schedule_timings, name="schedule-timings"),
     path(

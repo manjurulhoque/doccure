@@ -7,20 +7,19 @@ from django.urls import reverse
 from accounts.managers import CustomUserManager
 from utils.file_utils import profile_photo_directory_path
 
-ROLE = (
-    ("doctor", "Doctor"),
-    ("patient", "Patient"),
-)
-
 
 class User(AbstractUser):
     """
     Custom user model with extra fields
     """
 
+    class RoleChoices(models.TextChoices):
+        DOCTOR = "doctor", "Doctor"
+        PATIENT = "patient", "Patient"
+
     username = models.CharField(max_length=30, unique=True)
     role = models.CharField(
-        choices=ROLE,
+        choices=RoleChoices.choices,
         max_length=20,
         default="patient",
         error_messages={"required": "Role must be provided"},

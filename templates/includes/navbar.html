@@ -29,10 +29,11 @@
                     <a href="{% url 'core:home' %}">Home</a>
                 </li>
                 <li class="has-submenu">
-                    <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
-                    <ul class="submenu">
-                        <li><a href="#">Doctor Register</a></li>
-                    </ul>
+{#                    <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>#}
+{#                    <ul class="submenu">#}
+{#                        <li><a href="#">Doctor Register</a></li>#}
+{#                    </ul>#}
+                    <a href="{% url 'doctors:list' %}">Doctors</a>
                 </li>
                 {% if not user.is_authenticated %}
                     <li class="login-link">

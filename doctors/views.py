@@ -11,6 +11,7 @@ from django.http import (
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -271,3 +272,12 @@ class UpdateSpecializationAPIView(DoctorRequiredMixin, UpdateAPIView):
         return render_toast_message_for_api(
             "Specialization", "Updated successfully", "success"
         )
+
+
+class DoctorsListView(ListView):
+    model = User
+    context_object_name = "doctors"
+    template_name = "doctors/list.html"
+
+    def get_queryset(self):
+        return self.model.objects.filter(role=User.RoleChoices.DOCTOR, is_superuser=False)
