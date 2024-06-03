@@ -126,13 +126,13 @@
                                 <div class="doctor-widget">
                                     <div class="doc-info-left">
                                         <div class="doctor-img">
-                                            <a href="{% url 'doctors:doctor-profile' doctor.username %}">
+                                            <a href="{% url 'doctors:doctor-profile' doctor.username %}" target="_blank">
                                                 <img src="{{ doctor.profile.image }}" class="img-fluid" alt="User Image">
                                             </a>
                                         </div>
                                         <div class="doc-info-cont">
                                             <h4 class="doc-name">
-                                                <a href="{% url 'doctors:doctor-profile' doctor.username %}">{{ doctor.get_full_name }}</a>
+                                                <a href="{% url 'doctors:doctor-profile' doctor.username %}" target="_blank">{{ doctor.get_full_name }}</a>
                                             </h4>
                                             <p class="doc-speciality"></p>
 {#                                            <h5 class="doc-department">#}
@@ -147,40 +147,40 @@
                                                 <i class="fas fa-star"></i>
                                                 <span class="d-inline-block average-rating">(17)</span>
                                             </div>
-                                            <div class="clinic-details">
-                                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida,
-                                                    USA
-                                                </p>
-                                                <ul class="clinic-gallery">
-                                                    <li>
-                                                        <a href="{% static 'assets/img/features/feature-01.jpg' %}"
-                                                           data-fancybox="gallery">
-                                                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" alt="Feature">
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{% static 'assets/img/features/feature-02.jpg' %}"
-                                                           data-fancybox="gallery">
-                                                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" alt="Feature">
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{% static 'assets/img/features/feature-03.jpg' %}"
-                                                           data-fancybox="gallery">
-                                                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" alt="Feature">
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{% static 'assets/img/features/feature-04.jpg' %}"
-                                                           data-fancybox="gallery">
-                                                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" alt="Feature">
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+{#                                            <div class="clinic-details">#}
+{#                                                <p class="doc-location">#}
+{#                                                    <i class="fas fa-map-marker-alt"></i> Florida, USA#}
+{#                                                </p>#}
+{#                                                <ul class="clinic-gallery">#}
+{#                                                    <li>#}
+{#                                                        <a href="{% static 'assets/img/features/feature-01.jpg' %}"#}
+{#                                                           data-fancybox="gallery">#}
+{#                                                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" alt="Feature">#}
+{#                                                        </a>#}
+{#                                                    </li>#}
+{#                                                    <li>#}
+{#                                                        <a href="{% static 'assets/img/features/feature-02.jpg' %}"#}
+{#                                                           data-fancybox="gallery">#}
+{#                                                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" alt="Feature">#}
+{#                                                        </a>#}
+{#                                                    </li>#}
+{#                                                    <li>#}
+{#                                                        <a href="{% static 'assets/img/features/feature-03.jpg' %}"#}
+{#                                                           data-fancybox="gallery">#}
+{#                                                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" alt="Feature">#}
+{#                                                        </a>#}
+{#                                                    </li>#}
+{#                                                    <li>#}
+{#                                                        <a href="{% static 'assets/img/features/feature-04.jpg' %}"#}
+{#                                                           data-fancybox="gallery">#}
+{#                                                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" alt="Feature">#}
+{#                                                        </a>#}
+{#                                                    </li>#}
+{#                                                </ul>#}
+{#                                            </div>#}
                                             <div class="clinic-services">
                                                 <span>Dental Fillings</span>
-                                                <span> Whitneing</span>
+                                                <span> Whitening</span>
                                             </div>
                                         </div>
                                     </div>
@@ -196,8 +196,8 @@
                                             </ul>
                                         </div>
                                         <div class="clinic-booking">
-                                            <a class="view-pro-btn" href="{% url 'doctors:doctor-profile' doctor.username %}">View Profile</a>
-                                            <a class="apt-btn" href="{% url 'bookings:doctor-booking-view' doctor.username %}">Book Appointment</a>
+                                            <a class="view-pro-btn" href="{% url 'doctors:doctor-profile' doctor.username %}" target="_blank">View Profile</a>
+                                            <a class="apt-btn" href="{% url 'bookings:doctor-booking-view' doctor.username %}" target="_blank">Book Appointment</a>
                                         </div>
                                     </div>
                                 </div>

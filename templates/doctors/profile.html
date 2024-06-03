@@ -131,17 +131,16 @@
                                         <h4 class="widget-title">Education</h4>
                                         <div class="experience-box">
                                             <ul class="experience-list">
-                                                {% for spec in doctor.educations.all %}
+                                                {% for education in doctor.educations.all %}
                                                     <li>
                                                         <div class="experience-user">
                                                             <div class="before-circle"></div>
                                                         </div>
                                                         <div class="experience-content">
                                                             <div class="timeline-content">
-                                                                <a href="#/" class="name">American Dental Medical
-                                                                    University</a>
-                                                                <div>BDS</div>
-                                                                <span class="time">1998 - 2003</span>
+                                                                <a href="#/" class="name">{{ education.college }}</a>
+                                                                <div>{{ education.degree }}</div>
+                                                                <span class="time">{{ education.year_of_completion }}</span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -158,16 +157,15 @@
                                         <h4 class="widget-title">Work & Experience</h4>
                                         <div class="experience-box">
                                             <ul class="experience-list">
-                                                {% for spec in doctor.experiences.all %}
+                                                {% for experience in doctor.experiences.all %}
                                                     <li>
                                                         <div class="experience-user">
                                                             <div class="before-circle"></div>
                                                         </div>
                                                         <div class="experience-content">
                                                             <div class="timeline-content">
-                                                                <a href="#/" class="name">Glowing Smiles Family Dental
-                                                                    Clinic</a>
-                                                                <span class="time">2010 - Present (5 years)</span>
+                                                                <a href="#/" class="name">{{ experience.institution }}</a>
+                                                                <span class="time">{{ experience.from_year }} - Present (5 years)</span>
                                                             </div>
                                                         </div>
                                                     </li>
