@@ -47,7 +47,7 @@
                         <div class="dashboard-widget">
                             <nav class="dashboard-menu">
                                 <ul>
-                                    <li>
+                                    <li class="{% if request.resolver_match.route == 'patients/dashboard/' %}active{% endif %}">
                                         <a href="{% url 'patients:dashboard' %}">
                                             <i class="fas fa-columns"></i>
                                             <span>Dashboard</span>
@@ -66,7 +66,7 @@
                                             <small class="unread-msg">23</small>
                                         </a>
                                     </li>
-                                    <li class="active">
+                                    <li>
                                         <a href="{% url 'patients:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
                                             <span>Profile Settings</span>
