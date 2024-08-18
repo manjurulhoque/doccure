@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Profile settings{% endblock %}
+
 {% load static %}
 
 {% block content %}
@@ -66,7 +68,7 @@
                                             <small class="unread-msg">23</small>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.resolver_match.route == 'patients/profile-setting/' %}active{% endif %}">
                                         <a href="{% url 'patients:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
                                             <span>Profile Settings</span>
