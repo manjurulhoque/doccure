@@ -5,7 +5,6 @@ from django.views.generic import UpdateView, DetailView, View
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.http import HttpResponse
 
 from accounts.models import User
