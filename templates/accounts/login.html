@@ -34,8 +34,9 @@
                                     {% endfor %}
                                 {% endif %}
 
-                                <form action="" method="post">
+                                <form action="{% url 'accounts:login' %}" method="post">
                                     {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ next }}">
 
                                     <div class="form-group form-focus">
                                         <input type="text" id="id_username" class="form-control floating" name="username" value="{{ form.username.value|default:"" }}">
