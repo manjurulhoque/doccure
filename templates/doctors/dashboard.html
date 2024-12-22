@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block page_name1 %}Dashboard{% endblock %}
-{% block page_name2 %}Dashboard{% endblock %}
+{% block page_name2 %}Doctor Dashboard{% endblock %}
+
+{% block title %}Doctor Dashboard{% endblock %}
 
 {% block main %}
     <div class="row">
@@ -116,18 +118,24 @@
                                                     </span>
                                                 </td>
                                                 <td class="text-center">৳{{ appointment.doctor.profile.price_per_consultation }}</td>
-                                                <td class="text-right">
+                                                <td>
                                                     <div class="table-action">
-                                                        <a href="#" class="btn btn-sm bg-info-light">
+                                                        <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
                                                             <i class="far fa-eye"></i> View
                                                         </a>
                                                         {% if appointment.status == 'pending' %}
-                                                        <a href="#" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-check"></i> Accept
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-times"></i> Cancel
-                                                        </a>
+                                                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
+                                                                    <i class="fas fa-check"></i> Accept
+                                                                </button>
+                                                            </form>
+                                                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                                                    <i class="fas fa-times"></i> Cancel
+                                                                </button>
+                                                            </form>
                                                         {% endif %}
                                                     </div>
                                                 </td>
@@ -186,16 +194,22 @@
                                                 <td class="text-center">৳{{ appointment.doctor.profile.price_per_consultation }}</td>
                                                 <td class="text-right">
                                                     <div class="table-action">
-                                                        <a href="#" class="btn btn-sm bg-info-light">
+                                                        <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
                                                             <i class="far fa-eye"></i> View
                                                         </a>
                                                         {% if appointment.status == 'pending' %}
-                                                        <a href="#" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-check"></i> Accept
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-times"></i> Cancel
-                                                        </a>
+                                                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
+                                                                    <i class="fas fa-check"></i> Accept
+                                                                </button>
+                                                            </form>
+                                                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                                                    <i class="fas fa-times"></i> Cancel
+                                                                </button>
+                                                            </form>
                                                         {% endif %}
                                                     </div>
                                                 </td>

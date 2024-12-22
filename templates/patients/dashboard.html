@@ -74,7 +74,7 @@
                                                     {{ appointment.status|title }}
                                                 </span>
                                             </td>
-                                            <td class="text-right">
+                                            <td>
                                                 <div class="table-action">
                                                     {% if appointment.status == 'pending' or appointment.status == 'confirmed' %}
                                                         <form method="post" action="{% url 'patients:appointment-cancel' appointment.pk %}" style="display: inline;">

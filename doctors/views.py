@@ -8,16 +8,17 @@ from django.http import (
     Http404,
     HttpResponsePermanentRedirect,
 )
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from django.db.models import Q
 from django.db.models import Count
 from django.utils import timezone
+from django.contrib import messages
 
 from bookings.models import Booking
 from core.decorators import user_is_doctor
@@ -411,16 +412,49 @@ class AppointmentListView(ListView):
     model = Booking
     context_object_name = "appointments"
     template_name = "doctors/appointments.html"
+    paginate_by = 10
 
     def get_queryset(self):
-        return self.model.objects.filter(doctor=self.request.user)
+        return self.model.objects.select_related(
+            'doctor',
+            'doctor__profile',
+            'patient',
+            'patient__profile'
+        ).filter(
+            doctor=self.request.user
+        ).order_by('-appointment_date', '-appointment_time')
 
 
-class AppointmentDetailView(DetailView):
+class AppointmentDetailView(DoctorRequiredMixin, DetailView):
     model = Booking
-    context_object_name = "appointment"
-    template_name = "doctors/appointment-detail.html"
+    template_name = 'doctors/appointment-detail.html'
+    context_object_name = 'appointment'
 
     def get_queryset(self):
-        return self.model.objects.filter(doctor=self.request.user)
+        return Booking.objects.select_related(
+            'doctor', 
+            'doctor__profile',
+            'patient', 
+            'patient__profile'
+        ).filter(doctor=self.request.user)
+
+
+class AppointmentActionView(DoctorRequiredMixin, View):
+    def post(self, request, pk, action):
+        appointment = get_object_or_404(
+            Booking, 
+            pk=pk, 
+            doctor=request.user,
+            status__in=['pending', 'confirmed']
+        )
+        
+        if action == 'accept':
+            appointment.status = 'confirmed'
+            messages.success(request, 'Appointment confirmed successfully')
+        elif action == 'cancel':
+            appointment.status = 'cancelled'
+            messages.success(request, 'Appointment cancelled successfully')
+            
+        appointment.save()
+        return redirect('doctors:dashboard')
 
