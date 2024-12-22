@@ -1,7 +1,8 @@
 {% extends 'includes/patient-sidebar.html' %}
 
-{% block main %}
+{% block title %}Profile Settings{% endblock %}
 
+{% block main %}
     <div class="card">
         <div class="card-body">
             {% if form.errors %}
@@ -13,13 +14,12 @@
                 {% endfor %}
             {% endif %}
 
-            {{ form.errors }}
-
             <!-- Profile Settings Form -->
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="row form-row">
+                    <!-- Profile Photo -->
                     <div class="col-12 col-md-12">
                         <div class="form-group">
                             <div class="change-avatar">
@@ -31,47 +31,219 @@
                                         <span><i class="fa fa-upload"></i> Upload Photo</span>
                                         <input type="file" class="upload" name="avatar">
                                     </div>
-                                    {#<small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>#}
+                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:"" }}">
-                            {% if 'first_name' in form.errors %}
-                                {% for error in form.first_name.errors %}
-                                    <div class="alert alert-danger alert-dismissable">
-                                        <a href="#" class="close" data-dismiss="alert"
-                                           aria-label="close">&times;</a>
-                                        <strong>{{ error|escape }}</strong>
+
+                    <!-- Basic Information -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Basic Information</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:'' }}">
+                                            {% if form.first_name.errors %}
+                                                {% for error in form.first_name.errors %}
+                                                    <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
+                                                        <strong>{{ error|escape }}</strong>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                {% endfor %}
-                            {% endif %}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Last Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="last_name" value="{{ user.last_name|default:'' }}">
+                                            {% if form.last_name.errors %}
+                                                {% for error in form.last_name.errors %}
+                                                    <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
+                                                        <strong>{{ error|escape }}</strong>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <input type="date" class="form-control" name="dob" value="{{ user.profile.dob|date:'Y-m-d'|default:'' }}">
+                                            {% if form.dob.errors %}
+                                                {% for error in form.dob.errors %}
+                                                    <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
+                                                        <strong>{{ error|escape }}</strong>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Blood Group</label>
+                                            <select class="form-control" name="blood_group">
+                                                {% for choice in form.blood_group.field.choices %}
+                                                    <option value="{{ choice.0 }}" {% if user.profile.blood_group == choice.0 %}selected{% endif %}>
+                                                        {{ choice.1 }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            {% include 'includes/form_error.html' with field=form.blood_group %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select class="form-control" name="gender">
+                                                <option value="">Select Gender</option>
+                                                <option value="male" {% if user.profile.gender == 'male' %}selected{% endif %}>Male</option>
+                                                <option value="female" {% if user.profile.gender == 'female' %}selected{% endif %}>Female</option>
+                                                <option value="other" {% if user.profile.gender == 'other' %}selected{% endif %}>Other</option>
+                                            </select>
+                                            {% include 'includes/form_error.html' with field=form.gender %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input type="text" class="form-control" name="phone" value="{{ user.profile.phone|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.phone %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" class="form-control" name="last_name" value="{{ user.last_name|default:"" }}">
-                            {% if 'last_name' in form.errors %}
-                                {% for error in form.last_name.errors %}
-                                    <div class="alert alert-danger alert-dismissable">
-                                        <a href="#" class="close" data-dismiss="alert"
-                                           aria-label="close">&times;</a>
-                                        <strong>{{ error|escape }}</strong>
+
+                    <!-- Medical Information -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Medical Information</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row form-row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Medical Conditions</label>
+                                            <textarea class="form-control" name="medical_conditions" rows="3" placeholder="List any chronic conditions, surgeries, etc.">{{ user.profile.medical_conditions|default:'' }}</textarea>
+                                            {% include 'includes/form_error.html' with field=form.medical_conditions %}
+                                        </div>
                                     </div>
-                                {% endfor %}
-                            {% endif %}
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Allergies</label>
+                                            <textarea class="form-control" name="allergies" rows="3" placeholder="List any allergies to medications, food, etc.">{{ user.profile.allergies|default:'' }}</textarea>
+                                            {% include 'includes/form_error.html' with field=form.allergies %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Address Information</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row form-row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" name="address" value="{{ user.profile.address|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.address %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <input type="text" class="form-control" name="city" value="{{ user.profile.city|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.city %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>State</label>
+                                            <input type="text" class="form-control" name="state" value="{{ user.profile.state|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.state %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Postal Code</label>
+                                            <input type="text" class="form-control" name="postal_code" value="{{ user.profile.postal_code|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.postal_code %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Country</label>
+                                            <input type="text" class="form-control" name="country" value="{{ user.profile.country|default:'' }}">
+                                            {% include 'includes/form_error.html' with field=form.country %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="submit-section">
                     <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
                 </div>
             </form>
+            <!-- /Profile Settings Form -->
         </div>
     </div>
+{% endblock %}
 
+{% block extra_css %}
+<style>
+    .card {
+        margin-bottom: 20px;
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 15px;
+    }
+    .card-title {
+        margin-bottom: 0;
+        color: #272b41;
+        font-size: 18px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-control {
+        height: 40px;
+        border-color: #dcdcdc;
+    }
+    textarea.form-control {
+        height: auto;
+    }
+    .submit-btn {
+        padding: 10px 30px;
+    }
+    .change-avatar {
+        margin-bottom: 30px;
+    }
+</style>
 {% endblock %}

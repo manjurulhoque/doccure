@@ -1,5 +1,4 @@
-from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DetailView, View
 from django.views.generic.base import TemplateView
@@ -28,20 +27,57 @@ class PatientDashboardView(PatientRequiredMixin, TemplateView):
 
 class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
     model = User
-    form_class = PatientProfileForm
     template_name = "patients/profile-setting.html"
     success_url = reverse_lazy("patients:profile-setting")
+    form_class = PatientProfileForm
 
     def get_object(self, queryset=None):
         return self.request.user
 
     def form_valid(self, form):
-        user = form.save()
-        if form.cleaned_data.get("avatar"):
-            user.profile.avatar = form.cleaned_data["avatar"]
-            user.profile.save()
+        user = form.save(commit=False)
+        profile = user.profile
 
-        return HttpResponsePermanentRedirect(self.get_success_url())
+        # Handle profile image upload
+        if self.request.FILES.get('avatar'):
+            profile.image = self.request.FILES['avatar']
+
+        # Update profile fields
+        profile_fields = [
+            'dob', 'blood_group', 'gender', 'phone',
+            'medical_conditions', 'allergies',
+            'address', 'city', 'state', 'postal_code', 'country'
+        ]
+
+        for field in profile_fields:
+            value = self.request.POST.get(field)
+            if value:
+                setattr(profile, field, value)
+
+        # Save both user and profile
+        user.save()
+        profile.save()
+
+        messages.success(self.request, 'Profile updated successfully')
+        return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Please correct the errors below')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['blood_group_choices'] = [
+            ('A+', 'A+'),
+            ('A-', 'A-'),
+            ('B+', 'B+'),
+            ('B-', 'B-'),
+            ('O+', 'O+'),
+            ('O-', 'O-'),
+            ('AB+', 'AB+'),
+            ('AB-', 'AB-'),
+        ]
+        return context
 
 
 class AppointmentDetailView(DetailView):
