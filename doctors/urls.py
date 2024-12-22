@@ -12,6 +12,7 @@ from .views import (
     DoctorsListView,
     AppointmentListView,
     AppointmentDetailView,
+    AppointmentActionView,
 )
 
 app_name = "doctors"
@@ -59,5 +60,10 @@ urlpatterns = [
         "appointments/<int:pk>/",
         AppointmentDetailView.as_view(),
         name="appointment-detail",
+    ),
+    path(
+        "appointments/<int:pk>/<str:action>/",
+        AppointmentActionView.as_view(),
+        name="appointment-action",
     ),
 ]

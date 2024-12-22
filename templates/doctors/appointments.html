@@ -17,46 +17,192 @@
             <div class="appointment-list">
                 <div class="profile-info-widget">
                     <a href="#" class="booking-doc-img">
-                        {% if appointment.patient.profile_photo %}
-                            <img src="{{ appointment.patient.profile_photo.url }}" alt="{{ appointment.patient.get_full_name }}">
+                        {% if appointment.patient.profile.image %}
+                            <img src="{{ appointment.patient.profile.image }}" alt="{{ appointment.patient.get_full_name }}">
                         {% else %}
-                            <img src="{% static 'assets/img/patients/patient.jpg' %}" alt="Default Patient Image">
+                            <img src="https://via.placeholder.com/150x150?text=Patient" alt="Default Patient Image">
                         {% endif %}
                     </a>
                     <div class="profile-det-info">
-                        <h3><a href="#">{{ appointment.patient.get_full_name }}</a></h3>
+                        <h3>
+                            <a href="#">{{ appointment.patient.get_full_name }}</a>
+                            {% if appointment.patient.profile.gender %}
+                                <small>({{ appointment.patient.profile.gender|title }})</small>
+                            {% endif %}
+                        </h3>
                         <div class="patient-details">
-                            <h5><i class="far fa-clock"></i> {{ appointment.appointment_date|date:"d M Y" }}, {{ appointment.appointment_time }}</h5>
+                            <h5>
+                                <i class="far fa-clock"></i> 
+                                {{ appointment.appointment_date|date:"d M Y" }}, 
+                                <span class="text-primary">{{ appointment.appointment_time|time:"h:i A" }}</span>
+                            </h5>
                             <h5><i class="fas fa-envelope"></i> {{ appointment.patient.email }}</h5>
-                            {% if appointment.patient.phone_number %}
-                                <h5 class="mb-0"><i class="fas fa-phone"></i> {{ appointment.patient.phone_number }}</h5>
+                            {% if appointment.patient.profile.phone %}
+                                <h5><i class="fas fa-phone"></i> {{ appointment.patient.profile.phone }}</h5>
+                            {% endif %}
+                            {% if appointment.patient.profile.blood_group %}
+                                <h5><i class="fas fa-tint"></i> Blood Group: {{ appointment.patient.profile.blood_group }}</h5>
+                            {% endif %}
+                            {% if appointment.patient.profile.age %}
+                                <h5><i class="fas fa-birthday-cake"></i> Age: {{ appointment.patient.profile.age }} years</h5>
                             {% endif %}
                         </div>
+                        {% if appointment.patient.profile.medical_conditions or appointment.patient.profile.allergies %}
+                            <div class="patient-medical-details mt-2">
+                                {% if appointment.patient.profile.medical_conditions %}
+                                    <p class="text-muted mb-1">
+                                        <i class="fas fa-notes-medical"></i> 
+                                        <strong>Medical Conditions:</strong> {{ appointment.patient.profile.medical_conditions }}
+                                    </p>
+                                {% endif %}
+                                {% if appointment.patient.profile.allergies %}
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-allergies"></i> 
+                                        <strong>Allergies:</strong> {{ appointment.patient.profile.allergies }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="appointment-action">
-                    <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
-                        <i class="far fa-eye"></i> View
-                    </a>
-                    {% if appointment.status == 'pending' %}
-                        <a href="#" class="btn btn-sm bg-success-light">
-                            <i class="fas fa-check"></i> Accept
+                    <span class="badge badge-pill mb-2
+                        {% if appointment.status == 'confirmed' %}bg-success-light{% endif %}
+                        {% if appointment.status == 'pending' %}bg-warning-light{% endif %}
+                        {% if appointment.status == 'cancelled' %}bg-danger-light{% endif %}
+                        {% if appointment.status == 'completed' %}bg-info-light{% endif %}">
+                        {{ appointment.status|title }}
+                    </span>
+                    <div class="btn-group">
+                        <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
+                            <i class="far fa-eye"></i> View
                         </a>
-                        <a href="#" class="btn btn-sm bg-danger-light">
-                            <i class="fas fa-times"></i> Cancel
-                        </a>
-                    {% elif appointment.status == 'accepted' %}
-                        <span class="badge badge-success">Accepted</span>
-                    {% elif appointment.status == 'cancelled' %}
-                        <span class="badge badge-danger">Cancelled</span>
-                    {% endif %}
+                        {% if appointment.status == 'pending' %}
+                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="blog-pagination">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- /Pagination -->
+        
     {% else %}
         <div class="text-center">
-            <p>No appointments found.</p>
+            <div class="alert alert-info">
+                <i class="fas fa-calendar-times"></i> No appointments found.
+            </div>
         </div>
     {% endif %}
 </div>
+
+{% block extra_css %}
+<style>
+    .patient-medical-details {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .appointment-list {
+        border: 1px solid #f0f0f0;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .badge {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+    .patient-details h5 {
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .patient-details i {
+        width: 20px;
+        color: #20c0f3;
+    }
+    
+    /* Pagination Styles */
+    .blog-pagination {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .pagination {
+        margin-bottom: 0;
+    }
+    .pagination > li > a {
+        padding: 8px 16px;
+        color: #333;
+    }
+    .pagination > li.active > a {
+        background-color: #20c0f3;
+        border-color: #20c0f3;
+    }
+    .pagination > li.active > a:hover,
+    .pagination > li.active > a:focus {
+        background-color: #20c0f3;
+        border-color: #20c0f3;
+    }
+    .page-link:focus {
+        box-shadow: none;
+    }
+    .page-link:hover {
+        background-color: #f8f9fa;
+        color: #20c0f3;
+    }
+</style>
+{% endblock %}
 {% endblock %}
