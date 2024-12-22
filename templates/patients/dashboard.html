@@ -77,12 +77,18 @@
                                             <td class="text-right">
                                                 <div class="table-action">
                                                     {% if appointment.status == 'pending' or appointment.status == 'confirmed' %}
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-times"></i> Cancel
-                                                        </a>
+                                                        <form method="post" action="{% url 'patients:appointment-cancel' appointment.pk %}" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                                                <i class="fas fa-times"></i> Cancel
+                                                            </button>
+                                                        </form>
                                                     {% endif %}
-                                                    <a href="#" class="btn btn-sm bg-info-light">
+                                                    <a href="{% url 'patients:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
                                                         <i class="far fa-eye"></i> View
+                                                    </a>
+                                                    <a href="{% url 'patients:appointment-print' appointment.pk %}" target="_blank" class="btn btn-sm bg-primary-light">
+                                                        <i class="fas fa-print"></i> Print
                                                     </a>
                                                 </div>
                                             </td>
