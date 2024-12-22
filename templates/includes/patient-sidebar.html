@@ -74,8 +74,8 @@
                                             <span>Profile Settings</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="{% if request.resolver_match.url_name == 'change-password' %}active{% endif %}">
+                                        <a href="{% url 'patients:change-password' %}">
                                             <i class="fas fa-lock"></i>
                                             <span>Change Password</span>
                                         </a>
