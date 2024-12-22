@@ -59,43 +59,43 @@
                         <div class="dashboard-widget">
                             <nav class="dashboard-menu">
                                 <ul>
-                                    <li class="active">
+                                    <li class="{% if request.path == '/doctors/dashboard/' %}active{% endif %}">
                                         <a href="{% url 'doctors:dashboard' %}">
                                             <i class="fas fa-columns"></i>
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="{% if request.path == '/doctors/appointments/' %}active{% endif %}">
+                                        <a href="{% url 'doctors:appointments' %}">
                                             <i class="fas fa-calendar-check"></i>
                                             <span>Appointments</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.path == '/doctors/my-patients/' %}active{% endif %}">
                                         <a href="#">
                                             <i class="fas fa-user-injured"></i>
                                             <span>My Patients</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.path == '/doctors/schedule-timings/' %}active{% endif %}">
                                         <a href="{% url 'doctors:schedule-timings' %}">
                                             <i class="fas fa-hourglass-start"></i>
                                             <span>Schedule Timings</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.path == '/doctors/invoices/' %}active{% endif %}">
                                         <a href="#">
                                             <i class="fas fa-file-invoice"></i>
                                             <span>Invoices</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.path == '/doctors/profile-settings/' %}active{% endif %}">
                                         <a href="{% url 'doctors:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
                                             <span>Profile Settings</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="{% if request.path == '/doctors/change-password/' %}active{% endif %}">
                                         <a href="#">
                                             <i class="fas fa-lock"></i>
                                             <span>Change Password</span>

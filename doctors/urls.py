@@ -7,7 +7,11 @@ from .views import (
     DoctorProfileView,
     UpdateEducationAPIView,
     UpdateExperienceAPIView,
-    UpdateRegistrationNumberAPIView, UpdateSpecializationAPIView, DoctorsListView,
+    UpdateRegistrationNumberAPIView,
+    UpdateSpecializationAPIView,
+    DoctorsListView,
+    AppointmentListView,
+    AppointmentDetailView,
 )
 
 app_name = "doctors"
@@ -22,7 +26,9 @@ urlpatterns = [
         name="profile-setting",
     ),
     path(
-        "<str:username>/", DoctorProfileView.as_view(), name="doctor-profile"
+        "<str:username>/profile/",
+        DoctorProfileView.as_view(),
+        name="doctor-profile",
     ),
     path(
         "update-education",
@@ -43,5 +49,15 @@ urlpatterns = [
         "update-specialization",
         UpdateSpecializationAPIView.as_view(),
         name="update-specialization",
+    ),
+    path(
+        "appointments/",
+        AppointmentListView.as_view(),
+        name="appointments",
+    ),
+    path(
+        "appointments/<int:pk>/",
+        AppointmentDetailView.as_view(),
+        name="appointment-detail",
     ),
 ]

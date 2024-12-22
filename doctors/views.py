@@ -11,11 +11,12 @@ from django.http import (
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 
+from bookings.models import Booking
 from core.decorators import user_is_doctor
 from doctors.forms import DoctorProfileForm
 from doctors.models import Experience
@@ -23,12 +24,13 @@ from doctors.models.general import *
 from doctors.serializers import (
     EducationSerializer,
     ExperienceSerializer,
-    RegistrationNumberSerializer, SpecializationSerializer,
+    RegistrationNumberSerializer,
+    SpecializationSerializer,
 )
 from mixins.custom_mixins import DoctorRequiredMixin
 from utils.htmx import render_toast_message_for_api
 
-d = {
+days = {
     0: Sunday,
     1: Monday,
     2: Tuesday,
@@ -68,18 +70,12 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                     time_range, time_created = TimeRange.objects.get_or_create(
                         start=start, end=end
                     )
-                    day, created = d[i].objects.get_or_create(
-                        user=request.user
-                    )
+                    day, created = days[i].objects.get_or_create(user=request.user)
                     ranges = day.time_range
-                    if time_range.id not in list(
-                            ranges.values_list("id", flat=True)
-                    ):
+                    if time_range.id not in list(ranges.values_list("id", flat=True)):
                         day.time_range.add(time_range)
 
-        return HttpResponsePermanentRedirect(
-            reverse_lazy("doctors:schedule-timings")
-        )
+        return HttpResponsePermanentRedirect(reverse_lazy("doctors:schedule-timings"))
 
     return render(request, "doctors/schedule-timings.html")
 
@@ -265,7 +261,7 @@ class UpdateSpecializationAPIView(DoctorRequiredMixin, UpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.POST
-        specialist = data.get('specialist')
+        specialist = data.get("specialist")
         instance.profile.specialization = specialist
         instance.profile.save()
 
@@ -280,4 +276,25 @@ class DoctorsListView(ListView):
     template_name = "doctors/list.html"
 
     def get_queryset(self):
-        return self.model.objects.filter(role=User.RoleChoices.DOCTOR, is_superuser=False)
+        return self.model.objects.filter(
+            role=User.RoleChoices.DOCTOR, is_superuser=False
+        )
+
+
+class AppointmentListView(ListView):
+    model = Booking
+    context_object_name = "appointments"
+    template_name = "doctors/appointments.html"
+
+    def get_queryset(self):
+        return self.model.objects.filter(doctor=self.request.user)
+
+
+class AppointmentDetailView(DetailView):
+    model = Booking
+    context_object_name = "appointment"
+    template_name = "doctors/appointment-detail.html"
+
+    def get_queryset(self):
+        return self.model.objects.filter(doctor=self.request.user)
+

@@ -1,0 +1,62 @@
+{% extends "includes/doctor-sidebar.html" %}
+{% load static %}
+
+{% block title %}Appointments{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+{% block page_name1 %}Dashboard{% endblock %}
+{% block page_name2 %}Appointments{% endblock %}
+
+{% block main %}
+<div class="appointments">
+    {% if appointments %}
+        {% for appointment in appointments %}
+            <div class="appointment-list">
+                <div class="profile-info-widget">
+                    <a href="#" class="booking-doc-img">
+                        {% if appointment.patient.profile_photo %}
+                            <img src="{{ appointment.patient.profile_photo.url }}" alt="{{ appointment.patient.get_full_name }}">
+                        {% else %}
+                            <img src="{% static 'assets/img/patients/patient.jpg' %}" alt="Default Patient Image">
+                        {% endif %}
+                    </a>
+                    <div class="profile-det-info">
+                        <h3><a href="#">{{ appointment.patient.get_full_name }}</a></h3>
+                        <div class="patient-details">
+                            <h5><i class="far fa-clock"></i> {{ appointment.appointment_date|date:"d M Y" }}, {{ appointment.appointment_time }}</h5>
+                            <h5><i class="fas fa-envelope"></i> {{ appointment.patient.email }}</h5>
+                            {% if appointment.patient.phone_number %}
+                                <h5 class="mb-0"><i class="fas fa-phone"></i> {{ appointment.patient.phone_number }}</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="appointment-action">
+                    <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
+                        <i class="far fa-eye"></i> View
+                    </a>
+                    {% if appointment.status == 'pending' %}
+                        <a href="#" class="btn btn-sm bg-success-light">
+                            <i class="fas fa-check"></i> Accept
+                        </a>
+                        <a href="#" class="btn btn-sm bg-danger-light">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    {% elif appointment.status == 'accepted' %}
+                        <span class="badge badge-success">Accepted</span>
+                    {% elif appointment.status == 'cancelled' %}
+                        <span class="badge badge-danger">Cancelled</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center">
+            <p>No appointments found.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
