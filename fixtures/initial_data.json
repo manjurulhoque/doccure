@@ -1,0 +1,962 @@
+[
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor1",
+      "email": "sadia.hossain@example.com",
+      "first_name": "Sadia",
+      "last_name": "Hossain",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "phone": "+8801750000001",
+      "dob": "1969-02-04",
+      "about": "MBBS from Sylhet Medical College. 17 years of experience in Gynecologist.",
+      "specialization": "Dermatologist",
+      "gender": "female",
+      "address": "House 55, Road 1, Block E, Dhanmondi",
+      "city": "Chittagong",
+      "state": "Mymensingh",
+      "postal_code": "2780",
+      "country": "Bangladesh",
+      "price_per_consultation": 1736,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor2",
+      "email": "nahida.jahan@example.com",
+      "first_name": "Nahida",
+      "last_name": "Jahan",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "phone": "+8801750000002",
+      "dob": "1983-05-13",
+      "about": "MBBS from Chittagong Medical College. 15 years of experience in Gynecologist.",
+      "specialization": "Neurologist",
+      "gender": "female",
+      "address": "House 98, Road 10, Block B, Gulshan",
+      "city": "Gazipur",
+      "state": "Rangpur",
+      "postal_code": "7684",
+      "country": "Bangladesh",
+      "price_per_consultation": 1895,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor3",
+      "email": "mahmud.sheikh@example.com",
+      "first_name": "Mahmud",
+      "last_name": "Sheikh",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "phone": "+8801750000003",
+      "dob": "1968-08-24",
+      "about": "MBBS from Sylhet Medical College. 14 years of experience in Cardiologist.",
+      "specialization": "Dermatologist",
+      "gender": "male",
+      "address": "House 79, Road 15, Block D, Uttara",
+      "city": "Rajshahi",
+      "state": "Chittagong",
+      "postal_code": "5202",
+      "country": "Bangladesh",
+      "price_per_consultation": 1118,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor4",
+      "email": "abdul.sheikh@example.com",
+      "first_name": "Abdul",
+      "last_name": "Sheikh",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "phone": "+8801750000004",
+      "dob": "1980-02-15",
+      "about": "MBBS from Chittagong Medical College. 6 years of experience in ENT Specialist.",
+      "specialization": "Orthopedic Surgeon",
+      "gender": "male",
+      "address": "House 61, Road 6, Block E, Banani",
+      "city": "Barisal",
+      "state": "Rangpur",
+      "postal_code": "2253",
+      "country": "Bangladesh",
+      "price_per_consultation": 631,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor5",
+      "email": "fahim.siddique@example.com",
+      "first_name": "Fahim",
+      "last_name": "Siddique",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "phone": "+8801750000005",
+      "dob": "1986-10-27",
+      "about": "MBBS from Sylhet Medical College. 10 years of experience in Neurologist.",
+      "specialization": "Gynecologist",
+      "gender": "male",
+      "address": "House 41, Road 13, Block E, Uttara",
+      "city": "Dhaka",
+      "state": "Rajshahi",
+      "postal_code": "9182",
+      "country": "Bangladesh",
+      "price_per_consultation": 1463,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor6",
+      "email": "fahim.islam@example.com",
+      "first_name": "Fahim",
+      "last_name": "Islam",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "phone": "+8801750000006",
+      "dob": "1977-02-03",
+      "about": "MBBS from Rajshahi Medical College. 18 years of experience in Cardiologist.",
+      "specialization": "Ophthalmologist",
+      "gender": "male",
+      "address": "House 7, Road 4, Block A, Dhanmondi",
+      "city": "Dhaka",
+      "state": "Rangpur",
+      "postal_code": "8229",
+      "country": "Bangladesh",
+      "price_per_consultation": 662,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor7",
+      "email": "hasan.chowdhury@example.com",
+      "first_name": "Hasan",
+      "last_name": "Chowdhury",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "phone": "+8801750000007",
+      "dob": "1961-02-19",
+      "about": "MBBS from Rajshahi Medical College. 13 years of experience in Pediatrician.",
+      "specialization": "Orthopedic Surgeon",
+      "gender": "male",
+      "address": "House 65, Road 1, Block B, Gulshan",
+      "city": "Comilla",
+      "state": "Khulna",
+      "postal_code": "6683",
+      "country": "Bangladesh",
+      "price_per_consultation": 1421,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor8",
+      "email": "jamal.ahmed@example.com",
+      "first_name": "Jamal",
+      "last_name": "Ahmed",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 8,
+    "fields": {
+      "user": 8,
+      "phone": "+8801750000008",
+      "dob": "1988-02-11",
+      "about": "MBBS from Dhaka Medical College. 19 years of experience in Gynecologist.",
+      "specialization": "Dentist",
+      "gender": "male",
+      "address": "House 19, Road 8, Block D, Mirpur",
+      "city": "Mymensingh",
+      "state": "Chittagong",
+      "postal_code": "3111",
+      "country": "Bangladesh",
+      "price_per_consultation": 1711,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor9",
+      "email": "taslima.siddiqua@example.com",
+      "first_name": "Taslima",
+      "last_name": "Siddiqua",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 9,
+    "fields": {
+      "user": 9,
+      "phone": "+8801750000009",
+      "dob": "1979-05-06",
+      "about": "MBBS from Sylhet Medical College. 13 years of experience in Cardiologist.",
+      "specialization": "Ophthalmologist",
+      "gender": "female",
+      "address": "House 35, Road 15, Block D, Dhanmondi",
+      "city": "Khulna",
+      "state": "Dhaka",
+      "postal_code": "2453",
+      "country": "Bangladesh",
+      "price_per_consultation": 676,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor10",
+      "email": "fahim.rahman@example.com",
+      "first_name": "Fahim",
+      "last_name": "Rahman",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 10,
+    "fields": {
+      "user": 10,
+      "phone": "+8801750000010",
+      "dob": "1979-11-08",
+      "about": "MBBS from Sylhet Medical College. 8 years of experience in Pediatrician.",
+      "specialization": "Ophthalmologist",
+      "gender": "male",
+      "address": "House 19, Road 5, Block B, Uttara",
+      "city": "Dhaka",
+      "state": "Barisal",
+      "postal_code": "4365",
+      "country": "Bangladesh",
+      "price_per_consultation": 1647,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor11",
+      "email": "nasreen.chowdhury@example.com",
+      "first_name": "Nasreen",
+      "last_name": "Chowdhury",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 11,
+    "fields": {
+      "user": 11,
+      "phone": "+8801750000011",
+      "dob": "1971-08-24",
+      "about": "MBBS from Rajshahi Medical College. 20 years of experience in Gynecologist.",
+      "specialization": "Neurologist",
+      "gender": "female",
+      "address": "House 1, Road 8, Block D, Gulshan",
+      "city": "Barisal",
+      "state": "Chittagong",
+      "postal_code": "2338",
+      "country": "Bangladesh",
+      "price_per_consultation": 953,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor12",
+      "email": "fahim.uddin@example.com",
+      "first_name": "Fahim",
+      "last_name": "Uddin",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 12,
+    "fields": {
+      "user": 12,
+      "phone": "+8801750000012",
+      "dob": "1986-12-12",
+      "about": "MBBS from Chittagong Medical College. 10 years of experience in Orthopedic Surgeon.",
+      "specialization": "ENT Specialist",
+      "gender": "male",
+      "address": "House 5, Road 15, Block D, Gulshan",
+      "city": "Dhaka",
+      "state": "Rajshahi",
+      "postal_code": "9429",
+      "country": "Bangladesh",
+      "price_per_consultation": 1165,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor13",
+      "email": "fahim.sheikh@example.com",
+      "first_name": "Fahim",
+      "last_name": "Sheikh",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 13,
+    "fields": {
+      "user": 13,
+      "phone": "+8801750000013",
+      "dob": "1970-05-27",
+      "about": "MBBS from Rajshahi Medical College. 20 years of experience in Orthopedic Surgeon.",
+      "specialization": "Dermatologist",
+      "gender": "male",
+      "address": "House 89, Road 11, Block A, Gulshan",
+      "city": "Sylhet",
+      "state": "Sylhet",
+      "postal_code": "2687",
+      "country": "Bangladesh",
+      "price_per_consultation": 1090,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor14",
+      "email": "mehedi.ali@example.com",
+      "first_name": "Mehedi",
+      "last_name": "Ali",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 14,
+    "fields": {
+      "user": 14,
+      "phone": "+8801750000014",
+      "dob": "1988-03-23",
+      "about": "MBBS from Chittagong Medical College. 11 years of experience in Ophthalmologist.",
+      "specialization": "Ophthalmologist",
+      "gender": "male",
+      "address": "House 66, Road 5, Block E, Mirpur",
+      "city": "Rajshahi",
+      "state": "Mymensingh",
+      "postal_code": "3960",
+      "country": "Bangladesh",
+      "price_per_consultation": 689,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "doctor15",
+      "email": "ahmed.molla@example.com",
+      "first_name": "Ahmed",
+      "last_name": "Molla",
+      "role": "doctor",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 15,
+    "fields": {
+      "user": 15,
+      "phone": "+8801750000015",
+      "dob": "1981-04-19",
+      "about": "MBBS from Chittagong Medical College. 6 years of experience in Gynecologist.",
+      "specialization": "Cardiologist",
+      "gender": "male",
+      "address": "House 47, Road 5, Block E, Gulshan",
+      "city": "Gazipur",
+      "state": "Sylhet",
+      "postal_code": "2198",
+      "country": "Bangladesh",
+      "price_per_consultation": 905,
+      "is_available": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 16,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient1",
+      "email": "nahida.nahar@example.com",
+      "first_name": "Nahida",
+      "last_name": "Nahar",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 16,
+    "fields": {
+      "user": 16,
+      "phone": "+8801850000001",
+      "dob": "1982-01-12",
+      "gender": "female",
+      "address": "Flat 9A, House 81, Road 11, Uttara",
+      "city": "Narayanganj",
+      "state": "Mymensingh",
+      "postal_code": "3259",
+      "country": "Bangladesh",
+      "blood_group": "B-",
+      "allergies": "Dust Allergy",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 17,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient2",
+      "email": "nasreen.akhter@example.com",
+      "first_name": "Nasreen",
+      "last_name": "Akhter",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 17,
+    "fields": {
+      "user": 17,
+      "phone": "+8801850000002",
+      "dob": "1984-08-17",
+      "gender": "female",
+      "address": "Flat 10A, House 7, Road 7, Banani",
+      "city": "Barisal",
+      "state": "Dhaka",
+      "postal_code": "3638",
+      "country": "Bangladesh",
+      "blood_group": "B+",
+      "allergies": "None",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 18,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient3",
+      "email": "jamal.ahmed@example.com",
+      "first_name": "Jamal",
+      "last_name": "Ahmed",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 18,
+    "fields": {
+      "user": 18,
+      "phone": "+8801850000003",
+      "dob": "1974-12-26",
+      "gender": "male",
+      "address": "Flat 9A, House 97, Road 1, Banani",
+      "city": "Cox's Bazar",
+      "state": "Dhaka",
+      "postal_code": "6150",
+      "country": "Bangladesh",
+      "blood_group": "AB+",
+      "allergies": "Food Allergy",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 19,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient4",
+      "email": "farzana.ahmed@example.com",
+      "first_name": "Farzana",
+      "last_name": "Ahmed",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 19,
+    "fields": {
+      "user": 19,
+      "phone": "+8801850000004",
+      "dob": "1977-08-14",
+      "gender": "female",
+      "address": "Flat 15A, House 60, Road 15, Badda",
+      "city": "Gazipur",
+      "state": "Sylhet",
+      "postal_code": "6191",
+      "country": "Bangladesh",
+      "blood_group": "A+",
+      "allergies": "Drug Allergy",
+      "medical_conditions": "None"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 20,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient5",
+      "email": "aisha.begum@example.com",
+      "first_name": "Aisha",
+      "last_name": "Begum",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 20,
+    "fields": {
+      "user": 20,
+      "phone": "+8801850000005",
+      "dob": "1979-06-28",
+      "gender": "female",
+      "address": "Flat 14A, House 67, Road 13, Banani",
+      "city": "Comilla",
+      "state": "Mymensingh",
+      "postal_code": "5008",
+      "country": "Bangladesh",
+      "blood_group": "O+",
+      "allergies": "Food Allergy",
+      "medical_conditions": "High Blood Pressure"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 21,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient6",
+      "email": "hasan.chowdhury@example.com",
+      "first_name": "Hasan",
+      "last_name": "Chowdhury",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 21,
+    "fields": {
+      "user": 21,
+      "phone": "+8801850000006",
+      "dob": "1992-11-27",
+      "gender": "male",
+      "address": "Flat 10A, House 27, Road 13, Banani",
+      "city": "Mymensingh",
+      "state": "Barisal",
+      "postal_code": "9382",
+      "country": "Bangladesh",
+      "blood_group": "A+",
+      "allergies": "None",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 22,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient7",
+      "email": "nasir.talukder@example.com",
+      "first_name": "Nasir",
+      "last_name": "Talukder",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 22,
+    "fields": {
+      "user": 22,
+      "phone": "+8801850000007",
+      "dob": "1990-07-18",
+      "gender": "male",
+      "address": "Flat 1A, House 48, Road 15, Mohammadpur",
+      "city": "Khulna",
+      "state": "Chittagong",
+      "postal_code": "9687",
+      "country": "Bangladesh",
+      "blood_group": "AB-",
+      "allergies": "Drug Allergy",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 23,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient8",
+      "email": "jasmine.parvin@example.com",
+      "first_name": "Jasmine",
+      "last_name": "Parvin",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 23,
+    "fields": {
+      "user": 23,
+      "phone": "+8801850000008",
+      "dob": "1970-01-17",
+      "gender": "female",
+      "address": "Flat 9A, House 27, Road 1, Gulshan",
+      "city": "Dhaka",
+      "state": "Mymensingh",
+      "postal_code": "5043",
+      "country": "Bangladesh",
+      "blood_group": "B+",
+      "allergies": "None",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 24,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient9",
+      "email": "rashid.uddin@example.com",
+      "first_name": "Rashid",
+      "last_name": "Uddin",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 24,
+    "fields": {
+      "user": 24,
+      "phone": "+8801850000009",
+      "dob": "1977-07-02",
+      "gender": "male",
+      "address": "Flat 5A, House 37, Road 13, Uttara",
+      "city": "Chittagong",
+      "state": "Barisal",
+      "postal_code": "8638",
+      "country": "Bangladesh",
+      "blood_group": "O+",
+      "allergies": "Dust Allergy",
+      "medical_conditions": "High Blood Pressure"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 25,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient10",
+      "email": "salma.khan@example.com",
+      "first_name": "Salma",
+      "last_name": "Khan",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 25,
+    "fields": {
+      "user": 25,
+      "phone": "+8801850000010",
+      "dob": "1991-10-08",
+      "gender": "female",
+      "address": "Flat 2A, House 28, Road 13, Mirpur",
+      "city": "Mymensingh",
+      "state": "Rangpur",
+      "postal_code": "2428",
+      "country": "Bangladesh",
+      "blood_group": "O+",
+      "allergies": "Dust Allergy",
+      "medical_conditions": "High Blood Pressure"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 26,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient11",
+      "email": "sabina.chowdhury@example.com",
+      "first_name": "Sabina",
+      "last_name": "Chowdhury",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 26,
+    "fields": {
+      "user": 26,
+      "phone": "+8801850000011",
+      "dob": "1970-05-19",
+      "gender": "female",
+      "address": "Flat 1A, House 84, Road 1, Mohammadpur",
+      "city": "Barisal",
+      "state": "Dhaka",
+      "postal_code": "3777",
+      "country": "Bangladesh",
+      "blood_group": "AB-",
+      "allergies": "Food Allergy",
+      "medical_conditions": "High Blood Pressure"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 27,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient12",
+      "email": "nusrat.sultana@example.com",
+      "first_name": "Nusrat",
+      "last_name": "Sultana",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 27,
+    "fields": {
+      "user": 27,
+      "phone": "+8801850000012",
+      "dob": "2000-11-26",
+      "gender": "female",
+      "address": "Flat 18A, House 74, Road 14, Dhanmondi",
+      "city": "Rajshahi",
+      "state": "Rajshahi",
+      "postal_code": "4245",
+      "country": "Bangladesh",
+      "blood_group": "O+",
+      "allergies": "Dust Allergy",
+      "medical_conditions": "Diabetes"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 28,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient13",
+      "email": "taslima.akhter@example.com",
+      "first_name": "Taslima",
+      "last_name": "Akhter",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 28,
+    "fields": {
+      "user": 28,
+      "phone": "+8801850000013",
+      "dob": "1983-03-13",
+      "gender": "female",
+      "address": "Flat 15A, House 53, Road 4, Uttara",
+      "city": "Narayanganj",
+      "state": "Rajshahi",
+      "postal_code": "7738",
+      "country": "Bangladesh",
+      "blood_group": "AB-",
+      "allergies": "Drug Allergy",
+      "medical_conditions": "None"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 29,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient14",
+      "email": "nahida.rahman@example.com",
+      "first_name": "Nahida",
+      "last_name": "Rahman",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 29,
+    "fields": {
+      "user": 29,
+      "phone": "+8801850000014",
+      "dob": "1984-08-04",
+      "gender": "female",
+      "address": "Flat 4A, House 43, Road 2, Banani",
+      "city": "Dhaka",
+      "state": "Rangpur",
+      "postal_code": "5535",
+      "country": "Bangladesh",
+      "blood_group": "O-",
+      "allergies": "Dust Allergy",
+      "medical_conditions": "Asthma"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 30,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$HQyGxzxfOxv6nLKI8zF$w9Nmz1Rxm1fPY1HzJ2MU7MgKBfTJ1RfF3q9M1wJvXvQ=",
+      "username": "patient15",
+      "email": "nasir.uddin@example.com",
+      "first_name": "Nasir",
+      "last_name": "Uddin",
+      "role": "patient",
+      "is_active": true,
+      "date_joined": "2023-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 30,
+    "fields": {
+      "user": 30,
+      "phone": "+8801850000015",
+      "dob": "1978-03-23",
+      "gender": "male",
+      "address": "Flat 3A, House 63, Road 15, Mohammadpur",
+      "city": "Mymensingh",
+      "state": "Rangpur",
+      "postal_code": "7810",
+      "country": "Bangladesh",
+      "blood_group": "B+",
+      "allergies": "None",
+      "medical_conditions": "High Blood Pressure"
+    }
+  }
+]
