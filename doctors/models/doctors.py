@@ -4,9 +4,7 @@ from accounts.models import User
 
 
 class Education(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="educations"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="educations")
     college = models.CharField(max_length=300)
     degree = models.CharField(max_length=100)
     year_of_completion = models.IntegerField()
@@ -16,15 +14,11 @@ class Education(models.Model):
         verbose_name_plural = "Doctor Educations"
 
     def __str__(self) -> str:
-        return (
-            f"{self.user.get_full_name()} -> {self.college} -> {self.degree}"
-        )
+        return f"{self.user.get_full_name()} -> {self.college} -> {self.degree}"
 
 
 class Experience(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="experiences"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
     institution = models.CharField(max_length=300)
     from_year = models.IntegerField()
     to_year = models.IntegerField()
@@ -37,3 +31,39 @@ class Experience(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user.get_full_name()} -> {self.institution}"
+
+
+class Review(models.Model):
+    doctor = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="doctor_reviews"
+    )
+    patient = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="patient_reviews"
+    )
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["doctor", "patient"]
+        ordering = ["-created_at"]
+
+
+class Prescription(models.Model):
+    booking = models.OneToOneField(
+        "bookings.Booking", on_delete=models.CASCADE, related_name="prescription"
+    )
+    diagnosis = models.TextField()
+    medications = models.TextField()
+    notes = models.TextField(blank=True)
+    follow_up_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class Specialty(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    doctors = models.ManyToManyField(User, related_name="specialties")

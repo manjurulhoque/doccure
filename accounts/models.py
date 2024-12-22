@@ -7,7 +7,6 @@ from django.urls import reverse
 from accounts.managers import CustomUserManager
 from utils.file_utils import (
     profile_photo_directory_path,
-    doctor_profile_photo_directory_path,
 )
 
 
@@ -76,6 +75,36 @@ class Profile(models.Model):
     dob = models.DateField(blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     specialization = models.CharField(max_length=255, blank=True, null=True)
+    gender = models.CharField(
+        max_length=10,
+        choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
+        blank=True
+    )
+    address = models.TextField(blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    price_per_consultation = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+    is_available = models.BooleanField(default=True)
+    blood_group = models.CharField(
+        max_length=5,
+        choices=[
+            ('A+', 'A+'), ('A-', 'A-'),
+            ('B+', 'B+'), ('B-', 'B-'),
+            ('O+', 'O+'), ('O-', 'O-'),
+            ('AB+', 'AB+'), ('AB-', 'AB-'),
+        ],
+        blank=True,
+        null=True
+    )
+    allergies = models.TextField(blank=True, null=True)
+    medical_conditions = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return "Profile of {}".format(self.user.username)
