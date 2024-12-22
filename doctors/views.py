@@ -16,7 +16,7 @@ from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 
-from decorators import user_is_doctor
+from core.decorators import user_is_doctor
 from doctors.forms import DoctorProfileForm
 from doctors.models import Experience
 from doctors.models.general import *
