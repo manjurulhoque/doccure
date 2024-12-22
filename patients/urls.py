@@ -5,7 +5,8 @@ from .views import (
     PatientProfileUpdateView,
     AppointmentDetailView,
     AppointmentCancelView,
-    AppointmentPrintView
+    AppointmentPrintView,
+    ChangePasswordView
 )
 
 app_name = "patients"
@@ -31,5 +32,10 @@ urlpatterns = [
         'appointments/<int:pk>/print/',
         AppointmentPrintView.as_view(),
         name='appointment-print'
+    ),
+    path(
+        'change-password/',
+        ChangePasswordView.as_view(),
+        name='change-password'
     ),
 ]

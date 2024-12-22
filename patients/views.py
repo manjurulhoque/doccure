@@ -1,15 +1,16 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DetailView, View
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.contrib.auth import update_session_auth_hash
 
 from accounts.models import User
 from bookings.models import Booking
 from mixins.custom_mixins import PatientRequiredMixin
-from patients.forms import PatientProfileForm
+from patients.forms import PatientProfileForm, ChangePasswordForm
 
 
 class PatientDashboardView(PatientRequiredMixin, TemplateView):
@@ -126,3 +127,30 @@ class AppointmentPrintView(DetailView):
     def render_to_response(self, context):
         html_string = render_to_string(self.template_name, context, request=self.request)
         return HttpResponse(html_string)
+
+
+class ChangePasswordView(PatientRequiredMixin, View):
+    template_name = 'patients/change-password.html'
+    
+    def get(self, request):
+        form = ChangePasswordForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            
+            if user.check_password(form.cleaned_data['old_password']):
+                user.set_password(form.cleaned_data['new_password'])
+                user.save()
+                
+                # Update session to prevent logout
+                update_session_auth_hash(request, user)
+                
+                messages.success(request, 'Password changed successfully')
+                return redirect('patients:dashboard')
+            else:
+                messages.error(request, 'Current password is incorrect')
+        
+        return render(request, self.template_name, {'form': form})
