@@ -430,13 +430,28 @@ class AppointmentDetailView(DoctorRequiredMixin, DetailView):
     template_name = 'doctors/appointment-detail.html'
     context_object_name = 'appointment'
 
-    def get_queryset(self):
-        return Booking.objects.select_related(
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient = self.object.patient
+        
+        # Get patient's appointment history with this doctor
+        context['patient_history'] = Booking.objects.select_related(
             'doctor', 
-            'doctor__profile',
-            'patient', 
-            'patient__profile'
-        ).filter(doctor=self.request.user)
+            'doctor__profile'
+        ).filter(
+            doctor=self.request.user,
+            patient=patient,
+            appointment_date__lt=self.object.appointment_date
+        ).order_by('-appointment_date', '-appointment_time')
+        
+        # Get total visits count
+        context['total_visits'] = Booking.objects.filter(
+            doctor=self.request.user,
+            patient=patient,
+            status='completed'
+        ).count()
+        
+        return context
 
 
 class AppointmentActionView(DoctorRequiredMixin, View):
