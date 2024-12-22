@@ -127,8 +127,9 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
         data = self.request.data
         serializer = self.get_serializer(data=data)
         if not serializer.is_valid():
+            print(serializer.errors)
             return render_toast_message_for_api(
-                "Information", "Something went wrong when updating", "error"
+                "Information", "Something went wrong when updating your information", "error"
             )
         try:
             user.first_name = data.get("first_name")
@@ -146,5 +147,5 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
         except Exception as ex:
             print(str(ex))
             return render_toast_message_for_api(
-                "Information", "Something went wrong when updating", "error"
+                "Information", "Something went wrong when updating your information", "error"
             )

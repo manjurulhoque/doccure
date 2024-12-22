@@ -1,6 +1,7 @@
 {% extends 'includes/doctor-sidebar.html' %}
 {% load static %}
 
+{% block title %}Profile Settings{% endblock %}
 {% block css %}
 
     {{ block.super }}
@@ -100,25 +101,25 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" readonly value="{{ user.email }}">
+                        <input type="email" class="form-control" readonly value="{{ user.email|default:'' }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>First Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
+                        <input type="text" class="form-control" name="first_name" value="{{ user.first_name|default:'' }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Last Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
+                        <input type="text" class="form-control" name="last_name" value="{{ user.last_name|default:'' }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="text" class="form-control" name="phone" value="{{ user.profile.phone }}">
+                        <input type="text" class="form-control" name="phone" value="{{ user.profile.phone|default:'' }}">
                     </div>
                 </div>
                 {#                <div class="col-md-6">#}
@@ -134,8 +135,8 @@
                 <div class="col-md-6">
                     <div class="form-group mb-0">
                         <label>Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob"
-                               value="{{ user.profile.dob | date:"m/d/Y" }}">
+                        <input type="date" class="form-control" id="dob" name="dob" required
+                               value="{% if user.profile.dob %}{{ user.profile.dob|date:'Y-m-d' }}{% endif %}">
                     </div>
                 </div>
             </div>
@@ -443,19 +444,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const dobInput = document.getElementById('dob');
-            const originalDateValue = dobInput.value;
+            if (!dobInput) return;
 
-            // Convert the displayed date format to yyyy-mm-dd for HTML5 date input
-            if (originalDateValue) {
-                const [month, day, year] = originalDateValue.split('/');
-                dobInput.value = `${year}-${month}-${day}`;
-            }
-
-            dobInput.addEventListener('blur', () => {
+            // When form submits, keep the ISO format YYYY-MM-DD
+            dobInput.form?.addEventListener('submit', () => {
                 const date = new Date(dobInput.value);
                 if (!isNaN(date)) {
-                    const formattedDate = `${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}/${date.getFullYear()}`;
-                    dobInput.value = formattedDate;
+                    // Ensure date is in YYYY-MM-DD format for submission
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    dobInput.value = `${year}-${month}-${day}`;
                 }
             });
         });
