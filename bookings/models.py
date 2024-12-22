@@ -1,16 +1,23 @@
 from django.db import models
-from accounts.models import User
+from django.conf import settings
 
 
 class Booking(models.Model):
-    patient = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="patient_bookings"
-    )
     doctor = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="doctor_bookings"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="appointments",
+        limit_choices_to={"role": "doctor"},
     )
-    booking_date = models.DateField()
-    booking_time = models.TimeField()
+    patient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="patient_appointments",
+        limit_choices_to={"role": "patient"},
+    )
+    appointment_date = models.DateField()
+    appointment_time = models.TimeField()
+    booking_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
         max_length=20,
         choices=[
@@ -22,13 +29,11 @@ class Booking(models.Model):
         ],
         default="pending",
     )
-    reason = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-booking_date", "-booking_time"]
-        indexes = [
-            models.Index(fields=["booking_date", "booking_time"]),
-            models.Index(fields=["status"]),
-        ]
+        ordering = ["-appointment_date", "-appointment_time"]
+        # Ensure no double bookings for same doctor at same time
+        unique_together = ["doctor", "appointment_date", "appointment_time"]
+
+    def __str__(self):
+        return f"Appointment with Dr. {self.doctor.get_full_name()} on {self.appointment_date} at {self.appointment_time}"

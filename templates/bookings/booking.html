@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load booking_tags %}
+
+{% block title %}Book Appointment with Dr. {{ doctor.get_full_name }}{% endblock %}
 
 {% block content %}
-
     <!-- Breadcrumb -->
     <div class="breadcrumb-bar">
         <div class="container-fluid">
@@ -11,11 +13,11 @@
                 <div class="col-md-12 col-12">
                     <nav aria-label="breadcrumb" class="page-breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Booking</li>
                         </ol>
                     </nav>
-                    <h2 class="breadcrumb-title">Booking</h2>
+                    <h2 class="breadcrumb-title">Book Appointment</h2>
                 </div>
             </div>
         </div>
@@ -25,82 +27,60 @@
     <!-- Page Content -->
     <div class="content">
         <div class="container">
-
             <div class="row">
                 <div class="col-12">
-
+                    <!-- Doctor Info -->
                     <div class="card">
                         <div class="card-body">
                             <div class="booking-doc-info">
                                 <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="booking-doc-img">
-                                    <img src="{{ doctor.profile.image }}" alt="User Image">
+                                    <img src="{{ doctor.profile.image }}" alt="{{ doctor.get_full_name }}">
                                 </a>
                                 <div class="booking-info">
-                                    <h4><a href="{% url 'doctors:doctor-profile' doctor.username %}">{{ doctor.get_full_name }}</a></h4>
+                                    <h4><a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a></h4>
+                                    {% if doctor.profile.specialization %}
+                                        <p class="doc-speciality">{{ doctor.profile.specialization }}</p>
+                                    {% endif %}
                                     <div class="rating">
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="d-inline-block average-rating">35</span>
+                                        <i class="fas fa-star {% if doctor.rating >= 1 %}filled{% endif %}"></i>
+                                        <i class="fas fa-star {% if doctor.rating >= 2 %}filled{% endif %}"></i>
+                                        <i class="fas fa-star {% if doctor.rating >= 3 %}filled{% endif %}"></i>
+                                        <i class="fas fa-star {% if doctor.rating >= 4 %}filled{% endif %}"></i>
+                                        <i class="fas fa-star {% if doctor.rating >= 5 %}filled{% endif %}"></i>
+                                        <span class="d-inline-block average-rating">({{ doctor.reviews_count|default:0 }})</span>
                                     </div>
-                                    <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
+                                    {% if doctor.profile.city %}
+                                        <p class="text-muted mb-0">
+                                            <i class="fas fa-map-marker-alt"></i> {{ doctor.profile.city }}{% if doctor.profile.state %}, {{ doctor.profile.state }}{% endif %}
+                                        </p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- /Doctor Info -->
 
                     <!-- Schedule Widget -->
                     <div class="card booking-schedule schedule-widget">
-
                         <!-- Schedule Header -->
                         <div class="schedule-header">
                             <div class="row">
                                 <div class="col-md-12">
-
                                     <!-- Day Slot -->
                                     <div class="day-slot">
                                         <ul>
-                                            <li>
-                                                <span>Sat</span>
-                                                <span class="slot-date">16 Nov <small
-                                                        class="slot-year">2019</small></span>
+                                            {% for date in week_dates %}
+                                            <li {% if date.full_date == selected_date %}class="selected"{% endif %}>
+                                                <span>{{ date.day }}</span>
+                                                <span class="slot-date">
+                                                    {{ date.day_num }} {{ date.month }}
+                                                    <small class="slot-year">{{ date.year }}</small>
+                                                </span>
                                             </li>
-                                            <li>
-                                                <span>Sun</span>
-                                                <span class="slot-date">17 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
-                                            <li>
-                                                <span>Mon</span>
-                                                <span class="slot-date">11 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
-                                            <li>
-                                                <span>Tue</span>
-                                                <span class="slot-date">12 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
-                                            <li>
-                                                <span>Wed</span>
-                                                <span class="slot-date">13 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
-                                            <li>
-                                                <span>Thu</span>
-                                                <span class="slot-date">14 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
-                                            <li>
-                                                <span>Fri</span>
-                                                <span class="slot-date">15 Nov <small
-                                                        class="slot-year">2019</small></span>
-                                            </li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                     <!-- /Day Slot -->
-
                                 </div>
                             </div>
                         </div>
@@ -110,110 +90,77 @@
                         <div class="schedule-cont">
                             <div class="row">
                                 <div class="col-md-12">
-
                                     <!-- Time Slot -->
                                     <div class="time-slot">
                                         <ul class="clearfix">
+                                            {% for date in week_dates %}
                                             <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
+                                                {% for slot in schedule|get_item:date.full_date %}
+                                                    <a class="timing {% if slot.is_booked %}disabled{% endif %}" 
+                                                       href="#" 
+                                                       data-date="{{ date.full_date }}" 
+                                                       data-time="{{ slot.time|time:'H:i' }}"
+                                                       {% if slot.is_booked %}disabled{% endif %}>
+                                                        <span>{{ slot.formatted_time }}</span>
+                                                    </a>
+                                                {% empty %}
+                                                    <p class="text-muted">No slots available</p>
+                                                {% endfor %}
                                             </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing selected" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="timing" href="#">
-                                                    <span>9:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>10:00</span> <span>AM</span>
-                                                </a>
-                                                <a class="timing" href="#">
-                                                    <span>11:00</span> <span>AM</span>
-                                                </a>
-                                            </li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                     <!-- /Time Slot -->
-
                                 </div>
                             </div>
                         </div>
                         <!-- /Schedule Content -->
-
                     </div>
                     <!-- /Schedule Widget -->
 
                     <!-- Submit Section -->
-                    <div class="submit-section proceed-btn text-right">
-                        <a href="checkout.html" class="btn btn-primary submit-btn">Proceed to Pay</a>
-                    </div>
+                    <form method="post" action="{% url 'bookings:create-booking' doctor.username %}" id="booking-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="selected_date" id="selected_date">
+                        <input type="hidden" name="selected_time" id="selected_time">
+                        <div class="submit-section proceed-btn text-right">
+                            <button type="submit" class="btn btn-primary submit-btn" disabled>Proceed to Book</button>
+                        </div>
+                    </form>
                     <!-- /Submit Section -->
-
                 </div>
             </div>
         </div>
-
     </div>
     <!-- /Page Content -->
+{% endblock %}
 
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timingSlots = document.querySelectorAll('.timing');
+    const submitBtn = document.querySelector('.submit-btn');
+    const selectedDateInput = document.getElementById('selected_date');
+    const selectedTimeInput = document.getElementById('selected_time');
+
+    timingSlots.forEach(slot => {
+        slot.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove selected class from all slots
+            timingSlots.forEach(s => s.classList.remove('selected'));
+            
+            // Add selected class to clicked slot
+            this.classList.add('selected');
+            
+            // Update hidden inputs
+            selectedDateInput.value = this.dataset.date;
+            selectedTimeInput.value = this.dataset.time;
+            
+            // Enable submit button
+            submitBtn.disabled = false;
+        });
+    });
+});
+</script>
 {% endblock %}

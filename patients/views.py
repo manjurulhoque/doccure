@@ -5,6 +5,7 @@ from django.views.generic import UpdateView
 from django.views.generic.base import TemplateView
 
 from accounts.models import User
+from bookings.models import Booking
 from mixins.custom_mixins import PatientRequiredMixin
 from patients.forms import PatientProfileForm
 
@@ -14,6 +15,11 @@ class PatientDashboardView(PatientRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["appointments"] = (
+            Booking.objects.select_related('doctor', 'doctor__profile')
+            .filter(patient=self.request.user)
+            .order_by('-appointment_date', '-appointment_time')
+        )
         return context
 
 
