@@ -91,7 +91,7 @@ class DoctorProfileUpdateView(DoctorRequiredMixin, generic.UpdateView):
         return self.request.user
 
 
-class DoctorProfileView(generic.DetailView):
+class DoctorProfileView(DetailView):
     context_object_name = "doctor"
     model = User
     slug_url_kwarg = "username"
@@ -103,19 +103,48 @@ class DoctorProfileView(generic.DetailView):
             queryset = self.get_queryset()
 
         slug = self.kwargs.get(self.slug_url_kwarg)
-
-        slug_field = self.get_slug_field()
+        queryset = queryset.select_related('profile').prefetch_related(
+            'educations', 
+            'experiences',
+            'sunday__time_range',
+            'monday__time_range',
+            'tuesday__time_range',
+            'wednesday__time_range',
+            'thursday__time_range',
+            'friday__time_range',
+            'saturday__time_range'
+        )
 
         try:
-            obj = queryset.select_related("profile").get(**{slug_field: slug})
+            obj = queryset.get(**{self.slug_field: slug, 'role': User.RoleChoices.DOCTOR})
         except User.DoesNotExist:
-            raise Http404
+            raise Http404(f"No doctor found matching the username")
 
         return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["today"] = datetime.now().strftime("%-d %b %Y")
+        doctor = self.object
+        
+        # Get current day name
+        current_day = datetime.now().strftime('%A')
+        
+        # Prepare business hours
+        business_hours = {
+            'Sunday': doctor.sunday.time_range.all() if hasattr(doctor, 'sunday') else [],
+            'Monday': doctor.monday.time_range.all() if hasattr(doctor, 'monday') else [],
+            'Tuesday': doctor.tuesday.time_range.all() if hasattr(doctor, 'tuesday') else [],
+            'Wednesday': doctor.wednesday.time_range.all() if hasattr(doctor, 'wednesday') else [],
+            'Thursday': doctor.thursday.time_range.all() if hasattr(doctor, 'thursday') else [],
+            'Friday': doctor.friday.time_range.all() if hasattr(doctor, 'friday') else [],
+            'Saturday': doctor.saturday.time_range.all() if hasattr(doctor, 'saturday') else [],
+        }
+        
+        context.update({
+            'current_day': current_day,
+            'business_hours': business_hours,
+        })
+        
         return context
 
 
