@@ -59,6 +59,11 @@ class User(AbstractUser):
             "doctors:doctor-profile", kwargs={"username": self.username}
         )
 
+    @property
+    def rating(self):
+        # Implement your rating logic here
+        return 0  # Default value
+
 
 class Profile(models.Model):
     """

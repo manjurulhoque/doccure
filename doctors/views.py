@@ -15,6 +15,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
+from django.db.models import Q
 
 from bookings.models import Booking
 from core.decorators import user_is_doctor
@@ -29,6 +30,7 @@ from doctors.serializers import (
 )
 from mixins.custom_mixins import DoctorRequiredMixin
 from utils.htmx import render_toast_message_for_api
+from accounts.models import User
 
 days = {
     0: Sunday,
@@ -274,11 +276,69 @@ class DoctorsListView(ListView):
     model = User
     context_object_name = "doctors"
     template_name = "doctors/list.html"
+    paginate_by = 10
 
     def get_queryset(self):
-        return self.model.objects.filter(
-            role=User.RoleChoices.DOCTOR, is_superuser=False
-        )
+        queryset = self.model.objects.filter(
+            role=User.RoleChoices.DOCTOR, 
+            is_superuser=False,
+            is_active=True
+        ).select_related('profile')
+
+        # Handle search query
+        search_query = self.request.GET.get('q')
+        if search_query:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(profile__specialization__icontains=search_query) |
+                Q(profile__city__icontains=search_query)
+            )
+
+        # Handle gender filter
+        gender = self.request.GET.getlist('gender')
+        if gender:
+            queryset = queryset.filter(profile__gender__in=gender)
+
+        # Handle specialization filter
+        specializations = self.request.GET.getlist('specialization')
+        if specializations:
+            queryset = queryset.filter(profile__specialization__in=specializations)
+
+        # Handle sorting
+        sort_by = self.request.GET.get('sort')
+        if sort_by:
+            if sort_by == 'price_low':
+                queryset = queryset.order_by('profile__price_per_consultation')
+            elif sort_by == 'price_high':
+                queryset = queryset.order_by('-profile__price_per_consultation')
+            elif sort_by == 'rating':
+                queryset = queryset.order_by('-rating')
+            elif sort_by == 'experience':
+                queryset = queryset.order_by('-profile__experience')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Add search query to context
+        context['search_query'] = self.request.GET.get('q')
+        
+        # Add unique specializations to context
+        specializations = User.objects.filter(
+            role=User.RoleChoices.DOCTOR,
+            is_active=True
+        ).exclude(
+            profile__specialization__isnull=True
+        ).values_list(
+            'profile__specialization', 
+            flat=True
+        ).distinct()
+        
+        context['specializations'] = sorted(list(filter(None, specializations)))
+        
+        return context
 
 
 class AppointmentListView(ListView):
