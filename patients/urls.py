@@ -1,14 +1,35 @@
 from django.urls import path
 
-from .views import PatientDashboardView, PatientProfileUpdateView
+from .views import (
+    PatientDashboardView, 
+    PatientProfileUpdateView,
+    AppointmentDetailView,
+    AppointmentCancelView,
+    AppointmentPrintView
+)
 
 app_name = "patients"
 
 urlpatterns = [
     path("dashboard/", PatientDashboardView.as_view(), name="dashboard"),
     path(
-        "profile-setting/",
+        "profile-settings/",
         PatientProfileUpdateView.as_view(),
         name="profile-setting",
+    ),
+    path(
+        'appointments/<int:pk>/',
+        AppointmentDetailView.as_view(),
+        name='appointment-detail'
+    ),
+    path(
+        'appointments/<int:pk>/cancel/',
+        AppointmentCancelView.as_view(),
+        name='appointment-cancel'
+    ),
+    path(
+        'appointments/<int:pk>/print/',
+        AppointmentPrintView.as_view(),
+        name='appointment-print'
     ),
 ]

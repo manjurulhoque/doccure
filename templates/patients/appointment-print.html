@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointment Details - Print</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .details { margin-bottom: 20px; }
+        .details table { width: 100%; border-collapse: collapse; }
+        .details td { padding: 8px; border: 1px solid #ddd; }
+        .footer { margin-top: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Appointment Details</h1>
+            <p>Booking Reference: #{{ appointment.pk }}</p>
+        </div>
+        
+        <div class="details">
+            <table>
+                <tr>
+                    <td><strong>Doctor:</strong></td>
+                    <td>Dr. {{ appointment.doctor.get_full_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Specialization:</strong></td>
+                    <td>{{ appointment.doctor.profile.specialization }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Patient:</strong></td>
+                    <td>{{ appointment.patient.get_full_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Appointment Date:</strong></td>
+                    <td>{{ appointment.appointment_date }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Appointment Time:</strong></td>
+                    <td>{{ appointment.appointment_time|time:"h:i A" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Booking Date:</strong></td>
+                    <td>{{ appointment.booking_date }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>{{ appointment.status|title }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Consultation Fee:</strong></td>
+                    <td>৳{{ appointment.doctor.profile.price_per_consultation }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>This is a computer generated document.</p>
+        </div>
+    </div>
+    <script>
+        window.onload = function() { window.print(); }
+    </script>
+</body>
+</html> 

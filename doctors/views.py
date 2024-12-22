@@ -16,6 +16,8 @@ from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from django.db.models import Q
+from django.db.models import Count
+from django.utils import timezone
 
 from bookings.models import Booking
 from core.decorators import user_is_doctor
@@ -48,6 +50,41 @@ class DoctorDashboardView(DoctorRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+        
+        # Get appointment counts
+        context['total_patients'] = Booking.objects.filter(
+            doctor=self.request.user
+        ).values('patient').distinct().count()
+        
+        context['today_patients'] = Booking.objects.filter(
+            doctor=self.request.user,
+            appointment_date=today
+        ).count()
+        
+        context['total_appointments'] = Booking.objects.filter(
+            doctor=self.request.user
+        ).count()
+        
+        # Get upcoming appointments
+        context['upcoming_appointments'] = Booking.objects.select_related(
+            'patient', 
+            'patient__profile'
+        ).filter(
+            doctor=self.request.user,
+            appointment_date__gte=today,
+            status__in=['pending', 'confirmed']
+        ).order_by('appointment_date', 'appointment_time')[:10]
+        
+        # Get today's appointments
+        context['today_appointments'] = Booking.objects.select_related(
+            'patient', 
+            'patient__profile'
+        ).filter(
+            doctor=self.request.user,
+            appointment_date=today
+        ).order_by('appointment_time')
+        
         return context
 
 

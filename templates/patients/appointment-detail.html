@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Appointment Details{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="booking-doc-info">
+                    <a href="{% url 'doctors:doctor-profile' appointment.doctor.username %}" class="booking-doc-img">
+                        <img src="{{ appointment.doctor.profile.image }}" alt="Doctor Image">
+                    </a>
+                    <div class="booking-info">
+                        <h4><a href="{% url 'doctors:doctor-profile' appointment.doctor.username %}">Dr. {{ appointment.doctor.get_full_name }}</a></h4>
+                        <div class="clinic-details">
+                            <p class="doc-location">
+                                <i class="fas fa-map-marker-alt"></i> {{ appointment.doctor.profile.city }}, {{ appointment.doctor.profile.state }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-summary">
+                    <div class="booking-item-wrap">
+                        <ul class="booking-date">
+                            <li>Date <span>{{ appointment.appointment_date }}</span></li>
+                            <li>Time <span>{{ appointment.appointment_time|time:"h:i A" }}</span></li>
+                        </ul>
+                        <ul class="booking-fee">
+                            <li>Consulting Fee <span>৳{{ appointment.doctor.profile.price_per_consultation }}</span></li>
+                        </ul>
+                        <div class="booking-total">
+                            <ul class="booking-total-list">
+                                <li>
+                                    <span>Status</span>
+                                    <span class="total-cost">
+                                        <span class="badge badge-pill 
+                                            {% if appointment.status == 'confirmed' %}bg-success-light{% endif %}
+                                            {% if appointment.status == 'pending' %}bg-warning-light{% endif %}
+                                            {% if appointment.status == 'cancelled' %}bg-danger-light{% endif %}
+                                            {% if appointment.status == 'completed' %}bg-info-light{% endif %}">
+                                            {{ appointment.status|title }}
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-actions text-right">
+                    {% if appointment.status == 'pending' or appointment.status == 'confirmed' %}
+                    <form method="post" action="{% url 'patients:appointment-cancel' appointment.pk %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a href="{% url 'patients:appointment-print' appointment.pk %}" target="_blank" class="btn btn-sm bg-info-light">
+                        <i class="fas fa-print"></i> Print
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

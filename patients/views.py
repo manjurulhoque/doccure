@@ -1,8 +1,11 @@
 from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DetailView, View
 from django.views.generic.base import TemplateView
+from django.contrib import messages
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 from accounts.models import User
 from bookings.models import Booking
@@ -39,3 +42,51 @@ class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
             user.profile.save()
 
         return HttpResponsePermanentRedirect(self.get_success_url())
+
+
+class AppointmentDetailView(DetailView):
+    model = Booking
+    template_name = 'patients/appointment-detail.html'
+    context_object_name = 'appointment'
+
+    def get_queryset(self):
+        return Booking.objects.select_related(
+            'doctor', 
+            'doctor__profile',
+            'patient', 
+            'patient__profile'
+        ).filter(patient=self.request.user)
+
+
+class AppointmentCancelView(View):
+    def post(self, request, pk):
+        appointment = get_object_or_404(
+            Booking, 
+            pk=pk, 
+            patient=request.user,
+            status__in=['pending', 'confirmed']
+        )
+        
+        appointment.status = 'cancelled'
+        appointment.save()
+        
+        messages.success(request, 'Appointment cancelled successfully')
+        return redirect('patients:dashboard')
+
+
+class AppointmentPrintView(DetailView):
+    model = Booking
+    template_name = 'patients/appointment-print.html'
+    context_object_name = 'appointment'
+
+    def get_queryset(self):
+        return Booking.objects.select_related(
+            'doctor', 
+            'doctor__profile',
+            'patient', 
+            'patient__profile'
+        ).filter(patient=self.request.user)
+
+    def render_to_response(self, context):
+        html_string = render_to_string(self.template_name, context, request=self.request)
+        return HttpResponse(html_string)
