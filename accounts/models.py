@@ -5,7 +5,10 @@ from django.db import models
 from django.urls import reverse
 
 from accounts.managers import CustomUserManager
-from utils.file_utils import profile_photo_directory_path
+from utils.file_utils import (
+    profile_photo_directory_path,
+    doctor_profile_photo_directory_path,
+)
 
 
 class User(AbstractUser):

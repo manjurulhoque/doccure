@@ -122,30 +122,32 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
     def get_object(self):
         return self.request.user
 
-    def update(self, request, *args, **kwargs):
-        user = self.request.user
-        data = self.request.data
-        serializer = self.get_serializer(data=data)
-        if not serializer.is_valid():
-            print(serializer.errors)
-            return render_toast_message_for_api(
-                "Information", "Something went wrong when updating your information", "error"
-            )
+    def put(self, request, *args, **kwargs):
         try:
-            user.first_name = data.get("first_name")
-            user.last_name = data.get("last_name")
+            user = request.user
+            data = request.POST
+            files = request.FILES
+
+            # Update user information
+            user.first_name = data.get("first_name", user.first_name)
+            user.last_name = data.get("last_name", user.last_name)
             user.save()
 
-            # store profile information
+            # Update profile information
             user_profile = user.profile
             user_profile.dob = data.get("dob")
             user_profile.phone = data.get("phone")
+            
+            # Handle avatar file upload
+            if 'avatar' in files:
+                user_profile.avatar = files['avatar']
+            
             user_profile.save()
+            
             return render_toast_message_for_api(
                 "Information", "Updated successfully", "success"
             )
-        except Exception as ex:
-            print(str(ex))
+        except Exception as e:
             return render_toast_message_for_api(
-                "Information", "Something went wrong when updating your information", "error"
+                "Error", str(e), "error"
             )

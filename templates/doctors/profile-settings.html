@@ -80,12 +80,18 @@
                     <div class="form-group">
                         <div class="change-avatar">
                             <div class="profile-img">
-                                <img src="{{ user.profile.image }}" alt="User Image">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="User Image">
+                                {% endif %}
                             </div>
                             <div class="upload-img">
                                 <div class="change-photo-btn">
                                     <span><i class="fa fa-upload"></i> Upload Photo</span>
-                                    <input type="file" class="upload" name="avatar">
+                                    <input type="file" 
+                                           class="upload" 
+                                           name="avatar" 
+                                           accept="image/*"
+                                           onchange="previewImage(this)">
                                 </div>
                                 <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
                             </div>
@@ -146,6 +152,7 @@
                     hx-include="#basic-profile-data"
                     hx-disabled-elt="this"
                     hx-swap="none"
+                    hx-encoding="multipart/form-data"
             >
                 <i class="fa fa-plus-circle"></i>
                 Update
@@ -458,6 +465,24 @@
                 }
             });
         });
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = input.closest('.change-avatar').querySelector('.profile-img img');
+                    if (img) {
+                        img.src = e.target.result;
+                    } else {
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.alt = 'User Image';
+                        input.closest('.change-avatar').querySelector('.profile-img').appendChild(newImg);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 
 {% endblock %}
