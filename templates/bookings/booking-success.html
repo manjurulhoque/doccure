@@ -20,7 +20,7 @@ Booking Success
                             <i class="fas fa-check"></i>
                             <h3>Appointment booked Successfully!</h3>
                             <p>Appointment booked with <strong>{{ booking.doctor.get_full_name }}</strong><br> on <strong>{{ booking.appointment_date }} {{ booking.appointment_time }}</strong></p>
-                            <a href="invoice-view.html" class="btn btn-primary view-inv-btn">View Invoice</a>
+                            <a href="{% url 'bookings:booking-invoice' booking.id %}" class="btn btn-primary view-inv-btn">View Invoice</a>
                         </div>
                     </div>
                 </div>

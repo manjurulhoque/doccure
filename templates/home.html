@@ -13,20 +13,20 @@
         <div class="container-fluid">
             <div class="banner-wrapper">
                 <div class="banner-header text-center">
-                    <h1>Search Doctor, Make an Appointment</h1>
-                    <p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+                    <h1>Find and Book Appointments with Top Doctors</h1>
+                    <p>Get instant access to trusted doctors in your area for quality healthcare.</p>
                 </div>
 
                 <!-- Search -->
                 <div class="search-box">
-                    <form action="">
+                    <form action="{% url 'doctors:list' %}" method="get">
                         <div class="form-group search-location">
-                            <input type="text" class="form-control" placeholder="Search Location">
-                            <span class="form-text">Based on your Location</span>
+                            <input type="text" name="location" class="form-control" placeholder="Enter City or Division">
+                            <span class="form-text">Find doctors in your area</span>
                         </div>
                         <div class="form-group search-info">
-                            <input type="text" class="form-control" placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc">
-                            <span class="form-text">Ex : Dental or Sugar Check up etc</span>
+                            <input type="text" name="q" class="form-control" placeholder="Search by Doctor Name, Specialization, or Symptoms">
+                            <span class="form-text">e.g. Cardiologist, Heart Problems, Dr. Rahman</span>
                         </div>
                         <button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i> <span>Search</span></button>
                     </form>
@@ -42,8 +42,8 @@
     <section class="section section-specialities">
         <div class="container-fluid">
             <div class="section-header text-center">
-                <h2>Clinic and Specialities</h2>
-                <p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <h2>Medical Specialities</h2>
+                <p class="sub-title">Find specialized doctors across major medical fields to address your specific health needs</p>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-9">
@@ -53,17 +53,17 @@
                         <!-- Slider Item -->
                         <div class="speicality-item text-center">
                             <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-01.png' %}" class="img-fluid" alt="Speciality">
+                                <img src="{% static 'assets/img/specialities/specialities-01.png' %}" class="img-fluid" alt="Cardiology">
                                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
-                            <p>Urology</p>
+                            <p>Cardiology</p>
                         </div>
                         <!-- /Slider Item -->
 
                         <!-- Slider Item -->
                         <div class="speicality-item text-center">
                             <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-02.png' %}" class="img-fluid" alt="Speciality">
+                                <img src="{% static 'assets/img/specialities/specialities-02.png' %}" class="img-fluid" alt="Neurology">
                                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
                             <p>Neurology</p>
@@ -73,30 +73,30 @@
                         <!-- Slider Item -->
                         <div class="speicality-item text-center">
                             <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-03.png' %}" class="img-fluid" alt="Speciality">
+                                <img src="{% static 'assets/img/specialities/specialities-03.png' %}" class="img-fluid" alt="Orthopedics">
                                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
-                            <p>Orthopedic</p>
+                            <p>Orthopedics</p>
                         </div>
                         <!-- /Slider Item -->
 
                         <!-- Slider Item -->
                         <div class="speicality-item text-center">
                             <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-04.png' %}" class="img-fluid" alt="Speciality">
+                                <img src="{% static 'assets/img/specialities/specialities-04.png' %}" class="img-fluid" alt="Pediatrics">
                                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
-                            <p>Cardiologist</p>
+                            <p>Pediatrics</p>
                         </div>
                         <!-- /Slider Item -->
 
                         <!-- Slider Item -->
                         <div class="speicality-item text-center">
                             <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-05.png' %}" class="img-fluid" alt="Speciality">
+                                <img src="{% static 'assets/img/specialities/specialities-05.png' %}" class="img-fluid" alt="Dentistry">
                                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
-                            <p>Dentist</p>
+                            <p>Dentistry</p>
                         </div>
                         <!-- /Slider Item -->
 
@@ -114,14 +114,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="section-header ">
-                        <h2>Book Our Doctor</h2>
-                        <p>Lorem Ipsum is simply dummy text </p>
+                    <div class="section-header">
+                        <h2>Book Appointments Online</h2>
+                        <p>Connect with Expert Healthcare Professionals</p>
                     </div>
                     <div class="about-content">
-                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-                        <p>web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes</p>
-                        <a href="javascript:;">Read More..</a>
+                        <p>Access quality healthcare from the comfort of your home. Our platform connects you with experienced doctors who provide personalized medical consultations.</p>
+                        <p>Choose from a wide network of verified specialists, check their availability in real-time, and book appointments instantly. We're committed to making healthcare accessible and convenient for everyone in Bangladesh.</p>
+                        <a href="{% url 'doctors:list' %}">View All Doctors</a>
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -131,8 +131,8 @@
                             <!-- Doctor Widget -->
                             <div class="profile-widget">
                                 <div class="doc-img">
-                                    <a href="#">
-                                        <img class="img-fluid" alt="User Image" src="{{ doctor.profile.image }}">
+                                    <a href="{% url 'doctors:doctor-profile' doctor.username %}">
+                                        <img class="img-fluid" alt="Doctor Image" src="{{ doctor.profile.image }}">
                                     </a>
                                     <a href="javascript:void(0)" class="fav-btn">
                                         <i class="far fa-bookmark"></i>
@@ -140,28 +140,17 @@
                                 </div>
                                 <div class="pro-content">
                                     <h3 class="title">
-                                        <a href="">{{ doctor.get_full_name }}</a>
+                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
                                         <i class="fas fa-check-circle verified"></i>
                                     </h3>
-{#                                    <p class="speciality">MDS - Periodontology and Oral Implantology, BDS</p>#}
-                                    <div class="rating">
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <span class="d-inline-block average-rating">(17)</span>
-                                    </div>
+                                    <p class="speciality">{{ doctor.profile.specialization }}</p>
                                     <ul class="available-info">
                                         <li>
-                                            <i class="fas fa-map-marker-alt"></i> Florida, USA
+                                            <i class="fas fa-map-marker-alt"></i> {{ doctor.profile.city }}, {{ doctor.profile.country }}
                                         </li>
                                         <li>
-                                            <i class="far fa-clock"></i> Available on Fri, 22 Mar
-                                        </li>
-                                        <li>
-                                            <i class="far fa-money-bill-alt"></i> $300 - $1000
-                                            <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                            <i class="far fa-money-bill-alt"></i> ৳{{ doctor.profile.price_per_consultation }}
+                                            <i class="fas fa-info-circle" data-toggle="tooltip" title="Consultation Fee"></i>
                                         </li>
                                     </ul>
                                     <div class="row row-sm">
@@ -184,7 +173,7 @@
     </section>
     <!-- /Popular Section -->
 
-    <!-- Available Features -->
+    <!-- Features Section -->
     <section class="section section-features">
         <div class="container-fluid">
             <div class="row">
@@ -193,56 +182,39 @@
                 </div>
                 <div class="col-md-8">
                     <div class="section-header">
-                        <h2 class="mt-2">Available Features in Our Clinic</h2>
-                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. </p>
+                        <h2 class="mt-2">Why Choose DocCure?</h2>
+                        <p>We provide comprehensive healthcare solutions with a focus on quality and accessibility</p>
                     </div>
                     <div class="features-slider slider">
-                        <!-- Slider Item -->
                         <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>Patient Ward</p>
+                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" class="img-fluid" alt="Verified Doctors">
+                            <p>Verified Doctors</p>
                         </div>
-                        <!-- /Slider Item -->
 
-                        <!-- Slider Item -->
                         <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>Test Room</p>
+                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" class="img-fluid" alt="Easy Booking">
+                            <p>Easy Booking</p>
                         </div>
-                        <!-- /Slider Item -->
 
-                        <!-- Slider Item -->
                         <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>ICU</p>
+                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" class="img-fluid" alt="Digital Records">
+                            <p>Digital Records</p>
                         </div>
-                        <!-- /Slider Item -->
 
-                        <!-- Slider Item -->
                         <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>Laboratory</p>
+                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" class="img-fluid" alt="Instant Access">
+                            <p>Instant Access</p>
                         </div>
-                        <!-- /Slider Item -->
 
-                        <!-- Slider Item -->
                         <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-05.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>Operation</p>
+                            <img src="{% static 'assets/img/features/feature-05.jpg' %}" class="img-fluid" alt="Secure Platform">
+                            <p>Secure Platform</p>
                         </div>
-                        <!-- /Slider Item -->
-
-                        <!-- Slider Item -->
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-06.jpg' %}" class="img-fluid" alt="Feature">
-                            <p>Medical</p>
-                        </div>
-                        <!-- /Slider Item -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Available Features -->
+    <!-- /Features Section -->
 
 {% endblock %}

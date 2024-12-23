@@ -158,3 +158,32 @@ class BookingSuccessView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["booking"] = Booking.objects.get(id=kwargs["booking_id"])
         return context
+
+class BookingInvoiceView(LoginRequiredMixin, TemplateView):
+    template_name = "bookings/booking-invoice.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        booking = get_object_or_404(
+            Booking.objects.select_related(
+                'doctor', 
+                'doctor__profile',
+                'patient', 
+                'patient__profile'
+            ),
+            id=kwargs["booking_id"]
+        )
+        
+        # Ensure user can only view their own bookings
+        if not (self.request.user == booking.patient or self.request.user == booking.doctor):
+            raise Http404("Not found")
+            
+        context["booking"] = booking
+        context["issued_date"] = booking.booking_date.strftime('%d/%m/%Y')
+        
+        # Calculate invoice amounts
+        consultation_fee = booking.doctor.profile.price_per_consultation
+        context["subtotal"] = consultation_fee
+        context["total"] = consultation_fee  # Add any additional fees/discounts here
+        
+        return context

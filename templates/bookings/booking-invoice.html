@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="invoice-content">
+                    <div class="invoice-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="invoice-logo">
+                                    <img src="{% static 'assets/img/logo2.svg' %}" alt="logo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="invoice-details">
+                                    <strong>Order:</strong> #{{ booking.id }} <br>
+                                    <strong>Issued:</strong> {{ issued_date }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Invoice Item -->
+                    <div class="invoice-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="invoice-info">
+                                    <strong class="customer-text">Invoice From</strong>
+                                    <p class="invoice-details invoice-details-two">
+                                        Dr. {{ booking.doctor.get_full_name }} <br>
+                                        {% if booking.doctor.profile.address %}
+                                            {{ booking.doctor.profile.address }}<br>
+                                        {% endif %}
+                                        {{ booking.doctor.profile.city }}{% if booking.doctor.profile.state %}, {{ booking.doctor.profile.state }}{% endif %}<br>
+                                        {{ booking.doctor.profile.country }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="invoice-info invoice-info2">
+                                    <strong class="customer-text">Invoice To</strong>
+                                    <p class="invoice-details">
+                                        {{ booking.patient.get_full_name }} <br>
+                                        {% if booking.patient.profile.address %}
+                                            {{ booking.patient.profile.address }}<br>
+                                        {% endif %}
+                                        {{ booking.patient.profile.city }}{% if booking.patient.profile.state %}, {{ booking.patient.profile.state }}{% endif %}<br>
+                                        {{ booking.patient.profile.country }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Invoice Item -->
+                    
+                    <!-- Invoice Item -->
+                    <div class="invoice-item invoice-table-wrap">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="invoice-table table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Time</th>
+                                                <th class="text-right">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Consultation Fee</td>
+                                                <td class="text-center">{{ booking.appointment_date }}</td>
+                                                <td class="text-center">{{ booking.appointment_time|time:"h:i A" }}</td>
+                                                <td class="text-right">৳{{ booking.doctor.profile.price_per_consultation }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4 ml-auto">
+                                <div class="table-responsive">
+                                    <table class="invoice-table-two table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Total Amount:</th>
+                                                <td><span>৳{{ total }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Invoice Item -->
+                    
+                    <!-- Invoice Information -->
+                    <div class="other-info">
+                        <h4>Booking Information</h4>
+                        <p class="text-muted mb-0">
+                            Status: <span class="badge badge-pill 
+                                {% if booking.status == 'confirmed' %}bg-success-light{% endif %}
+                                {% if booking.status == 'pending' %}bg-warning-light{% endif %}
+                                {% if booking.status == 'cancelled' %}bg-danger-light{% endif %}
+                                {% if booking.status == 'completed' %}bg-info-light{% endif %}">
+                                {{ booking.status|title }}
+                            </span>
+                        </p>
+                    </div>
+                    <!-- /Invoice Information -->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .invoice-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+    .invoice-item {
+        margin-bottom: 30px;
+    }
+    .invoice-logo {
+        margin-bottom: 20px;
+    }
+    .invoice-info {
+        margin-bottom: 20px;
+    }
+    .customer-text {
+        font-size: 18px;
+        color: #272b41;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .invoice-details {
+        color: #757575;
+        line-height: 1.5;
+    }
+    .badge {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+</style>
+{% endblock %}
+{% endblock %}
