@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.http import HttpRequest, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.urls import reverse
+from django.views.generic.base import TemplateView
 
 from accounts.models import User
 from doctors.models.general import TimeRange
@@ -113,35 +113,48 @@ class BookingCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
     def post(self, request, username):
-        doctor = get_object_or_404(User, username=username, role=User.RoleChoices.DOCTOR)
-        
+        doctor = get_object_or_404(
+            User, username=username, role=User.RoleChoices.DOCTOR
+        )
+
         # Get form data
-        date = request.POST.get('selected_date')
-        time = request.POST.get('selected_time')
-        
+        date = request.POST.get("selected_date")
+        time = request.POST.get("selected_time")
+
         if not date or not time:
-            messages.error(request, 'Please select both date and time for the appointment')
-            return redirect('bookings:doctor-booking-view', username=username)
-            
+            messages.error(
+                request, "Please select both date and time for the appointment"
+            )
+            return redirect("bookings:doctor-booking-view", username=username)
+
         try:
             # Convert string inputs to proper date/time objects
-            appointment_date = datetime.strptime(date, '%Y-%m-%d').date()
-            appointment_time = datetime.strptime(time, '%H:%M').time()
-            
+            appointment_date = datetime.strptime(date, "%Y-%m-%d").date()
+            appointment_time = datetime.strptime(time, "%H:%M").time()
+
             # Create the booking
-            Booking.objects.create(
+            booking = Booking.objects.create(
                 doctor=doctor,
                 patient=request.user,
                 appointment_date=appointment_date,
-                appointment_time=appointment_time
+                appointment_time=appointment_time,
             )
 
             messages.success(request, "Appointment booked successfully!")
-            return redirect("patients:dashboard")
+            return redirect("bookings:booking-success", booking_id=booking.id)
 
         except ValueError:
-            messages.error(request, 'Invalid date or time format')
+            messages.error(request, "Invalid date or time format")
         except Exception as e:
             messages.error(request, str(e))
 
         return redirect("bookings:doctor-booking-view", username=username)
+
+
+class BookingSuccessView(LoginRequiredMixin, TemplateView):
+    template_name = "bookings/booking-success.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["booking"] = Booking.objects.get(id=kwargs["booking_id"])
+        return context
