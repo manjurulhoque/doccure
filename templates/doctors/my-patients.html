@@ -1,0 +1,170 @@
+{% extends 'includes/doctor-sidebar.html' %}
+{% load static %}
+{% load doctor_tags %}
+
+{% block title %}My Patients{% endblock %}
+{% block page_name1 %}My Patients{% endblock %}
+{% block page_name2 %}My Patients{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if patients %}
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Blood Group</th>
+                                <th>Phone</th>
+                                <th>Last Visit</th>
+                                <th>Paid</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient in patients %}
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ patient.profile.image }}" alt="User Image">
+                                        </a>
+                                        <a href="#">{{ patient.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    {% if patient.profile.dob %}
+                                        {{ patient.profile.dob|timesince|split:" "|first }} years
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>{{ patient.profile.gender|title|default:"N/A" }}</td>
+                                <td>{{ patient.profile.blood_group|default:"N/A" }}</td>
+                                <td>{{ patient.profile.phone|default:"N/A" }}</td>
+                                <td>
+                                    {% with last_visit=patient.patient_appointments.filter.first %}
+                                        {% if last_visit %}
+                                            {{ last_visit.appointment_date }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    {% with stats=patient_stats|get_item:patient.id %}
+                                        <span class="d-block">Total: {{ stats.total_appointments }}</span>
+                                        <small class="text-muted">Completed: {{ stats.completed_appointments }}</small>
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-sm bg-info-light mr-1" data-toggle="modal" data-target="#patient_details_{{ patient.id }}">
+                                            <i class="far fa-eye"></i> View
+                                        </a>
+                                        <a href="{% url 'doctors:appointment-history' patient.id %}" class="btn btn-sm bg-primary-light">
+                                            <i class="fas fa-history"></i> History
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Patient Details Modal -->
+                            <div class="modal fade" id="patient_details_{{ patient.id }}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Patient Details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="patient-info">
+                                                        {% if patient.profile.medical_conditions %}
+                                                        <div class="info-block">
+                                                            <h5><i class="fas fa-notes-medical"></i> Medical Conditions</h5>
+                                                            <p>{{ patient.profile.medical_conditions }}</p>
+                                                        </div>
+                                                        {% endif %}
+                                                        
+                                                        {% if patient.profile.allergies %}
+                                                        <div class="info-block">
+                                                            <h5><i class="fas fa-allergies"></i> Allergies</h5>
+                                                            <p>{{ patient.profile.allergies }}</p>
+                                                        </div>
+                                                        {% endif %}
+                                                        
+                                                        <div class="info-block">
+                                                            <h5><i class="fas fa-map-marker-alt"></i> Address</h5>
+                                                            <p>
+                                                                {{ patient.profile.address|default:"" }}<br>
+                                                                {% if patient.profile.city or patient.profile.state %}
+                                                                    {{ patient.profile.city }}{% if patient.profile.city and patient.profile.state %}, {% endif %}{{ patient.profile.state }}<br>
+                                                                {% endif %}
+                                                                {% if patient.profile.postal_code %}
+                                                                    {{ patient.profile.postal_code }}<br>
+                                                                {% endif %}
+                                                                {{ patient.profile.country|default:"" }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Patient Details Modal -->
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="text-center">
+                        <p class="text-muted mt-2 mb-2">No patients found</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .patient-info .info-block {
+        margin-bottom: 20px;
+    }
+    .patient-info .info-block h5 {
+        color: #272b41;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    .patient-info .info-block h5 i {
+        color: #20c0f3;
+        margin-right: 10px;
+        width: 20px;
+    }
+    .patient-info .info-block p {
+        color: #757575;
+        margin-bottom: 0;
+    }
+    .modal-body {
+        padding: 20px;
+    }
+    .btn-group .btn {
+        margin-right: 5px;
+    }
+    .btn-group .btn:last-child {
+        margin-right: 0;
+    }
+</style>
+{% endblock %}
+{% endblock %}

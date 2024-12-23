@@ -1,0 +1,72 @@
+{% extends 'includes/doctor-sidebar.html' %}
+{% load static %}
+
+{% block title %}Patient History{% endblock %}
+{% block page_name1 %}Patient History{% endblock %}
+{% block page_name2 %}Patient History{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Appointment History - {{ patient.get_full_name }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if appointments %}
+                    <table class="table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.appointment_date }}</td>
+                                <td>{{ appointment.appointment_time|time:"h:i A" }}</td>
+                                <td>
+                                    <span class="badge badge-pill 
+                                        {% if appointment.status == 'confirmed' %}bg-success-light{% endif %}
+                                        {% if appointment.status == 'pending' %}bg-warning-light{% endif %}
+                                        {% if appointment.status == 'cancelled' %}bg-danger-light{% endif %}
+                                        {% if appointment.status == 'completed' %}bg-info-light{% endif %}">
+                                        {{ appointment.status|title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
+                                        <i class="far fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="text-center">
+                        <p class="text-muted mt-2 mb-2">No appointment history found</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .badge {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+    .btn-sm {
+        padding: 5px 10px;
+    }
+</style>
+{% endblock %}
+{% endblock %} 

@@ -48,10 +48,18 @@
                                     <img src="{{ user.profile.image }}" alt="User Image">
                                 </a>
                                 <div class="profile-det-info">
-                                    <h3>{{ user.get_full_name }}</h3>
+                                    <h3>Dr. {{ user.get_full_name }}</h3>
 
                                     <div class="patient-details">
-                                        <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+                                        {% if user.profile.specialization %}
+                                            <h5 class="mb-0">{{ user.profile.specialization }}</h5>
+                                        {% endif %}
+                                        {% if user.profile.city and user.profile.country %}
+                                            <h5 class="mt-2">
+                                                <i class="fas fa-map-marker-alt"></i> 
+                                                {{ user.profile.city }}, {{ user.profile.country }}
+                                            </h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -59,44 +67,38 @@
                         <div class="dashboard-widget">
                             <nav class="dashboard-menu">
                                 <ul>
-                                    <li class="{% if request.path == '/doctors/dashboard/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                                         <a href="{% url 'doctors:dashboard' %}">
                                             <i class="fas fa-columns"></i>
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
-                                    <li class="{% if request.path == '/doctors/appointments/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'appointments' %}active{% endif %}">
                                         <a href="{% url 'doctors:appointments' %}">
                                             <i class="fas fa-calendar-check"></i>
                                             <span>Appointments</span>
                                         </a>
                                     </li>
-                                    <li class="{% if request.path == '/doctors/my-patients/' %}active{% endif %}">
-                                        <a href="#">
+                                    <li class="{% if request.resolver_match.url_name == 'my-patients' %}active{% endif %}">
+                                        <a href="{% url 'doctors:my-patients' %}">
                                             <i class="fas fa-user-injured"></i>
                                             <span>My Patients</span>
                                         </a>
                                     </li>
-                                    <li class="{% if request.path == '/doctors/schedule-timings/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'schedule-timings' %}active{% endif %}">
                                         <a href="{% url 'doctors:schedule-timings' %}">
                                             <i class="fas fa-hourglass-start"></i>
                                             <span>Schedule Timings</span>
                                         </a>
                                     </li>
-                                    <li class="{% if request.path == '/doctors/invoices/' %}active{% endif %}">
-                                        <a href="#">
-                                            <i class="fas fa-file-invoice"></i>
-                                            <span>Invoices</span>
-                                        </a>
-                                    </li>
-                                    <li class="{% if request.path == '/doctors/profile-settings/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'profile-setting' %}active{% endif %}">
                                         <a href="{% url 'doctors:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
                                             <span>Profile Settings</span>
                                         </a>
                                     </li>
-                                    <li class="{% if request.path == '/doctors/change-password/' %}active{% endif %}">
-                                        <a href="#">
+                                    <li class="{% if request.resolver_match.url_name == 'change-password' %}active{% endif %}">
+                                        <a href="{% url 'doctors:change-password' %}">
                                             <i class="fas fa-lock"></i>
                                             <span>Change Password</span>
                                         </a>

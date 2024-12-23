@@ -38,10 +38,17 @@
                                     <img src="{{ user.profile.image }}" alt="User Image">
                                 </a>
                                 <div class="profile-det-info">
-                                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                                    <h3>{{ user.get_full_name }}</h3>
                                     <div class="patient-details">
-                                        <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
-                                        <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</h5>
+                                        {% if user.profile.dob %}
+                                            <h5><i class="fas fa-birthday-cake"></i> {{ user.profile.dob|date:"d M Y" }}</h5>
+                                        {% endif %}
+                                        {% if user.profile.city and user.profile.country %}
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-map-marker-alt"></i> 
+                                                {{ user.profile.city }}, {{ user.profile.country }}
+                                            </h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -49,26 +56,13 @@
                         <div class="dashboard-widget">
                             <nav class="dashboard-menu">
                                 <ul>
-                                    <li class="{% if request.resolver_match.route == 'patients/dashboard/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                                         <a href="{% url 'patients:dashboard' %}">
                                             <i class="fas fa-columns"></i>
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fas fa-bookmark"></i>
-                                            <span>Favourites</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fas fa-comments"></i>
-                                            <span>Message</span>
-                                            <small class="unread-msg">23</small>
-                                        </a>
-                                    </li>
-                                    <li class="{% if request.resolver_match.route == 'patients/profile-setting/' %}active{% endif %}">
+                                    <li class="{% if request.resolver_match.url_name == 'profile-setting' %}active{% endif %}">
                                         <a href="{% url 'patients:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
                                             <span>Profile Settings</span>
