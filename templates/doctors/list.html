@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+    Doctors
+{% endblock %}
+
 {% block content %}
 
     <!-- Breadcrumb -->
@@ -20,15 +24,15 @@
                     {% endif %}
                 </div>
                 <div class="col-md-4 col-12 d-md-block d-none">
-                    <div class="sort-by">
+                    <div class="sort-by mr-5">
                         <span class="sort-title">Sort by</span>
                         <span class="sortby-fliter">
-                            <select class="select" name="sort">
+                            <select class="select" name="sort" onchange="updateSort(this.value)">
                                 <option value="">Select</option>
-                                <option value="rating">Rating</option>
-                                <option value="price_low">Price - Low to High</option>
-                                <option value="price_high">Price - High to Low</option>
-                                <option value="experience">Experience</option>
+                                {% comment %} <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Rating</option> {% endcomment %}
+                                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price - Low to High</option>
+                                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price - High to Low</option>
+                                <option value="experience" {% if request.GET.sort == 'experience' %}selected{% endif %}>Experience</option>
                             </select>
                         </span>
                     </div>
@@ -44,30 +48,29 @@
             <div class="row">
                 <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
                     <!-- Search Filter -->
-                    <div class="card search-filter">
+                    <form method="get" action="{% url 'doctors:list' %}" class="card search-filter">
                         <div class="card-header">
                             <h4 class="card-title mb-0">Search Filter</h4>
                         </div>
                         <div class="card-body">
-                            <form method="get">
-                                <div class="filter-widget">
-                                    <h4>Gender</h4>
-                                    <div>
-                                        <label class="custom_check">
-                                            <input type="checkbox" name="gender" value="male" {% if 'male' in request.GET.gender %}checked{% endif %}>
-                                            <span class="checkmark"></span> Male Doctor
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label class="custom_check">
-                                            <input type="checkbox" name="gender" value="female" {% if 'female' in request.GET.gender %}checked{% endif %}>
-                                            <span class="checkmark"></span> Female Doctor
-                                        </label>
-                                    </div>
+                            <div class="filter-widget">
+                                <h4>Gender</h4>
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender" value="male" {% if 'male' in request.GET.gender %}checked{% endif %}>
+                                        <span class="checkmark"></span> Male Doctor
+                                    </label>
                                 </div>
-                                <div class="filter-widget">
-                                    <h4>Select Specialist</h4>
-                                    {% for specialization in specializations %}
+                                <div>
+                                    <label class="custom_check">
+                                        <input type="checkbox" name="gender" value="female" {% if 'female' in request.GET.gender %}checked{% endif %}>
+                                        <span class="checkmark"></span> Female Doctor
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-widget">
+                                <h4>Select Specialist</h4>
+                                {% for specialization in specializations %}
                                     <div>
                                         <label class="custom_check">
                                             <input type="checkbox" name="specialization" value="{{ specialization }}" 
@@ -75,14 +78,13 @@
                                             <span class="checkmark"></span> {{ specialization }}
                                         </label>
                                     </div>
-                                    {% endfor %}
-                                </div>
-                                <div class="btn-search">
-                                    <button type="submit" class="btn btn-block">Search</button>
-                                </div>
-                            </form>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-search">
+                                <button type="submit" class="btn btn-block">Search</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     <!-- /Search Filter -->
                 </div>
 
@@ -154,4 +156,28 @@
     </div>
     <!-- /Page Content -->
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updateSort(value) {
+        // Get current URL and parameters
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        
+        // Update or add sort parameter
+        if (value) {
+            params.set('sort', value);
+        } else {
+            params.delete('sort');
+        }
+        
+        // Redirect with updated parameters
+        window.location.href = `${url.pathname}?${params.toString()}`;
+    }
+
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 {% endblock %}

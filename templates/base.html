@@ -71,8 +71,6 @@
 <!-- Slick JS -->
 <script src="{% static 'assets/js/slick.js' %}"></script>
 
-{% block scripts %} {% endblock %}
-
 <!-- Custom JS -->
 <script src="{% static 'assets/js/script.js' %}"></script>
 <script defer type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -88,6 +86,8 @@
         toastr[level](message, title);
     });
 </script>
+
+{% block scripts %}{% endblock %}
 
 </body>
 

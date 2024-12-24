@@ -62,7 +62,7 @@ class User(AbstractUser):
     @property
     def rating(self):
         # Implement your rating logic here
-        return 0  # Default value
+        return 4  # Default value
 
 
 class Profile(models.Model):
