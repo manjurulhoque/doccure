@@ -139,10 +139,30 @@
                         {% endfor %}
 
                         {% if is_paginated %}
-                        <div class="load-more text-center">
-                            {% if page_obj.has_next %}
-                                <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Load More</a>
-                            {% endif %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary prev-arrow mr-1">
+                                            <i class="fas fa-chevron-left"></i> Previous
+                                        </a>
+                                    {% endif %}
+
+                                    {% for num in page_obj.paginator.page_range %}
+                                        {% if page_obj.number == num %}
+                                            <a href="#" class="btn btn-primary mx-1">{{ num }}</a>
+                                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ num }}" class="btn btn-outline-primary mx-1">{{ num }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.next_page_number }}" class="btn btn-outline-primary next-arrow ml-1">
+                                            Next <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                         {% endif %}
                     {% else %}

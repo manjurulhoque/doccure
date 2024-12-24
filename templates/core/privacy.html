@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="privacy-content">
+                    <div class="privacy-text">
+                        <h3>Privacy Policy</h3>
+                        <p>At DocCure, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information.</p>
+
+                        <h4>1. Information We Collect</h4>
+                        <h5>Personal Information</h5>
+                        <ul>
+                            <li>Name and contact information</li>
+                            <li>Date of birth and gender</li>
+                            <li>Medical history and conditions</li>
+                            <li>Appointment records</li>
+                            <li>Payment information</li>
+                        </ul>
+
+                        <h4>2. How We Use Your Information</h4>
+                        <p>We use the information we collect to:</p>
+                        <ul>
+                            <li>Facilitate appointment bookings</li>
+                            <li>Improve our services</li>
+                            <li>Communicate with you about appointments and services</li>
+                            <li>Process payments</li>
+                            <li>Comply with legal obligations</li>
+                        </ul>
+
+                        <h4>3. Information Security</h4>
+                        <p>We implement appropriate security measures to protect your personal information, including:</p>
+                        <ul>
+                            <li>Encryption of sensitive data</li>
+                            <li>Secure server infrastructure</li>
+                            <li>Regular security audits</li>
+                            <li>Access controls and authentication</li>
+                        </ul>
+
+                        <h4>4. Data Sharing</h4>
+                        <p>We share your information only with:</p>
+                        <ul>
+                            <li>Healthcare providers involved in your care</li>
+                            <li>Payment processors for billing purposes</li>
+                            <li>Legal authorities when required by law</li>
+                        </ul>
+
+                        <h4>5. Your Rights</h4>
+                        <p>You have the right to:</p>
+                        <ul>
+                            <li>Access your personal information</li>
+                            <li>Correct inaccurate information</li>
+                            <li>Request deletion of your information</li>
+                            <li>Opt-out of marketing communications</li>
+                        </ul>
+
+                        <h4>6. Contact Us</h4>
+                        <p>If you have questions about this Privacy Policy, please contact us at privacy@doccure.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .privacy-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        margin: 40px 0;
+    }
+    .privacy-text h3 {
+        color: #272b41;
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    .privacy-text h4 {
+        color: #272b41;
+        font-size: 18px;
+        margin: 25px 0 10px;
+    }
+    .privacy-text h5 {
+        color: #272b41;
+        font-size: 16px;
+        margin: 15px 0 10px;
+    }
+    .privacy-text p, .privacy-text ul {
+        color: #757575;
+        margin-bottom: 15px;
+    }
+    .privacy-text ul {
+        padding-left: 20px;
+    }
+</style>
+{% endblock %}
+{% endblock %} 

@@ -25,10 +25,10 @@
                 </a>
             </div>
             <ul class="main-nav">
-                <li class="active">
+                <li {% if request.path == '/' %}class="active"{% endif %}>
                     <a href="{% url 'core:home' %}">Home</a>
                 </li>
-                <li class="has-submenu">
+                <li class="has-submenu{% if request.path == '/doctors/' %} active {% endif %}">
 {#                    <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>#}
 {#                    <ul class="submenu">#}
 {#                        <li><a href="#">Doctor Register</a></li>#}
@@ -40,7 +40,7 @@
                         <a href="{% url 'accounts:login' %}">Login / Signup</a>
                     </li>
                 {% elif user.role == 'patient' %}
-                    <li class="has-submenu">
+                    <li class="has-submenu {% if request.path == '/patients/' %} active {% endif %}">
                         <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
                             <li><a href="{% url 'patients:dashboard' %}">Patient Dashboard</a></li>

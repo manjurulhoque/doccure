@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms and Conditions{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="terms-content">
+                    <div class="terms-text">
+                        <h3>Terms and Conditions</h3>
+                        <h4>1. Introduction</h4>
+                        <p>Welcome to DocCure. By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+
+                        <h4>2. Use License</h4>
+                        <p>Permission is granted to temporarily access the materials (information or software) on DocCure's website for personal, non-commercial transitory viewing only.</p>
+
+                        <h4>3. Medical Disclaimer</h4>
+                        <p>The information provided on this site is intended for your general knowledge only and is not a substitute for professional medical advice or treatment for specific medical conditions.</p>
+
+                        <h4>4. Appointment Booking</h4>
+                        <ul>
+                            <li>Users must provide accurate information when booking appointments</li>
+                            <li>Cancellations must be made at least 24 hours before the scheduled appointment</li>
+                            <li>Repeated no-shows may result in booking restrictions</li>
+                        </ul>
+
+                        <h4>5. User Accounts</h4>
+                        <p>Users are responsible for maintaining the confidentiality of their account information and password. Users are responsible for all activities that occur under their account.</p>
+
+                        <h4>6. Privacy</h4>
+                        <p>Your use of DocCure is subject to our Privacy Policy. Please review our Privacy Policy, which also governs the Site and informs users of our data collection practices.</p>
+
+                        <h4>7. Electronic Communications</h4>
+                        <p>Visiting DocCure or sending emails to DocCure constitutes electronic communications. You consent to receive electronic communications and you agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.</p>
+
+                        <h4>8. Limitations</h4>
+                        <p>DocCure shall not be liable for any direct, indirect, incidental, consequential or punitive damages arising out of your access to, or use of, the site.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .terms-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        margin: 40px 0;
+    }
+    .terms-text h3 {
+        color: #272b41;
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    .terms-text h4 {
+        color: #272b41;
+        font-size: 18px;
+        margin: 25px 0 10px;
+    }
+    .terms-text p, .terms-text ul {
+        color: #757575;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+{% endblock %} 
