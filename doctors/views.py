@@ -491,7 +491,7 @@ class AppointmentActionView(DoctorRequiredMixin, View):
 class MyPatientsView(DoctorRequiredMixin, ListView):
     template_name = 'doctors/my-patients.html'
     context_object_name = 'patients'
-    
+
     def get_queryset(self):
         # Get unique patients who have appointments with this doctor
         return (
