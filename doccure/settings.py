@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "doctors",
     "patients",
     "bookings",
+    "ckeditor",
 ]
 
 MIDDLEWARE = [
@@ -93,6 +94,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -109,10 +111,24 @@ TIME_INPUT_FORMATS = [
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # CKEditor Configuration
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+
 CKEDITOR_CONFIGS = {
     "default": {
         "toolbar": "full",
         "height": 300,
         "width": "100%",
+        "extraPlugins": ",".join(
+            [
+                "widget",
+                "dialog",
+                "dialogui",
+                "codesnippet"
+            ]
+        ),
     },
 }
+
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"

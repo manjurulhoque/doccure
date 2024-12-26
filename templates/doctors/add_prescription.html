@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}
+Add Prescription
+{% endblock %}
+
 {% block content %}
 <div class="content">
     <div class="container">
@@ -50,6 +54,6 @@
 </div>
 {% endblock %}
 
-{% block extra_scripts %}
+{% block scripts %}
 {{ form.media }}
 {% endblock %} 

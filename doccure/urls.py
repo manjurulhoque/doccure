@@ -28,6 +28,7 @@ urlpatterns = [
     path("bookings/", include("bookings.urls")),
     path("", include("core.urls")),
     path("__debug__/", include(debug_toolbar.urls)),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path(
         "admin/",
         include(
@@ -44,4 +45,4 @@ urlpatterns = [
     path('admin/specialities/create/', SpecialityCreateView.as_view(), name='admin-speciality-create'),
     path('admin/specialities/<int:pk>/update/', SpecialityUpdateView.as_view(), name='admin-speciality-update'),
     path('admin/specialities/<int:pk>/delete/', SpecialityDeleteView.as_view(), name='admin-speciality-delete'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
