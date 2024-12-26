@@ -1,0 +1,147 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Appointments{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Speciality</th>
+                                <th>Patient Name</th>
+                                <th>Appointment Time</th>
+                                <th>Status</th>
+                                <th class="text-right">Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="{% url 'doctors:doctor-profile' appointment.doctor.username %}" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ appointment.doctor.profile.image }}" alt="User Image">
+                                        </a>
+                                        <a href="{% url 'doctors:doctor-profile' appointment.doctor.username %}">Dr. {{ appointment.doctor.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>{{ appointment.doctor.profile.specialization }}</td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ appointment.patient.profile.image }}" alt="User Image">
+                                        </a>
+                                        <a href="#">{{ appointment.patient.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    {{ appointment.appointment_date|date:"d M Y" }}
+                                    <span class="text-primary d-block">{{ appointment.appointment_time|time:"h:i A" }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-pill 
+                                        {% if appointment.status == 'confirmed' %}bg-success-light{% endif %}
+                                        {% if appointment.status == 'pending' %}bg-warning-light{% endif %}
+                                        {% if appointment.status == 'cancelled' %}bg-danger-light{% endif %}
+                                        {% if appointment.status == 'completed' %}bg-info-light{% endif %}">
+                                        {{ appointment.status|title }}
+                                    </span>
+                                </td>
+                                <td class="text-right">৳{{ appointment.doctor.profile.price_per_consultation }}</td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="#" class="btn btn-sm bg-info-light">
+                                            <i class="fe fe-eye"></i> View
+                                        </a>
+                                        {% if appointment.status == 'pending' %}
+                                        <a href="#" class="btn btn-sm bg-success-light">
+                                            <i class="fe fe-check"></i> Accept
+                                        </a>
+                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                            <i class="fe fe-x"></i> Cancel
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">No appointments found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if is_paginated %}
+                <div class="row mt-4">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info">
+                            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">&laquo; First</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .actions .btn {
+        margin-right: 5px;
+    }
+    .actions .btn:last-child {
+        margin-right: 0;
+    }
+    .badge {
+        padding: 5px 10px;
+    }
+    .pagination {
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+{% endblock %}

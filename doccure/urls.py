@@ -4,7 +4,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from accounts.views.admin_views import AdminDashboardView, AdminPatientsView, AdminDoctorsView
+from accounts.views.admin_views import (
+    AdminDashboardView,
+    AdminPatientsView,
+    AdminDoctorsView,
+    AdminAppointmentsView,
+)
 
 admin.site.site_header = "Doccure Admin"
 admin.site.site_title = "Doccure Admin Portal"
@@ -26,6 +31,7 @@ urlpatterns = [
                 path("", AdminDashboardView.as_view(), name="admin-dashboard"),
                 path("patients/", AdminPatientsView.as_view(), name="admin-patients"),
                 path("doctors/", AdminDoctorsView.as_view(), name="admin-doctors"),
+                path("appointments/", AdminAppointmentsView.as_view(), name="admin-appointments"),
             ],
         ),
     ),
