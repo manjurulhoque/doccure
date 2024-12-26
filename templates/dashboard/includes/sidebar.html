@@ -12,8 +12,8 @@
                 <li {% if request.path == '/admin/appointments/' %}class="active"{% endif %}> 
                     <a href="{% url 'admin-appointments' %}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
                 </li>
-                <li> 
-                    <a href="specialities.html"><i class="fe fe-users"></i> <span>Specialities</span></a>
+                <li {% if request.path == '/admin/specialities/' %}class="active"{% endif %}> 
+                    <a href="{% url 'admin-specialities' %}"><i class="fe fe-users"></i> <span>Specialities</span></a>
                 </li>
                 <li {% if request.path == '/admin/doctors/' %}class="active"{% endif %}> 
                     <a href="{% url 'admin-doctors' %}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>

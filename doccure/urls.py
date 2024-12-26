@@ -9,6 +9,7 @@ from accounts.views.admin_views import (
     AdminPatientsView,
     AdminDoctorsView,
     AdminAppointmentsView,
+    AdminSpecialitiesView,
 )
 
 admin.site.site_header = "Doccure Admin"
@@ -32,6 +33,7 @@ urlpatterns = [
                 path("patients/", AdminPatientsView.as_view(), name="admin-patients"),
                 path("doctors/", AdminDoctorsView.as_view(), name="admin-doctors"),
                 path("appointments/", AdminAppointmentsView.as_view(), name="admin-appointments"),
+                path("specialities/", AdminSpecialitiesView.as_view(), name="admin-specialities"),
             ],
         ),
     ),

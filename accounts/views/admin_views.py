@@ -6,6 +6,7 @@ from datetime import date
 
 from accounts.models import User
 from bookings.models import Booking
+from core.models import Speciality
 
 
 class AdminDashboardView(AdminRequiredMixin, TemplateView):
@@ -130,9 +131,15 @@ class AdminAppointmentsView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         return Booking.objects.select_related(
-            'doctor',
-            'doctor__profile',
-            'patient',
-            'patient__profile'
-        ).order_by('-appointment_date', '-appointment_time')
+            "doctor", "doctor__profile", "patient", "patient__profile"
+        ).order_by("-appointment_date", "-appointment_time")
 
+
+class AdminSpecialitiesView(AdminRequiredMixin, ListView):
+    model = Speciality
+    template_name = "dashboard/specialities.html"
+    context_object_name = "specialities"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Speciality.objects.all()
