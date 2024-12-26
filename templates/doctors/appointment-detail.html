@@ -58,21 +58,21 @@
                             </div>
 
                             {% if appointment.patient.profile.medical_conditions or appointment.patient.profile.allergies %}
-                            <div class="medical-info mt-4">
-                                {% if appointment.patient.profile.medical_conditions %}
-                                <div class="info-block">
-                                    <h5><i class="fas fa-notes-medical"></i> Medical Conditions</h5>
-                                    <p>{{ appointment.patient.profile.medical_conditions }}</p>
+                                <div class="medical-info mt-4">
+                                    {% if appointment.patient.profile.medical_conditions %}
+                                        <div class="info-block">
+                                            <h5><i class="fas fa-notes-medical"></i> Medical Conditions</h5>
+                                            <p>{{ appointment.patient.profile.medical_conditions }}</p>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if appointment.patient.profile.allergies %}
+                                        <div class="info-block">
+                                            <h5><i class="fas fa-allergies"></i> Allergies</h5>
+                                            <p>{{ appointment.patient.profile.allergies }}</p>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
-                                
-                                {% if appointment.patient.profile.allergies %}
-                                <div class="info-block">
-                                    <h5><i class="fas fa-allergies"></i> Allergies</h5>
-                                    <p>{{ appointment.patient.profile.allergies }}</p>
-                                </div>
-                                {% endif %}
-                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -111,61 +111,110 @@
                         </div>
 
                         {% if appointment.status == 'pending' %}
-                        <div class="mt-4">
-                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
-                                    <i class="fas fa-check"></i> Accept
-                                </button>
-                            </form>
-                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
-                                    <i class="fas fa-times"></i> Cancel
-                                </button>
-                            </form>
-                        </div>
+                            <div class="mt-4">
+                                <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
+                                        <i class="fas fa-check"></i> Accept
+                                    </button>
+                                </form>
+                                <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </form>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
 
                 <!-- Patient History Card -->
                 {% if patient_history %}
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h4 class="card-title">Previous Visits</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for visit in patient_history %}
-                                    <tr>
-                                        <td>{{ visit.appointment_date }}</td>
-                                        <td>{{ visit.appointment_time|time:"h:i A" }}</td>
-                                        <td>
-                                            <span class="badge badge-pill 
-                                                {% if visit.status == 'confirmed' %}bg-success-light{% endif %}
-                                                {% if visit.status == 'pending' %}bg-warning-light{% endif %}
-                                                {% if visit.status == 'cancelled' %}bg-danger-light{% endif %}
-                                                {% if visit.status == 'completed' %}bg-info-light{% endif %}">
-                                                {{ visit.status|title }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h4 class="card-title">Previous Visits</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for visit in patient_history %}
+                                        <tr>
+                                            <td>{{ visit.appointment_date }}</td>
+                                            <td>{{ visit.appointment_time|time:"h:i A" }}</td>
+                                            <td>
+                                                <span class="badge badge-pill 
+                                                    {% if visit.status == 'confirmed' %}bg-success-light{% endif %}
+                                                    {% if visit.status == 'pending' %}bg-warning-light{% endif %}
+                                                    {% if visit.status == 'cancelled' %}bg-danger-light{% endif %}
+                                                    {% if visit.status == 'completed' %}bg-info-light{% endif %}">
+                                                    {{ visit.status|title }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
+
+                {% if appointment.status == 'completed' and not appointment.prescription %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Add Prescription</h4>
+                                    <p>Add prescription details for this appointment</p>
+                                    <a href="{% url 'doctors:add-prescription' appointment.id %}" class="btn btn-primary">
+                                        Add Prescription
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if appointment.prescription %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Prescription Details</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="prescription-info">
+                                                <h5>Symptoms</h5>
+                                                <p>{{ appointment.prescription.symptoms }}</p>
+                                                
+                                                <h5>Diagnosis</h5>
+                                                <p>{{ appointment.prescription.diagnosis }}</p>
+                                                
+                                                <h5>Medication & Instructions</h5>
+                                                <div>{{ appointment.prescription.medication_instructions|safe }}</div>
+                                                
+                                                {% if appointment.prescription.notes %}
+                                                    <h5>Additional Notes</h5>
+                                                    <p>{{ appointment.prescription.notes }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>

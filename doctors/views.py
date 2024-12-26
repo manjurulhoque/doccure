@@ -12,7 +12,7 @@ from django.http import (
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, CreateView, UpdateView
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -22,9 +22,9 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 
-from bookings.models import Booking
+from bookings.models import Booking, Prescription
 from core.decorators import user_is_doctor
-from doctors.forms import DoctorProfileForm
+from doctors.forms import DoctorProfileForm, PrescriptionForm
 from doctors.models import Experience
 from doctors.models.general import *
 from doctors.serializers import (
@@ -600,3 +600,32 @@ class DoctorChangePasswordView(DoctorRequiredMixin, View):
                 messages.error(request, "Current password is incorrect")
 
         return render(request, self.template_name, {"form": form})
+
+
+class PrescriptionCreateView(DoctorRequiredMixin, CreateView):
+    model = Prescription
+    form_class = PrescriptionForm
+    template_name = 'doctors/add_prescription.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        booking_id = self.kwargs.get('booking_id')
+        context['booking'] = get_object_or_404(Booking, id=booking_id, doctor=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        booking_id = self.kwargs.get('booking_id')
+        booking = get_object_or_404(Booking, id=booking_id, doctor=self.request.user)
+        
+        if booking.status != 'completed':
+            messages.error(self.request, 'Can only add prescription for completed appointments')
+            return redirect('doctors:appointment-detail', pk=booking_id)
+            
+        form.instance.booking = booking
+        form.instance.doctor = self.request.user
+        form.instance.patient = booking.patient
+        messages.success(self.request, 'Prescription added successfully')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('doctors:appointment-detail', kwargs={'pk': self.kwargs['booking_id']})

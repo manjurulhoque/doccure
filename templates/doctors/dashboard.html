@@ -230,4 +230,53 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Recent Prescriptions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Diagnosis</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prescription in recent_prescriptions %}
+                                <tr>
+                                    <td>{{ prescription.created_at|date:"d M Y" }}</td>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="#" class="avatar avatar-sm mr-2">
+                                                <img class="avatar-img rounded-circle" src="{{ prescription.patient.profile.image }}" alt="Patient Image">
+                                            </a>
+                                            <a href="#">{{ prescription.patient.get_full_name }}</a>
+                                        </h2>
+                                    </td>
+                                    <td>{{ prescription.diagnosis|truncatechars:50 }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm bg-info-light">
+                                            <i class="far fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No prescriptions found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -16,6 +16,7 @@ from .views import (
     MyPatientsView,
     AppointmentHistoryView,
     DoctorChangePasswordView,
+    PrescriptionCreateView,
 )
 
 app_name = "doctors"
@@ -79,5 +80,10 @@ urlpatterns = [
         "change-password/",
         DoctorChangePasswordView.as_view(),
         name="change-password",
+    ),
+    path(
+        "appointment/<int:booking_id>/prescription/add/",
+        PrescriptionCreateView.as_view(),
+        name="add-prescription",
     ),
 ]

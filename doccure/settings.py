@@ -107,3 +107,12 @@ TIME_INPUT_FORMATS = [
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+# CKEditor Configuration
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "height": 300,
+        "width": "100%",
+    },
+}

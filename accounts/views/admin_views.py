@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from core.models import Speciality
 
 from accounts.models import User
-from bookings.models import Booking
+from bookings.models import Booking, Prescription
 
 
 class AdminDashboardView(AdminRequiredMixin, TemplateView):
@@ -66,6 +66,11 @@ class AdminDashboardView(AdminRequiredMixin, TemplateView):
         context["recent_appointments"] = Booking.objects.select_related(
             "doctor", "doctor__profile", "patient", "patient__profile"
         ).order_by("-appointment_date")[:5]
+
+        # Add recent prescriptions
+        context['recent_prescriptions'] = Prescription.objects.select_related(
+            'doctor', 'patient', 'booking'
+        ).order_by('-created_at')[:10]
 
         return context
 

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Add Prescription</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    
+                                    <div class="form-group">
+                                        <label>Symptoms</label>
+                                        {{ form.symptoms }}
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Diagnosis</label>
+                                        {{ form.diagnosis }}
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Medication & Instructions</label>
+                                        {{ form.medications }}
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Additional Notes</label>
+                                        {{ form.notes }}
+                                    </div>
+                                    
+                                    <div class="submit-section">
+                                        <button type="submit" class="btn btn-primary submit-btn">Save Prescription</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ form.media }}
+{% endblock %} 
