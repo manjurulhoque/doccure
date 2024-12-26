@@ -57,7 +57,9 @@ class BookingView(LoginRequiredMixin, View):
                     time_slots.append(
                         {
                             "time": current_time.time(),
-                            "formatted_time": current_time.strftime("%I:%M %p"),
+                            "formatted_time": current_time.strftime(
+                                "%I:%M %p"
+                            ),
                         }
                     )
                 current_time += timedelta(minutes=30)
@@ -94,13 +96,17 @@ class BookingView(LoginRequiredMixin, View):
         schedule = {}
         for date_info in week_dates:
             date = datetime.strptime(date_info["full_date"], "%Y-%m-%d").date()
-            schedule[date_info["full_date"]] = self.get_available_slots(doctor, date)
+            schedule[date_info["full_date"]] = self.get_available_slots(
+                doctor, date
+            )
 
         context = {
             "doctor": doctor,
             "week_dates": week_dates,
             "schedule": schedule,
-            "selected_date": request.GET.get("date", week_dates[0]["full_date"]),
+            "selected_date": request.GET.get(
+                "date", week_dates[0]["full_date"]
+            ),
         }
 
         return render(request, self.template_name, context)
@@ -159,6 +165,7 @@ class BookingSuccessView(LoginRequiredMixin, TemplateView):
         context["booking"] = Booking.objects.get(id=kwargs["booking_id"])
         return context
 
+
 class BookingInvoiceView(LoginRequiredMixin, TemplateView):
     template_name = "bookings/booking-invoice.html"
 
@@ -166,24 +173,26 @@ class BookingInvoiceView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         booking = get_object_or_404(
             Booking.objects.select_related(
-                'doctor', 
-                'doctor__profile',
-                'patient', 
-                'patient__profile'
+                "doctor", "doctor__profile", "patient", "patient__profile"
             ),
-            id=kwargs["booking_id"]
+            id=kwargs["booking_id"],
         )
-        
+
         # Ensure user can only view their own bookings
-        if not (self.request.user == booking.patient or self.request.user == booking.doctor):
+        if not (
+            self.request.user == booking.patient
+            or self.request.user == booking.doctor
+        ):
             raise Http404("Not found")
-            
+
         context["booking"] = booking
-        context["issued_date"] = booking.booking_date.strftime('%d/%m/%Y')
-        
+        context["issued_date"] = booking.booking_date.strftime("%d/%m/%Y")
+
         # Calculate invoice amounts
         consultation_fee = booking.doctor.profile.price_per_consultation
         context["subtotal"] = consultation_fee
-        context["total"] = consultation_fee  # Add any additional fees/discounts here
-        
+        context["total"] = (
+            consultation_fee  # Add any additional fees/discounts here
+        )
+
         return context

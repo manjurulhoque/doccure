@@ -1,12 +1,12 @@
 from django.urls import path
 
 from .views import (
-    PatientDashboardView, 
+    PatientDashboardView,
     PatientProfileUpdateView,
     AppointmentDetailView,
     AppointmentCancelView,
     AppointmentPrintView,
-    ChangePasswordView
+    ChangePasswordView,
 )
 
 app_name = "patients"
@@ -19,23 +19,23 @@ urlpatterns = [
         name="profile-setting",
     ),
     path(
-        'appointments/<int:pk>/',
+        "appointments/<int:pk>/",
         AppointmentDetailView.as_view(),
-        name='appointment-detail'
+        name="appointment-detail",
     ),
     path(
-        'appointments/<int:pk>/cancel/',
+        "appointments/<int:pk>/cancel/",
         AppointmentCancelView.as_view(),
-        name='appointment-cancel'
+        name="appointment-cancel",
     ),
     path(
-        'appointments/<int:pk>/print/',
+        "appointments/<int:pk>/print/",
         AppointmentPrintView.as_view(),
-        name='appointment-print'
+        name="appointment-print",
     ),
     path(
-        'change-password/',
+        "change-password/",
         ChangePasswordView.as_view(),
-        name='change-password'
+        name="change-password",
     ),
 ]

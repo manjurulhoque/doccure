@@ -11,5 +11,7 @@ class BasicUserInformationSerializer(serializers.Serializer):
 
     def validate_dob(self, value):
         if value and value > datetime.now().date():
-            raise serializers.ValidationError("Date of birth cannot be in the future")
+            raise serializers.ValidationError(
+                "Date of birth cannot be in the future"
+            )
         return value

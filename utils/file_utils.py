@@ -8,4 +8,6 @@ def generate_file_name(length=30):
 
 
 def profile_photo_directory_path(instance, filename):
-    return "profiles/{0}".format(generate_file_name() + "." + filename.split(".")[-1])
+    return "profiles/{0}".format(
+        generate_file_name() + "." + filename.split(".")[-1]
+    )

@@ -2,7 +2,7 @@
 # Line length to use for formatting
 line-length = 79
 
-# Whether to skip formatting of certain files
+# Files and directories to exclude from formatting
 exclude = '''
 /(
     \.git
@@ -14,7 +14,7 @@ exclude = '''
   | buck-out
   | build
   | dist
-  | .vscode
+  | \.vscode
   | venv
   | migrations
 )/

@@ -114,12 +114,18 @@ def schedule_timings(request: HttpRequest) -> HttpResponse:
                     time_range, time_created = TimeRange.objects.get_or_create(
                         start=start, end=end
                     )
-                    day, created = days[i].objects.get_or_create(user=request.user)
+                    day, created = days[i].objects.get_or_create(
+                        user=request.user
+                    )
                     ranges = day.time_range
-                    if time_range.id not in list(ranges.values_list("id", flat=True)):
+                    if time_range.id not in list(
+                        ranges.values_list("id", flat=True)
+                    ):
                         day.time_range.add(time_range)
 
-        return HttpResponsePermanentRedirect(reverse_lazy("doctors:schedule-timings"))
+        return HttpResponsePermanentRedirect(
+            reverse_lazy("doctors:schedule-timings")
+        )
 
     return render(request, "doctors/schedule-timings.html")
 
@@ -176,13 +182,19 @@ class DoctorProfileView(DetailView):
         # Prepare business hours
         business_hours = {
             "Sunday": (
-                doctor.sunday.time_range.all() if hasattr(doctor, "sunday") else []
+                doctor.sunday.time_range.all()
+                if hasattr(doctor, "sunday")
+                else []
             ),
             "Monday": (
-                doctor.monday.time_range.all() if hasattr(doctor, "monday") else []
+                doctor.monday.time_range.all()
+                if hasattr(doctor, "monday")
+                else []
             ),
             "Tuesday": (
-                doctor.tuesday.time_range.all() if hasattr(doctor, "tuesday") else []
+                doctor.tuesday.time_range.all()
+                if hasattr(doctor, "tuesday")
+                else []
             ),
             "Wednesday": (
                 doctor.wednesday.time_range.all()
@@ -190,13 +202,19 @@ class DoctorProfileView(DetailView):
                 else []
             ),
             "Thursday": (
-                doctor.thursday.time_range.all() if hasattr(doctor, "thursday") else []
+                doctor.thursday.time_range.all()
+                if hasattr(doctor, "thursday")
+                else []
             ),
             "Friday": (
-                doctor.friday.time_range.all() if hasattr(doctor, "friday") else []
+                doctor.friday.time_range.all()
+                if hasattr(doctor, "friday")
+                else []
             ),
             "Saturday": (
-                doctor.saturday.time_range.all() if hasattr(doctor, "saturday") else []
+                doctor.saturday.time_range.all()
+                if hasattr(doctor, "saturday")
+                else []
             ),
         }
 
@@ -392,7 +410,9 @@ class DoctorsListView(ListView):
         # Handle specialization filter
         specializations = self.request.GET.getlist("specialization")
         if specializations:
-            queryset = queryset.filter(profile__specialization__in=specializations)
+            queryset = queryset.filter(
+                profile__specialization__in=specializations
+            )
 
         # Handle sorting
         sort_by = self.request.GET.get("sort")
@@ -400,7 +420,9 @@ class DoctorsListView(ListView):
             if sort_by == "price_low":
                 queryset = queryset.order_by("profile__price_per_consultation")
             elif sort_by == "price_high":
-                queryset = queryset.order_by("-profile__price_per_consultation")
+                queryset = queryset.order_by(
+                    "-profile__price_per_consultation"
+                )
             elif sort_by == "rating":
                 queryset = queryset.order_by("-rating")
             elif sort_by == "experience":
@@ -422,7 +444,9 @@ class DoctorsListView(ListView):
             .distinct()
         )
 
-        context["specializations"] = sorted(list(filter(None, specializations)))
+        context["specializations"] = sorted(
+            list(filter(None, specializations))
+        )
 
         return context
 
@@ -474,7 +498,10 @@ class AppointmentDetailView(DoctorRequiredMixin, DetailView):
 class AppointmentActionView(DoctorRequiredMixin, View):
     def post(self, request, pk, action):
         appointment = get_object_or_404(
-            Booking, pk=pk, doctor=request.user, status__in=["pending", "confirmed"]
+            Booking,
+            pk=pk,
+            doctor=request.user,
+            status__in=["pending", "confirmed"],
         )
 
         if action == "accept":
@@ -489,58 +516,57 @@ class AppointmentActionView(DoctorRequiredMixin, View):
 
 
 class MyPatientsView(DoctorRequiredMixin, ListView):
-    template_name = 'doctors/my-patients.html'
-    context_object_name = 'patients'
+    template_name = "doctors/my-patients.html"
+    context_object_name = "patients"
 
     def get_queryset(self):
         # Get unique patients who have appointments with this doctor
         return (
             User.objects.filter(
-                patient_appointments__doctor=self.request.user, 
-                role="patient"
+                patient_appointments__doctor=self.request.user, role="patient"
             )
             .distinct()
             .select_related("profile")
         )
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Get appointment counts for each patient
         patient_stats = {}
-        for patient in context['patients']:
+        for patient in context["patients"]:
             stats = Booking.objects.filter(
-                doctor=self.request.user,
-                patient=patient
+                doctor=self.request.user, patient=patient
             ).aggregate(
-                total_appointments=Count('id'),
-                completed_appointments=Count('id', filter=Q(status='completed'))
+                total_appointments=Count("id"),
+                completed_appointments=Count(
+                    "id", filter=Q(status="completed")
+                ),
             )
             patient_stats[patient.id] = stats
-        context['patient_stats'] = patient_stats
+        context["patient_stats"] = patient_stats
         return context
 
 
 class AppointmentHistoryView(DoctorRequiredMixin, ListView):
     model = Booking
-    template_name = 'doctors/appointment-history.html'
-    context_object_name = 'appointments'
+    template_name = "doctors/appointment-history.html"
+    context_object_name = "appointments"
 
     def get_queryset(self):
         return (
-            self.model.objects.select_related('patient', 'patient__profile')
+            self.model.objects.select_related("patient", "patient__profile")
             .filter(
-                doctor=self.request.user,
-                patient_id=self.kwargs['patient_id']
+                doctor=self.request.user, patient_id=self.kwargs["patient_id"]
             )
-            .order_by('-appointment_date', '-appointment_time')
+            .order_by("-appointment_date", "-appointment_time")
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['patient'] = get_object_or_404(
-            User.objects.select_related('profile'),
-            id=self.kwargs['patient_id'],
-            role='patient'
+        context["patient"] = get_object_or_404(
+            User.objects.select_related("profile"),
+            id=self.kwargs["patient_id"],
+            role="patient",
         )
         return context
 
@@ -549,24 +575,25 @@ class DoctorChangePasswordView(DoctorRequiredMixin, View):
     template_name = "doctors/change-password.html"
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {"form": ChangePasswordForm()})
+        return render(
+            request, self.template_name, {"form": ChangePasswordForm()}
+        )
 
     def post(self, request, *args, **kwargs):
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
             user = request.user
-            
-            if user.check_password(form.cleaned_data['old_password']):
-                user.set_password(form.cleaned_data['new_password'])
+
+            if user.check_password(form.cleaned_data["old_password"]):
+                user.set_password(form.cleaned_data["new_password"])
                 user.save()
-                
+
                 # Update session to prevent logout
                 update_session_auth_hash(request, user)
-                
-                messages.success(request, 'Password changed successfully')
-                return redirect('doctors:dashboard')
-            else:
-                messages.error(request, 'Current password is incorrect')
-        
-        return render(request, self.template_name, {"form": form})
 
+                messages.success(request, "Password changed successfully")
+                return redirect("doctors:dashboard")
+            else:
+                messages.error(request, "Current password is incorrect")
+
+        return render(request, self.template_name, {"form": form})

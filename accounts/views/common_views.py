@@ -137,17 +137,15 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
             user_profile = user.profile
             user_profile.dob = data.get("dob")
             user_profile.phone = data.get("phone")
-            
+
             # Handle avatar file upload
-            if 'avatar' in files:
-                user_profile.avatar = files['avatar']
-            
+            if "avatar" in files:
+                user_profile.avatar = files["avatar"]
+
             user_profile.save()
-            
+
             return render_toast_message_for_api(
                 "Information", "Updated successfully", "success"
             )
         except Exception as e:
-            return render_toast_message_for_api(
-                "Error", str(e), "error"
-            )
+            return render_toast_message_for_api("Error", str(e), "error")

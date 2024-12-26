@@ -69,19 +69,15 @@ urlpatterns = [
         AppointmentActionView.as_view(),
         name="appointment-action",
     ),
+    path("my-patients/", MyPatientsView.as_view(), name="my-patients"),
     path(
-        'my-patients/',
-        MyPatientsView.as_view(),
-        name='my-patients'
-    ),
-    path(
-        'my-patients/<int:patient_id>/history/',
+        "my-patients/<int:patient_id>/history/",
         AppointmentHistoryView.as_view(),
-        name='appointment-history'
+        name="appointment-history",
     ),
     path(
-        'change-password/',
+        "change-password/",
         DoctorChangePasswordView.as_view(),
-        name='change-password'
+        name="change-password",
     ),
 ]

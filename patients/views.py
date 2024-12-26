@@ -19,9 +19,9 @@ class PatientDashboardView(PatientRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["appointments"] = (
-            Booking.objects.select_related('doctor', 'doctor__profile')
+            Booking.objects.select_related("doctor", "doctor__profile")
             .filter(patient=self.request.user)
-            .order_by('-appointment_date', '-appointment_time')
+            .order_by("-appointment_date", "-appointment_time")
         )
         return context
 
@@ -40,14 +40,22 @@ class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
         profile = user.profile
 
         # Handle profile image upload
-        if self.request.FILES.get('avatar'):
-            profile.image = self.request.FILES['avatar']
+        if self.request.FILES.get("avatar"):
+            profile.image = self.request.FILES["avatar"]
 
         # Update profile fields
         profile_fields = [
-            'dob', 'blood_group', 'gender', 'phone',
-            'medical_conditions', 'allergies',
-            'address', 'city', 'state', 'postal_code', 'country'
+            "dob",
+            "blood_group",
+            "gender",
+            "phone",
+            "medical_conditions",
+            "allergies",
+            "address",
+            "city",
+            "state",
+            "postal_code",
+            "country",
         ]
 
         for field in profile_fields:
@@ -59,98 +67,94 @@ class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
         user.save()
         profile.save()
 
-        messages.success(self.request, 'Profile updated successfully')
+        messages.success(self.request, "Profile updated successfully")
         return redirect(self.success_url)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Please correct the errors below')
+        messages.error(self.request, "Please correct the errors below")
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['blood_group_choices'] = [
-            ('A+', 'A+'),
-            ('A-', 'A-'),
-            ('B+', 'B+'),
-            ('B-', 'B-'),
-            ('O+', 'O+'),
-            ('O-', 'O-'),
-            ('AB+', 'AB+'),
-            ('AB-', 'AB-'),
+        context["blood_group_choices"] = [
+            ("A+", "A+"),
+            ("A-", "A-"),
+            ("B+", "B+"),
+            ("B-", "B-"),
+            ("O+", "O+"),
+            ("O-", "O-"),
+            ("AB+", "AB+"),
+            ("AB-", "AB-"),
         ]
         return context
 
 
 class AppointmentDetailView(DetailView):
     model = Booking
-    template_name = 'patients/appointment-detail.html'
-    context_object_name = 'appointment'
+    template_name = "patients/appointment-detail.html"
+    context_object_name = "appointment"
 
     def get_queryset(self):
         return Booking.objects.select_related(
-            'doctor', 
-            'doctor__profile',
-            'patient', 
-            'patient__profile'
+            "doctor", "doctor__profile", "patient", "patient__profile"
         ).filter(patient=self.request.user)
 
 
 class AppointmentCancelView(View):
     def post(self, request, pk):
         appointment = get_object_or_404(
-            Booking, 
-            pk=pk, 
+            Booking,
+            pk=pk,
             patient=request.user,
-            status__in=['pending', 'confirmed']
+            status__in=["pending", "confirmed"],
         )
-        
-        appointment.status = 'cancelled'
+
+        appointment.status = "cancelled"
         appointment.save()
-        
-        messages.success(request, 'Appointment cancelled successfully')
-        return redirect('patients:dashboard')
+
+        messages.success(request, "Appointment cancelled successfully")
+        return redirect("patients:dashboard")
 
 
 class AppointmentPrintView(DetailView):
     model = Booking
-    template_name = 'patients/appointment-print.html'
-    context_object_name = 'appointment'
+    template_name = "patients/appointment-print.html"
+    context_object_name = "appointment"
 
     def get_queryset(self):
         return Booking.objects.select_related(
-            'doctor', 
-            'doctor__profile',
-            'patient', 
-            'patient__profile'
+            "doctor", "doctor__profile", "patient", "patient__profile"
         ).filter(patient=self.request.user)
 
     def render_to_response(self, context):
-        html_string = render_to_string(self.template_name, context, request=self.request)
+        html_string = render_to_string(
+            self.template_name, context, request=self.request
+        )
         return HttpResponse(html_string)
 
 
 class ChangePasswordView(PatientRequiredMixin, View):
-    template_name = 'patients/change-password.html'
-    
+    template_name = "patients/change-password.html"
+
     def get(self, request):
         form = ChangePasswordForm()
-        return render(request, self.template_name, {'form': form})
-    
+        return render(request, self.template_name, {"form": form})
+
     def post(self, request):
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
             user = request.user
-            
-            if user.check_password(form.cleaned_data['old_password']):
-                user.set_password(form.cleaned_data['new_password'])
+
+            if user.check_password(form.cleaned_data["old_password"]):
+                user.set_password(form.cleaned_data["new_password"])
                 user.save()
-                
+
                 # Update session to prevent logout
                 update_session_auth_hash(request, user)
-                
-                messages.success(request, 'Password changed successfully')
-                return redirect('patients:dashboard')
+
+                messages.success(request, "Password changed successfully")
+                return redirect("patients:dashboard")
             else:
-                messages.error(request, 'Current password is incorrect')
-        
-        return render(request, self.template_name, {'form': form})
+                messages.error(request, "Current password is incorrect")
+
+        return render(request, self.template_name, {"form": form})
