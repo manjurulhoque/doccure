@@ -222,6 +222,9 @@ class DoctorProfileView(DetailView):
             {
                 "current_day": current_day,
                 "business_hours": business_hours,
+                "reviews": doctor.reviews_received.select_related(
+                    "patient", "patient__profile"
+                ).order_by("-created_at"),
             }
         )
 

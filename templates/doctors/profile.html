@@ -97,6 +97,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#doc_business_hours" data-toggle="tab">Business Hours</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#doc_reviews" data-toggle="tab">Reviews</a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /Tab Menu -->
@@ -169,14 +172,14 @@
                                     <!-- /Experience Details -->
 
                                     {% if doctor.profile.specialization %}
-                                    <!-- Specializations List -->
-                                    <div class="service-list">
-                                        <h4>Specialization</h4>
-                                        <ul class="clearfix">
-                                            <li>{{ doctor.profile.specialization }}</li>
-                                        </ul>
-                                    </div>
-                                    <!-- /Specializations List -->
+                                        <!-- Specializations List -->
+                                        <div class="service-list">
+                                            <h4>Specialization</h4>
+                                            <ul class="clearfix">
+                                                <li>{{ doctor.profile.specialization }}</li>
+                                            </ul>
+                                        </div>
+                                        <!-- /Specializations List -->
                                     {% endif %}
 
                                 </div>
@@ -216,6 +219,61 @@
                             </div>
                         </div>
                         <!-- /Business Hours Content -->
+
+                        <!-- Reviews Content -->
+                        <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <!-- Reviews Widget -->
+                                    <div class="widget reviews-widget">
+                                        <h4 class="widget-title">Reviews</h4>
+                                        <div class="widget-content">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title d-flex justify-content-between">
+                                                        <span>Reviews</span>
+                                                        <span class="average-rating">
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 1 %}filled{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 2 %}filled{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 3 %}filled{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 4 %}filled{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 5 %}filled{% endif %}"></i>
+                                                            <span>({{ doctor.reviews_received.count }} Reviews)</span>
+                                                        </span>
+                                                    </h4>
+                                            
+                                                    {% for review in doctor.reviews_received.all %}
+                                                        <div class="review-list">
+                                                            <div class="review-item">
+                                                                <div class="review-header d-flex justify-content-between">
+                                                                    <div class="reviewer-info">
+                                                                        <div class="reviewer-img">
+                                                                            <img src="{{ review.patient.profile.image }}" class="avatar-sm rounded-circle" alt="Patient">
+                                                                        </div>
+                                                                        <h5>{{ review.patient.get_full_name }}</h5>
+                                                                        <small class="review-date">{{ review.created_at|date }}</small>
+                                                                    </div>
+                                                                    <div class="review-rating">
+                                                                        {% for i in "12345"|make_list %}
+                                                                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-yellow{% endif %}"></i>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="review-text mt-2">{{ review.review }}</p>
+                                                            </div>
+                                                        </div>
+                                                    {% empty %}
+                                                        <p class="text-muted">No reviews yet.</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <!-- /Reviews Widget -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Reviews Content -->
 
                     </div>
                     <!-- /Tab Content -->
