@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <!-- Medical Cross Symbol -->
+  <path d="M40 20 h20 v20 h20 v20 h-20 v20 h-20 v-20 h-20 v-20 h20 z" 
+        fill="#1976D2"/>
+  
+  <!-- Text "DocCure" -->
+  <text x="100" y="65" 
+        font-family="Arial, sans-serif" 
+        font-size="48" 
+        font-weight="bold" 
+        fill="#1976D2">DocCure</text>
+</svg>

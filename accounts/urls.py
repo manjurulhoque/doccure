@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 
-from .views import *
+from .views.common_views import *
 
 app_name = "accounts"
 
