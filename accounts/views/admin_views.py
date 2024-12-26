@@ -89,6 +89,9 @@ class AdminPatientsView(AdminRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Patients"
         return context
+    
+    def get_queryset(self):
+        return User.objects.filter(role="patient")
 
 
 class AdminDoctorsView(AdminRequiredMixin, ListView):
@@ -101,3 +104,6 @@ class AdminDoctorsView(AdminRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Doctors"
         return context
+    
+    def get_queryset(self):
+        return User.objects.filter(role="doctor")

@@ -1,0 +1,133 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Doctors{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Speciality</th>
+                                <th>Member Since</th>
+                                <th>Earned</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doctor in doctors %}
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ doctor.profile.image }}" alt="User Image">
+                                        </a>
+                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>{{ doctor.profile.specialization }}</td>
+                                <td>
+                                    {{ doctor.date_joined|date:"d M Y" }}
+                                    <br>
+                                    <small>{{ doctor.date_joined|time:"h:i A" }}</small>
+                                </td>
+                                <td>৳{{ doctor.earned|default:"0" }}</td>
+                                <td>
+                                    <span class="badge badge-pill {% if doctor.is_active %}bg-success-light{% else %}bg-danger-light{% endif %}">
+                                        {{ doctor.is_active|yesno:"Active,Inactive" }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="btn btn-sm bg-info-light">
+                                            <i class="fe fe-eye"></i> View
+                                        </a>
+                                        <a href="#" class="btn btn-sm bg-success-light">
+                                            <i class="fe fe-check"></i> Approve
+                                        </a>
+                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                            <i class="fe fe-times"></i> Block
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">No doctors found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if is_paginated %}
+                <div class="row mt-4">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info">
+                            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">&laquo; First</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .actions .btn {
+        margin-right: 5px;
+    }
+    .actions .btn:last-child {
+        margin-right: 0;
+    }
+    .badge {
+        padding: 5px 10px;
+    }
+    .pagination {
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+{% endblock %}
