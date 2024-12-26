@@ -1,16 +1,18 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, DetailView, View
+from django.views.generic import UpdateView, DetailView, View, CreateView
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.contrib.auth import update_session_auth_hash
 
+
 from accounts.models import User
 from bookings.models import Booking
 from mixins.custom_mixins import PatientRequiredMixin
-from patients.forms import PatientProfileForm, ChangePasswordForm
+from patients.forms import PatientProfileForm, ChangePasswordForm, ReviewForm
+from core.models import Review
 
 
 class PatientDashboardView(PatientRequiredMixin, TemplateView):
@@ -158,3 +160,32 @@ class ChangePasswordView(PatientRequiredMixin, View):
                 messages.error(request, "Current password is incorrect")
 
         return render(request, self.template_name, {"form": form})
+
+
+class AddReviewView(PatientRequiredMixin, CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = "patients/add_review.html"
+
+    def form_valid(self, form):
+        booking_id = self.kwargs.get("booking_id")
+        booking = get_object_or_404(Booking, id=booking_id, patient=self.request.user)
+
+        if booking.status != "completed":
+            messages.error(self.request, "You can only review completed appointments.")
+            return redirect("patients:appointment-detail", pk=booking_id)
+
+        if Review.objects.filter(booking=booking).exists():
+            messages.error(self.request, "You have already reviewed this appointment.")
+            return redirect("patients:appointment-detail", pk=booking_id)
+
+        form.instance.patient = self.request.user
+        form.instance.doctor = booking.doctor
+        form.instance.booking = booking
+        messages.success(self.request, "Thank you for your review!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "patients:appointment-detail", kwargs={"pk": self.kwargs["booking_id"]}
+        )

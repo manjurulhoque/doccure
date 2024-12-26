@@ -1,6 +1,7 @@
 from django import forms
 
 from accounts.models import User
+from core.models import Review
 
 
 class PatientProfileForm(forms.ModelForm):
@@ -115,3 +116,17 @@ class ChangePasswordForm(forms.Form):
         if new_password and confirm_password:
             if new_password != confirm_password:
                 raise forms.ValidationError("The new passwords don't match")
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'review']
+        widgets = {
+            'rating': forms.Select(attrs={'class': 'form-control'}),
+            'review': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Write your review here...'
+            })
+        }

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Write a Review</h4>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <div class="star-rating">
+                                    {{ form.rating }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Review</label>
+                                {{ form.review }}
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn">Submit Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.star-rating {
+    font-size: 0;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    cursor: pointer;
+    padding: 5px;
+    font-size: 24px;
+}
+.star-rating label:before {
+    content: '★';
+    color: #ddd;
+}
+.star-rating input:checked ~ label:before {
+    color: #ffd700;
+}
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+$(document).ready(function() {
+    // Star rating functionality
+    $('.star-rating input').change(function() {
+        var $radio = $(this);
+        $('.star-rating .selected').removeClass('selected');
+        $radio.closest('label').addClass('selected');
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,26 @@
+{% if appointment.status == 'completed' and not appointment.review %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Rate Your Experience</h4>
+        <p>Share your experience with Dr. {{ appointment.doctor.get_full_name }}</p>
+        <a href="{% url 'patients:add-review' appointment.id %}" class="btn btn-primary">
+            Write a Review
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% if appointment.review %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Your Review</h4>
+        <div class="rating">
+            {% for i in "12345"|make_list %}
+            <i class="fas fa-star {% if forloop.counter <= appointment.review.rating %}filled{% endif %}"></i>
+            {% endfor %}
+        </div>
+        <p class="review-text">{{ appointment.review.review }}</p>
+        <p class="review-date">Reviewed on {{ appointment.review.created_at|date }}</p>
+    </div>
+</div>
+{% endif %} 
