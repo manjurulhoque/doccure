@@ -3,10 +3,13 @@ from django.db.models import Count, Sum
 from accounts.decorators import AdminRequiredMixin
 from django.views.generic import ListView
 from datetime import date
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from core.models import Speciality
 
 from accounts.models import User
 from bookings.models import Booking
-from core.models import Speciality
 
 
 class AdminDashboardView(AdminRequiredMixin, TemplateView):
@@ -142,4 +145,35 @@ class AdminSpecialitiesView(AdminRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Speciality.objects.all()
+        return Speciality.objects.all().order_by('name')
+
+
+class SpecialityCreateView(AdminRequiredMixin, CreateView):
+    model = Speciality
+    fields = ['name', 'description', 'image']
+    template_name = "dashboard/specialities.html"
+    success_url = reverse_lazy('admin-specialities')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Speciality created successfully.')
+        return super().form_valid(form)
+
+
+class SpecialityUpdateView(AdminRequiredMixin, UpdateView):
+    model = Speciality
+    fields = ['name', 'description', 'image', 'is_active']
+    template_name = "dashboard/specialities.html"
+    success_url = reverse_lazy('admin-specialities')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Speciality updated successfully.')
+        return super().form_valid(form)
+
+
+class SpecialityDeleteView(AdminRequiredMixin, DeleteView):
+    model = Speciality
+    success_url = reverse_lazy('admin-specialities')
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Speciality deleted successfully.')
+        return super().delete(request, *args, **kwargs)

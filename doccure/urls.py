@@ -10,6 +10,9 @@ from accounts.views.admin_views import (
     AdminDoctorsView,
     AdminAppointmentsView,
     AdminSpecialitiesView,
+    SpecialityCreateView,
+    SpecialityUpdateView,
+    SpecialityDeleteView,
 )
 
 admin.site.site_header = "Doccure Admin"
@@ -37,4 +40,8 @@ urlpatterns = [
             ],
         ),
     ),
+    path('admin/specialities/', AdminSpecialitiesView.as_view(), name='admin-specialities'),
+    path('admin/specialities/create/', SpecialityCreateView.as_view(), name='admin-speciality-create'),
+    path('admin/specialities/<int:pk>/update/', SpecialityUpdateView.as_view(), name='admin-speciality-update'),
+    path('admin/specialities/<int:pk>/delete/', SpecialityDeleteView.as_view(), name='admin-speciality-delete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
