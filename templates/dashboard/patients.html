@@ -1,0 +1,123 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Patients{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Last Visit</th>
+                                <th class="text-right">Total Paid</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient in patients %}
+                            <tr>
+                                <td>#PT{{ patient.id|stringformat:"03d" }}</td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ patient.profile.image }}" alt="User Image">
+                                        </a>
+                                        <a href="#">{{ patient.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>{{ patient.profile.age|default:"N/A" }}</td>
+                                <td>{{ patient.profile.address|default:"N/A" }}</td>
+                                <td>{{ patient.profile.phone|default:"N/A" }}</td>
+                                <td>{{ patient.last_visit|date:"d M Y"|default:"No visits" }}</td>
+                                <td class="text-right">৳{{ patient.total_paid|default:"0" }}</td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="#" class="btn btn-sm bg-info-light">
+                                            <i class="fe fe-eye"></i> View
+                                        </a>
+                                        <a href="#" class="btn btn-sm bg-success-light">
+                                            <i class="fe fe-check"></i> Active
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center">No patients found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if is_paginated %}
+                <div class="row mt-4">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info">
+                            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">&laquo; First</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .actions .btn {
+        margin-right: 5px;
+    }
+    .actions .btn:last-child {
+        margin-right: 0;
+    }
+    .pagination {
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+{% endblock %}

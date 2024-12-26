@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.db.models import Count, Sum
 from accounts.decorators import AdminRequiredMixin
 from django.views.generic import ListView
+from datetime import date
 
 from accounts.models import User
 from bookings.models import Booking
@@ -85,13 +86,43 @@ class AdminPatientsView(AdminRequiredMixin, ListView):
     context_object_name = "patients"
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Patients"
-        return context
-    
     def get_queryset(self):
-        return User.objects.filter(role="patient")
+        queryset = User.objects.filter(role="patient").select_related("profile")
+        
+        # Add computed fields for each patient
+        for patient in queryset:
+            # Get last visit date
+            latest_appointment = (
+                Booking.objects.filter(patient=patient)
+                .order_by("-appointment_date")
+                .first()
+            )
+            patient.last_visit = (
+                latest_appointment.appointment_date if latest_appointment else None
+            )
+            
+            # Calculate total amount paid
+            patient.total_paid = (
+                Booking.objects.filter(
+                    patient=patient,
+                    status="completed"
+                ).aggregate(
+                    total=Sum("doctor__profile__price_per_consultation")
+                )["total"] or 0
+            )
+            
+            # Calculate age from DOB if available
+            if patient.profile.dob:
+                today = date.today()
+                patient.profile.age = (
+                    today.year - patient.profile.dob.year -
+                    ((today.month, today.day) < 
+                     (patient.profile.dob.month, patient.profile.dob.day))
+                )
+            else:
+                patient.profile.age = None
+                
+        return queryset
 
 
 class AdminDoctorsView(AdminRequiredMixin, ListView):
