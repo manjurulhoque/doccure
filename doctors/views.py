@@ -632,3 +632,19 @@ class PrescriptionCreateView(DoctorRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('doctors:appointment-detail', kwargs={'pk': self.kwargs['booking_id']})
+
+
+class PrescriptionDetailView(DoctorRequiredMixin, DetailView):
+    model = Prescription
+    template_name = 'doctors/prescription_detail.html'
+    context_object_name = 'prescription'
+
+    def get_queryset(self):
+        # Only allow doctors to view prescriptions they wrote
+        return Prescription.objects.filter(doctor=self.request.user).select_related(
+            'doctor',
+            'doctor__profile',
+            'patient',
+            'patient__profile',
+            'booking'
+        )

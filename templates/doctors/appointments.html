@@ -74,19 +74,19 @@
                         {{ appointment.status|title }}
                     </span>
                     <div class="btn-group">
-                        <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light">
+                        <a href="{% url 'doctors:appointment-detail' appointment.pk %}" class="btn btn-sm bg-info-light ml-2 mr-2">
                             <i class="far fa-eye"></i> View
                         </a>
                         {% if appointment.status == 'pending' %}
                             <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'accept' %}" style="display: inline;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm bg-success-light" onclick="return confirm('Are you sure you want to accept this appointment?')">
+                                <button type="submit" class="btn btn-sm bg-success-light mr-2 ml-2" onclick="return confirm('Are you sure you want to accept this appointment?')">
                                     <i class="fas fa-check"></i> Accept
                                 </button>
                             </form>
                             <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'cancel' %}" style="display: inline;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                <button type="submit" class="btn btn-sm bg-danger-light mr-2 ml-2" onclick="return confirm('Are you sure you want to cancel this appointment?')">
                                     <i class="fas fa-times"></i> Cancel
                                 </button>
                             </form>
@@ -94,15 +94,21 @@
                         {% if appointment.status == 'confirmed' %}
                             <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'completed' %}" style="display: inline;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm bg-info-light" onclick="return confirm('Are you sure you want to mark this appointment as completed?')">
+                                <button type="submit" class="btn btn-sm bg-info-light mr-2 ml-2" onclick="return confirm('Are you sure you want to mark this appointment as completed?')">
                                     <i class="fas fa-check"></i> Mark as Completed
                                 </button>
                             </form>
                         {% endif %}
-                        {% if appointment.status == 'completed' and not appointment.prescription %}
-                            <a href="{% url 'doctors:add-prescription' appointment.pk %}" class="btn btn-sm bg-success-light ml-2">
-                                <i class="fas fa-file-medical"></i> Create Prescription
-                            </a>
+                        {% if appointment.status == 'completed' %}
+                            {% if not appointment.prescription %}
+                                <a href="{% url 'doctors:add-prescription' appointment.pk %}" class="btn btn-sm bg-success-light mr-2 ml-2">
+                                    <i class="fas fa-file-medical"></i> Create Prescription
+                                </a>
+                            {% else %}
+                                <a href="{% url 'doctors:prescription-detail' appointment.prescription.pk %}" class="btn btn-sm bg-success-light mr-2 ml-2">
+                                    <i class="fas fa-eye"></i> View Prescription
+                                </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

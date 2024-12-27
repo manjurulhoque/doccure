@@ -1,0 +1,117 @@
+{% extends 'includes/doctor-sidebar.html' %}
+{% load static %}
+
+{% block title %}Prescription Details{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Prescription Details</h4>
+            </div>
+            <div class="card-body">
+                <!-- Patient Info -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="patient-info">
+                            <h5>Patient Information</h5>
+                            <div class="info-block">
+                                <p><strong>Name:</strong> {{ prescription.patient.get_full_name }}</p>
+                                <p><strong>Age:</strong> {{ prescription.patient.profile.age|default:"N/A" }} years</p>
+                                <p><strong>Gender:</strong> {{ prescription.patient.profile.gender|title|default:"N/A" }}</p>
+                                <p><strong>Blood Group:</strong> {{ prescription.patient.profile.blood_group|default:"N/A" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="prescription-meta">
+                            <h5>Prescription Details</h5>
+                            <div class="info-block">
+                                <p><strong>Date:</strong> {{ prescription.created_at|date:"d M Y" }}</p>
+                                <p><strong>Appointment Date:</strong> {{ prescription.booking.appointment_date }}</p>
+                                <p><strong>Doctor:</strong> Dr. {{ prescription.doctor.get_full_name }}</p>
+                                <p><strong>Specialization:</strong> {{ prescription.doctor.profile.specialization }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Medical Information -->
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="medical-info">
+                            <h5>Symptoms</h5>
+                            <p>{{ prescription.symptoms }}</p>
+
+                            <h5 class="mt-4">Diagnosis</h5>
+                            <p>{{ prescription.diagnosis }}</p>
+
+                            <h5 class="mt-4">Medications & Instructions</h5>
+                            <div class="medication-details">
+                                {{ prescription.medications|safe }}
+                            </div>
+
+                            {% if prescription.notes %}
+                            <h5 class="mt-4">Additional Notes</h5>
+                            <p>{{ prescription.notes }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="row mt-4">
+                    <div class="col-md-12 text-right">
+                        <button onclick="window.print()" class="btn btn-primary">
+                            <i class="fas fa-print"></i> Print Prescription
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .card-body h5 {
+        color: #272b41;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .info-block {
+        margin-bottom: 20px;
+    }
+    .info-block p {
+        margin-bottom: 8px;
+        color: #757575;
+    }
+    .info-block strong {
+        color: #272b41;
+    }
+    .medical-info p {
+        color: #757575;
+        line-height: 1.6;
+    }
+    .medication-details {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+    }
+    @media print {
+        .sidebar-menu,
+        .header,
+        .btn {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+{% endblock %}
+{% endblock %} 
