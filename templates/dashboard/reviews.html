@@ -1,0 +1,167 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Reviews</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin-dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Reviews</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Rating</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in reviews %}
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ review.patient.profile.image }}" alt="Patient Image">
+                                        </a>
+                                        <a href="#">{{ review.patient.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="{% url 'doctors:doctor-profile' review.doctor.username %}" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ review.doctor.profile.image }}" alt="Doctor Image">
+                                        </a>
+                                        <a href="{% url 'doctors:doctor-profile' review.doctor.username %}">Dr. {{ review.doctor.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        {% for i in "12345"|make_list %}
+                                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-yellow{% endif %}"></i>
+                                        {% endfor %}
+                                        <span class="d-inline-block average-rating">({{ review.rating }})</span>
+                                    </div>
+                                </td>
+                                <td>{{ review.review|truncatechars:100 }}</td>
+                                <td>{{ review.created_at|date:"d M Y" }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#review_{{ review.id }}">
+                                        <i class="far fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Review Details Modal -->
+                            <div class="modal fade" id="review_{{ review.id }}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Review Details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="review-info">
+                                                        <div class="review-header">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="rating">
+                                                                        {% for i in "12345"|make_list %}
+                                                                        <i class="fas fa-star {% if forloop.counter <= review.rating %}filled{% endif %}"></i>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 text-right">
+                                                                    <span class="review-date">{{ review.created_at|date:"d M Y" }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="review-body mt-3">
+                                                            <h5>Review</h5>
+                                                            <p>{{ review.review }}</p>
+                                                            
+                                                            <div class="review-meta mt-3">
+                                                                <p><strong>Patient:</strong> {{ review.patient.get_full_name }}</p>
+                                                                <p><strong>Doctor:</strong> Dr. {{ review.doctor.get_full_name }}</p>
+                                                                <p><strong>Appointment Date:</strong> {{ review.booking.appointment_date }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Review Details Modal -->
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">No reviews found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% include "includes/pagination.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .rating {
+        color: #ffd700;
+    }
+    .rating .filled {
+        color: #ffd700;
+    }
+    .rating i {
+        margin-right: 2px;
+    }
+    .average-rating {
+        color: #757575;
+        margin-left: 5px;
+    }
+    .review-date {
+        color: #757575;
+        font-size: 14px;
+    }
+    .review-info .review-body h5 {
+        color: #272b41;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .review-info .review-body p {
+        color: #757575;
+        margin-bottom: 10px;
+    }
+    .review-meta p {
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+{% endblock %} 

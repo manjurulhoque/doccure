@@ -1,12 +1,12 @@
 from django.views.generic import TemplateView
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Avg
 from accounts.decorators import AdminRequiredMixin
 from django.views.generic import ListView
 from datetime import date
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from core.models import Speciality
+from core.models import Review, Speciality
 
 from accounts.models import User
 from bookings.models import Booking, Prescription
@@ -192,11 +192,11 @@ class AdminPrescriptionsView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         return Prescription.objects.select_related(
-            "doctor", 
+            "doctor",
             "doctor__profile",
-            "patient", 
+            "patient",
             "patient__profile",
-            "booking"
+            "booking",
         ).order_by("-created_at")
 
     def get_context_data(self, **kwargs):
@@ -206,4 +206,28 @@ class AdminPrescriptionsView(AdminRequiredMixin, ListView):
         context["prescriptions_today"] = self.model.objects.filter(
             created_at__date=date.today()
         ).count()
+        return context
+
+
+class AdminReviewListView(AdminRequiredMixin, ListView):
+    model = Review
+    template_name = "dashboard/reviews.html"
+    context_object_name = "reviews"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Review.objects.select_related(
+            "doctor",
+            "doctor__profile",
+            "patient",
+            "patient__profile",
+            "booking",
+        ).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_reviews"] = self.model.objects.count()
+        context["average_rating"] = (
+            self.model.objects.aggregate(Avg("rating"))["rating__avg"] or 0
+        )
         return context

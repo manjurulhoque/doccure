@@ -233,11 +233,11 @@
                                                     <h4 class="card-title d-flex justify-content-between">
                                                         <span>Reviews</span>
                                                         <span class="average-rating">
-                                                            <i class="fas fa-star {% if doctor.average_rating >= 1 %}filled{% endif %}"></i>
-                                                            <i class="fas fa-star {% if doctor.average_rating >= 2 %}filled{% endif %}"></i>
-                                                            <i class="fas fa-star {% if doctor.average_rating >= 3 %}filled{% endif %}"></i>
-                                                            <i class="fas fa-star {% if doctor.average_rating >= 4 %}filled{% endif %}"></i>
-                                                            <i class="fas fa-star {% if doctor.average_rating >= 5 %}filled{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 1 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 2 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 3 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 4 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 5 %}text-yellow{% endif %}"></i>
                                                             <span>({{ doctor.reviews_received.count }} Reviews)</span>
                                                         </span>
                                                     </h4>

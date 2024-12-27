@@ -24,11 +24,11 @@
                 <li {% if request.path == '/admin/prescriptions/' %}class="active"{% endif %}> 
                     <a href="{% url 'admin-prescriptions' %}"><i class="fe fe-file-text"></i> <span>Prescriptions</span></a>
                 </li>
-                <li> 
-                    <a href="reviews.html"><i class="fe fe-star-o"></i> <span>Reviews</span></a>
+                <li {% if request.path == '/admin/reviews/' %}class="active"{% endif %}> 
+                    <a href="{% url 'admin-reviews' %}"><i class="fe fe-star-o"></i> <span>Reviews</span></a>
                 </li>
                 <li> 
-                    <a href="transactions-list.html"><i class="fe fe-activity"></i> <span>Transactions</span></a>
+                    <a href=""><i class="fe fe-activity"></i> <span>Transactions</span></a>
                 </li>
                 <li class="submenu">
                     <a href="#"><i class="fe fe-document"></i> <span> Reports</span> <span class="menu-arrow"></span></a>

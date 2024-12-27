@@ -16,7 +16,8 @@
         <link rel="stylesheet" href="{% static 'dashboard/assets/css/bootstrap.min.css' %}">
 		
 		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="{% static 'dashboard/assets/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
 		
 		<!-- Feathericon CSS -->
         <link rel="stylesheet" href="{% static 'dashboard/assets/css/feathericon.min.css' %}">
@@ -25,6 +26,14 @@
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static 'dashboard/assets/css/style.css' %}">
+
+		<style>
+			.text-yellow {
+				color: #ffc107;
+			}
+		</style>
+
+		{% block css %}{% endblock %}
     </head>
     <body>
 	

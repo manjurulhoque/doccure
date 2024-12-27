@@ -14,6 +14,7 @@ from accounts.views.admin_views import (
     SpecialityUpdateView,
     SpecialityDeleteView,
     AdminPrescriptionsView,
+    AdminReviewListView,
 )
 
 admin.site.site_header = "Doccure Admin"
@@ -39,16 +40,12 @@ urlpatterns = [
                 path("doctors/", AdminDoctorsView.as_view(), name="admin-doctors"),
                 path("appointments/", AdminAppointmentsView.as_view(), name="admin-appointments"),
                 path("specialities/", AdminSpecialitiesView.as_view(), name="admin-specialities"),
+                path("specialities/create/", SpecialityCreateView.as_view(), name="admin-speciality-create"),
+                path("specialities/<int:pk>/update/", SpecialityUpdateView.as_view(), name="admin-speciality-update"),
+                path("specialities/<int:pk>/delete/", SpecialityDeleteView.as_view(), name="admin-speciality-delete"),
+                path("prescriptions/", AdminPrescriptionsView.as_view(), name="admin-prescriptions"),
+                path("reviews/", AdminReviewListView.as_view(), name="admin-reviews"),
             ],
         ),
-    ),
-    path('admin/specialities/', AdminSpecialitiesView.as_view(), name='admin-specialities'),
-    path('admin/specialities/create/', SpecialityCreateView.as_view(), name='admin-speciality-create'),
-    path('admin/specialities/<int:pk>/update/', SpecialityUpdateView.as_view(), name='admin-speciality-update'),
-    path('admin/specialities/<int:pk>/delete/', SpecialityDeleteView.as_view(), name='admin-speciality-delete'),
-    path(
-        "admin/prescriptions/", 
-        AdminPrescriptionsView.as_view(), 
-        name="admin-prescriptions"
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
