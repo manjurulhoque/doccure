@@ -117,7 +117,13 @@ class AdminPatientsView(AdminRequiredMixin, ListView):
                 )
             else:
                 patient.profile.age = None
-
+            
+            # Get appointment stats
+            patient.total_appointments = Booking.objects.filter(patient=patient).count()
+            patient.completed_appointments = Booking.objects.filter(
+                patient=patient, status="completed"
+            ).count()
+            
         return queryset
 
 

@@ -35,36 +35,86 @@
                         </thead>
                         <tbody>
                             {% for patient in patients %}
-                            <tr>
-                                <td>#PT{{ patient.id|stringformat:"03d" }}</td>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="#" class="avatar avatar-sm mr-2">
-                                            <img class="avatar-img rounded-circle" src="{{ patient.profile.image }}" alt="User Image">
-                                        </a>
-                                        <a href="#">{{ patient.get_full_name }}</a>
-                                    </h2>
-                                </td>
-                                <td>{{ patient.profile.age|default:"N/A" }}</td>
-                                <td>{{ patient.profile.address|default:"N/A" }}</td>
-                                <td>{{ patient.profile.phone|default:"N/A" }}</td>
-                                <td>{{ patient.last_visit|date:"d M Y"|default:"No visits" }}</td>
-                                <td class="text-right">৳{{ patient.total_paid|default:"0" }}</td>
-                                <td>
-                                    <div class="actions">
-                                        <a href="#" class="btn btn-sm bg-info-light">
-                                            <i class="fe fe-eye"></i> View
-                                        </a>
-                                        <a href="#" class="btn btn-sm bg-success-light">
-                                            <i class="fe fe-check"></i> Active
-                                        </a>
+                                <!-- Add Patient Details Modal -->
+                                <div class="modal fade" id="patient_details_{{ patient.id }}" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Patient Details</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img src="{{ patient.profile.image }}" alt="Patient Image" class="img-fluid rounded">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h4>{{ patient.get_full_name }}</h4>
+                                                        <p><strong>Email:</strong> {{ patient.email }}</p>
+                                                        <p><strong>Phone:</strong> {{ patient.profile.phone|default:"Not provided" }}</p>
+                                                        <p><strong>Gender:</strong> {{ patient.profile.gender|title|default:"Not specified" }}</p>
+                                                        <p><strong>Blood Group:</strong> {{ patient.profile.blood_group|default:"Not specified" }}</p>
+                                                        <p><strong>Age:</strong> {{ patient.profile.age|default:"Not specified" }} years</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <hr>
+                                                
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <h5>Medical Information</h5>
+                                                        {% if patient.profile.medical_conditions or patient.profile.allergies %}
+                                                            {% if patient.profile.medical_conditions %}
+                                                                <p><strong>Medical Conditions:</strong><br>{{ patient.profile.medical_conditions }}</p>
+                                                            {% endif %}
+                                                            {% if patient.profile.allergies %}
+                                                                <p><strong>Allergies:</strong><br>{{ patient.profile.allergies }}</p>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <p class="text-muted">No medical information provided</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h5>Appointment Statistics</h5>
+                                                        <p><strong>Total Appointments:</strong> {{ patient.total_appointments }}</p>
+                                                        <p><strong>Completed Appointments:</strong> {{ patient.completed_appointments }}</p>
+                                                        <p><strong>Total Amount Paid:</strong> ৳{{ patient.total_paid }}</p>
+                                                        <p><strong>Last Visit:</strong> {{ patient.last_visit|date:"d M Y"|default:"Never" }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                                <tr>
+                                    <td>#PT{{ patient.id|stringformat:"03d" }}</td>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="#" class="avatar avatar-sm mr-2">
+                                                <img class="avatar-img rounded-circle" src="{{ patient.profile.image }}" alt="User Image">
+                                            </a>
+                                            <a href="#">{{ patient.get_full_name }}</a>
+                                        </h2>
+                                    </td>
+                                    <td>{{ patient.profile.age|default:"N/A" }}</td>
+                                    <td>{{ patient.profile.address|default:"N/A" }}</td>
+                                    <td>{{ patient.profile.phone|default:"N/A" }}</td>
+                                    <td>{{ patient.last_visit|date:"d M Y"|default:"No visits" }}</td>
+                                    <td class="text-right">৳{{ patient.total_paid|default:"0" }}</td>
+                                    <td>
+                                        <div class="actions">
+                                            <button type="button" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#patient_details_{{ patient.id }}">
+                                                <i class="fe fe-eye"></i> View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                             {% empty %}
-                            <tr>
-                                <td colspan="8" class="text-center">No patients found</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="8" class="text-center">No patients found</td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -75,8 +125,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-{% block extra_css %}
+{% block css %}
 <style>
     .actions .btn {
         margin-right: 5px;
@@ -84,9 +135,32 @@
     .actions .btn:last-child {
         margin-right: 0;
     }
-    .pagination {
-        justify-content: flex-end;
+    .modal-lg {
+        max-width: 800px;
+    }
+    .modal-body h5 {
+        color: #272b41;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .modal-body p {
+        margin-bottom: 10px;
+    }
+    .modal-body strong {
+        color: #272b41;
+    }
+    .patient-status {
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 15px;
+    }
+    .status-active {
+        background-color: #28a745;
+        color: white;
+    }
+    .status-inactive {
+        background-color: #dc3545;
+        color: white;
     }
 </style>
-{% endblock %}
 {% endblock %}
