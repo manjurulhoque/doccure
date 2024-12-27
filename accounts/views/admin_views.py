@@ -68,9 +68,9 @@ class AdminDashboardView(AdminRequiredMixin, TemplateView):
         ).order_by("-appointment_date")[:5]
 
         # Add recent prescriptions
-        context['recent_prescriptions'] = Prescription.objects.select_related(
-            'doctor', 'patient', 'booking'
-        ).order_by('-created_at')[:10]
+        context["recent_prescriptions"] = Prescription.objects.select_related(
+            "doctor", "patient", "booking"
+        ).order_by("-created_at")[:10]
 
         return context
 
@@ -150,35 +150,60 @@ class AdminSpecialitiesView(AdminRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Speciality.objects.all().order_by('name')
+        return Speciality.objects.all().order_by("name")
 
 
 class SpecialityCreateView(AdminRequiredMixin, CreateView):
     model = Speciality
-    fields = ['name', 'description', 'image']
+    fields = ["name", "description", "image"]
     template_name = "dashboard/specialities.html"
-    success_url = reverse_lazy('admin-specialities')
+    success_url = reverse_lazy("admin-specialities")
 
     def form_valid(self, form):
-        messages.success(self.request, 'Speciality created successfully.')
+        messages.success(self.request, "Speciality created successfully.")
         return super().form_valid(form)
 
 
 class SpecialityUpdateView(AdminRequiredMixin, UpdateView):
     model = Speciality
-    fields = ['name', 'description', 'image', 'is_active']
+    fields = ["name", "description", "image", "is_active"]
     template_name = "dashboard/specialities.html"
-    success_url = reverse_lazy('admin-specialities')
+    success_url = reverse_lazy("admin-specialities")
 
     def form_valid(self, form):
-        messages.success(self.request, 'Speciality updated successfully.')
+        messages.success(self.request, "Speciality updated successfully.")
         return super().form_valid(form)
 
 
 class SpecialityDeleteView(AdminRequiredMixin, DeleteView):
     model = Speciality
-    success_url = reverse_lazy('admin-specialities')
-    
+    success_url = reverse_lazy("admin-specialities")
+
     def delete(self, request, *args, **kwargs):
-        messages.success(request, 'Speciality deleted successfully.')
+        messages.success(request, "Speciality deleted successfully.")
         return super().delete(request, *args, **kwargs)
+
+
+class AdminPrescriptionsView(AdminRequiredMixin, ListView):
+    model = Prescription
+    template_name = "dashboard/prescriptions.html"
+    context_object_name = "prescriptions"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Prescription.objects.select_related(
+            "doctor", 
+            "doctor__profile",
+            "patient", 
+            "patient__profile",
+            "booking"
+        ).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add summary stats
+        context["total_prescriptions"] = self.model.objects.count()
+        context["prescriptions_today"] = self.model.objects.filter(
+            created_at__date=date.today()
+        ).count()
+        return context

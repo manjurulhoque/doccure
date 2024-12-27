@@ -1,0 +1,213 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Prescriptions{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Prescriptions</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin-dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Prescriptions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <!-- Stats -->
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-primary">
+                                <i class="fas fa-file-medical"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ total_prescriptions }}</h3>
+                                <h6>Total Prescriptions</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-success">
+                                <i class="fas fa-file-medical-alt"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ prescriptions_today }}</h3>
+                                <h6>Today's Prescriptions</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Stats -->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Patient</th>
+                                <th>Diagnosis</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prescription in prescriptions %}
+                            <tr>
+                                <td>{{ prescription.created_at|date:"d M Y" }}</td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="{% url 'doctors:doctor-profile' prescription.doctor.username %}" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ prescription.doctor.profile.image }}" alt="Doctor Image">
+                                        </a>
+                                        <a href="{% url 'doctors:doctor-profile' prescription.doctor.username %}">Dr. {{ prescription.doctor.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <img class="avatar-img rounded-circle" src="{{ prescription.patient.profile.image }}" alt="Patient Image">
+                                        </a>
+                                        <a href="#">{{ prescription.patient.get_full_name }}</a>
+                                    </h2>
+                                </td>
+                                <td>{{ prescription.diagnosis|truncatechars:50 }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#prescription_{{ prescription.id }}">
+                                        <i class="far fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Prescription Details Modal -->
+                            <div class="modal fade" id="prescription_{{ prescription.id }}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Prescription Details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="prescription-info">
+                                                        <div class="info-header">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <h5>Doctor</h5>
+                                                                    <p>Dr. {{ prescription.doctor.get_full_name }}</p>
+                                                                    <p>{{ prescription.doctor.profile.specialization }}</p>
+                                                                </div>
+                                                                <div class="col-md-6 text-right">
+                                                                    <h5>Date</h5>
+                                                                    <p>{{ prescription.created_at|date:"d M Y" }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <hr>
+                                                        
+                                                        <div class="info-body">
+                                                            <h5>Symptoms</h5>
+                                                            <p>{{ prescription.symptoms }}</p>
+                                                            
+                                                            <h5>Diagnosis</h5>
+                                                            <p>{{ prescription.diagnosis }}</p>
+                                                            
+                                                            <h5>Medications & Instructions</h5>
+                                                            <div>{{ prescription.medications|safe }}</div>
+                                                            
+                                                            {% if prescription.notes %}
+                                                                <h5>Additional Notes</h5>
+                                                                <p>{{ prescription.notes }}</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Prescription Details Modal -->
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No prescriptions found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% include "includes/pagination.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .prescription-info .info-header h5 {
+        color: #272b41;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .prescription-info .info-body h5 {
+        color: #272b41;
+        font-size: 15px;
+        margin: 20px 0 10px;
+    }
+    .prescription-info p {
+        color: #757575;
+        margin-bottom: 10px;
+    }
+    .modal-lg {
+        max-width: 800px;
+    }
+    .dash-widget-header {
+        align-items: center;
+        display: flex;
+        margin-bottom: 15px;
+    }
+    .dash-widget-icon {
+        background-color: rgba(32, 192, 243, 0.1);
+        border-radius: 50%;
+        color: #20c0f3;
+        display: inline-block;
+        font-size: 24px;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        text-align: center;
+        width: 50px;
+    }
+    .dash-count h3 {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    .dash-count h6 {
+        color: #757575;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+{% endblock %} 

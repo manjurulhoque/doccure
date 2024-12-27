@@ -21,6 +21,9 @@
                 <li {% if request.path == '/admin/patients/' %}class="active"{% endif %}> 
                     <a href="{% url 'admin-patients' %}"><i class="fe fe-user"></i> <span>Patients</span></a>
                 </li>
+                <li {% if request.path == '/admin/prescriptions/' %}class="active"{% endif %}> 
+                    <a href="{% url 'admin-prescriptions' %}"><i class="fe fe-file-text"></i> <span>Prescriptions</span></a>
+                </li>
                 <li> 
                     <a href="reviews.html"><i class="fe fe-star-o"></i> <span>Reviews</span></a>
                 </li>
