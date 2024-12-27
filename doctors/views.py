@@ -12,7 +12,13 @@ from django.http import (
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import ListView, DetailView, View, CreateView, UpdateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    View,
+    CreateView,
+    UpdateView,
+)
 from django.views.generic.base import TemplateView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -515,7 +521,9 @@ class AppointmentActionView(DoctorRequiredMixin, View):
             messages.success(request, "Appointment cancelled successfully")
         elif action == "completed":
             appointment.status = "completed"
-            messages.success(request, "Appointment marked as completed successfully")
+            messages.success(
+                request, "Appointment marked as completed successfully"
+            )
 
         appointment.save()
         return redirect("doctors:dashboard")
@@ -608,43 +616,55 @@ class DoctorChangePasswordView(DoctorRequiredMixin, View):
 class PrescriptionCreateView(DoctorRequiredMixin, CreateView):
     model = Prescription
     form_class = PrescriptionForm
-    template_name = 'doctors/add_prescription.html'
+    template_name = "doctors/add_prescription.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        booking_id = self.kwargs.get('booking_id')
-        context['booking'] = get_object_or_404(Booking, id=booking_id, doctor=self.request.user)
+        booking_id = self.kwargs.get("booking_id")
+        context["booking"] = get_object_or_404(
+            Booking, id=booking_id, doctor=self.request.user
+        )
         return context
 
     def form_valid(self, form):
-        booking_id = self.kwargs.get('booking_id')
-        booking = get_object_or_404(Booking, id=booking_id, doctor=self.request.user)
-        
-        if booking.status != 'completed':
-            messages.error(self.request, 'Can only add prescription for completed appointments')
-            return redirect('doctors:appointment-detail', pk=booking_id)
-            
+        booking_id = self.kwargs.get("booking_id")
+        booking = get_object_or_404(
+            Booking, id=booking_id, doctor=self.request.user
+        )
+
+        if booking.status != "completed":
+            messages.error(
+                self.request,
+                "Can only add prescription for completed appointments",
+            )
+            return redirect("doctors:appointment-detail", pk=booking_id)
+
         form.instance.booking = booking
         form.instance.doctor = self.request.user
         form.instance.patient = booking.patient
-        messages.success(self.request, 'Prescription added successfully')
+        messages.success(self.request, "Prescription added successfully")
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('doctors:appointment-detail', kwargs={'pk': self.kwargs['booking_id']})
+        return reverse_lazy(
+            "doctors:appointment-detail",
+            kwargs={"pk": self.kwargs["booking_id"]},
+        )
 
 
 class PrescriptionDetailView(DoctorRequiredMixin, DetailView):
     model = Prescription
-    template_name = 'doctors/prescription_detail.html'
-    context_object_name = 'prescription'
+    template_name = "doctors/prescription_detail.html"
+    context_object_name = "prescription"
 
     def get_queryset(self):
         # Only allow doctors to view prescriptions they wrote
-        return Prescription.objects.filter(doctor=self.request.user).select_related(
-            'doctor',
-            'doctor__profile',
-            'patient',
-            'patient__profile',
-            'booking'
+        return Prescription.objects.filter(
+            doctor=self.request.user
+        ).select_related(
+            "doctor",
+            "doctor__profile",
+            "patient",
+            "patient__profile",
+            "booking",
         )

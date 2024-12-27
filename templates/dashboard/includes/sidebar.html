@@ -33,7 +33,8 @@
                 <li class="submenu">
                     <a href="#"><i class="fe fe-document"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="invoice-report.html">Invoice Reports</a></li>
+                        <li {% if request.path == '/admin/reports/appointments/' %}class="active"{% endif %}><a href="{% url 'admin-appointment-report' %}">Appointment Reports</a></li>
+                        <li {% if request.path == '/admin/reports/revenue/' %}class="active"{% endif %}><a href="{% url 'admin-revenue-report' %}">Revenue Reports</a></li>
                     </ul>
                 </li>
             </ul>

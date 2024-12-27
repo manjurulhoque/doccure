@@ -121,12 +121,14 @@ class ChangePasswordForm(forms.Form):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['rating', 'review']
+        fields = ["rating", "review"]
         widgets = {
-            'rating': forms.Select(attrs={'class': 'form-control'}),
-            'review': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 4,
-                'placeholder': 'Write your review here...'
-            })
+            "rating": forms.Select(attrs={"class": "form-control"}),
+            "review": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 4,
+                    "placeholder": "Write your review here...",
+                }
+            ),
         }

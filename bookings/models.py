@@ -41,9 +41,19 @@ class Booking(models.Model):
 
 
 class Prescription(models.Model):
-    booking = models.OneToOneField('Booking', on_delete=models.CASCADE, related_name='prescription')
-    doctor = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='prescriptions_given')
-    patient = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='prescriptions_received')
+    booking = models.OneToOneField(
+        "Booking", on_delete=models.CASCADE, related_name="prescription"
+    )
+    doctor = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="prescriptions_given",
+    )
+    patient = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="prescriptions_received",
+    )
     symptoms = models.TextField()
     diagnosis = models.TextField()
     medications = RichTextField()
@@ -55,4 +65,4 @@ class Prescription(models.Model):
         return f"Prescription for {self.patient} by Dr. {self.doctor}"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]

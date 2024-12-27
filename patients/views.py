@@ -169,14 +169,20 @@ class AddReviewView(PatientRequiredMixin, CreateView):
 
     def form_valid(self, form):
         booking_id = self.kwargs.get("booking_id")
-        booking = get_object_or_404(Booking, id=booking_id, patient=self.request.user)
+        booking = get_object_or_404(
+            Booking, id=booking_id, patient=self.request.user
+        )
 
         if booking.status != "completed":
-            messages.error(self.request, "You can only review completed appointments.")
+            messages.error(
+                self.request, "You can only review completed appointments."
+            )
             return redirect("patients:appointment-detail", pk=booking_id)
 
         if Review.objects.filter(booking=booking).exists():
-            messages.error(self.request, "You have already reviewed this appointment.")
+            messages.error(
+                self.request, "You have already reviewed this appointment."
+            )
             return redirect("patients:appointment-detail", pk=booking_id)
 
         form.instance.patient = self.request.user
@@ -187,5 +193,6 @@ class AddReviewView(PatientRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "patients:appointment-detail", kwargs={"pk": self.kwargs["booking_id"]}
+            "patients:appointment-detail",
+            kwargs={"pk": self.kwargs["booking_id"]},
         )

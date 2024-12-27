@@ -104,11 +104,11 @@ After loading fixtures, you can use these demo accounts:
 
 **Doctor Account:**
 - Username: doctor1
-- Password: password123
+- Password: Abcdefgh.1
 
 **Patient Account:**
 - Username: patient1
-- Password: password123
+- Password: Abcdefgh.1
 
 ## Contributing
 1. Fork the repository

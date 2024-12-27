@@ -24,7 +24,7 @@ class Speciality(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('doctors:list') + f'?speciality={self.slug}'
+        return reverse("doctors:list") + f"?speciality={self.slug}"
 
     @property
     def doctor_count(self):
@@ -39,24 +39,32 @@ class Speciality(models.Model):
 
 class Review(models.Model):
     RATING_CHOICES = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
+        (1, "1"),
+        (2, "2"),
+        (3, "3"),
+        (4, "4"),
+        (5, "5"),
     )
-    
-    patient = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='reviews_given')
-    doctor = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='reviews_received')
-    booking = models.OneToOneField('bookings.Booking', on_delete=models.CASCADE)
+
+    patient = models.ForeignKey(
+        "accounts.User", on_delete=models.CASCADE, related_name="reviews_given"
+    )
+    doctor = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="reviews_received",
+    )
+    booking = models.OneToOneField(
+        "bookings.Booking", on_delete=models.CASCADE
+    )
     rating = models.IntegerField(choices=RATING_CHOICES)
     review = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
-        unique_together = ['patient', 'booking']
+        ordering = ["-created_at"]
+        unique_together = ["patient", "booking"]
 
     def __str__(self):
         return f"Review by {self.patient} for Dr. {self.doctor}"

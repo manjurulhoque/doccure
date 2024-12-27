@@ -6,8 +6,15 @@ from datetime import date
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from core.models import Review, Speciality
+from django.db.models.functions import TruncMonth, TruncDay
+from django.db.models import Count, Sum, Q
+from django.utils import timezone
+from datetime import timedelta
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+from decimal import Decimal
 
+from core.models import Review, Speciality
 from accounts.models import User
 from bookings.models import Booking, Prescription
 
@@ -117,13 +124,13 @@ class AdminPatientsView(AdminRequiredMixin, ListView):
                 )
             else:
                 patient.profile.age = None
-            
+
             # Get appointment stats
             patient.total_appointments = Booking.objects.filter(patient=patient).count()
             patient.completed_appointments = Booking.objects.filter(
                 patient=patient, status="completed"
             ).count()
-            
+
         return queryset
 
 
@@ -236,4 +243,145 @@ class AdminReviewListView(AdminRequiredMixin, ListView):
         context["average_rating"] = (
             self.model.objects.aggregate(Avg("rating"))["rating__avg"] or 0
         )
+        return context
+
+
+class AppointmentReportView(AdminRequiredMixin, TemplateView):
+    template_name = "dashboard/reports/appointments.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get date range from query params or default to last 30 days
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=30)
+
+        # Get appointments data
+        appointments = Booking.objects.filter(
+            appointment_date__range=[start_date, end_date]
+        ).select_related("doctor", "patient")
+
+        # Monthly trend
+        monthly_stats = list(
+            appointments.annotate(month=TruncMonth("appointment_date"))
+            .values("month")
+            .annotate(
+                total=Count("id"),
+                completed=Count("id", filter=Q(status="completed")),
+                cancelled=Count("id", filter=Q(status="cancelled")),
+            )
+            .order_by("month")
+        )
+
+        # Format dates for JSON
+        for stat in monthly_stats:
+            stat["month"] = stat["month"].strftime("%Y-%m-%d")
+
+        # Status distribution
+        status_stats = list(appointments.values("status").annotate(count=Count("id")))
+
+        # Doctor performance
+        doctor_stats = list(
+            appointments.values("doctor__first_name", "doctor__last_name").annotate(
+                total=Count("id"),
+                completed=Count("id", filter=Q(status="completed")),
+                cancelled=Count("id", filter=Q(status="cancelled")),
+            )
+        )
+
+        context.update(
+            {
+                "monthly_stats": json.dumps(monthly_stats),
+                "status_stats": json.dumps(status_stats),
+                "doctor_stats": doctor_stats,
+                "total_appointments": appointments.count(),
+                "completed_appointments": appointments.filter(
+                    status="completed"
+                ).count(),
+                "cancelled_appointments": appointments.filter(
+                    status="cancelled"
+                ).count(),
+            }
+        )
+        return context
+
+
+class RevenueReportView(AdminRequiredMixin, TemplateView):
+    template_name = "dashboard/reports/revenue.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add date filtering
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=30)
+
+        completed_bookings = Booking.objects.filter(status="completed").select_related(
+            "doctor__profile"
+        )
+
+        # Monthly revenue
+        monthly_revenue = list(
+            completed_bookings.annotate(month=TruncMonth("appointment_date"))
+            .values("month")
+            .annotate(revenue=Sum("doctor__profile__price_per_consultation"))
+            .order_by("month")
+        )
+
+        # Format dates and convert Decimal to float for JSON
+        for stat in monthly_revenue:
+            stat["month"] = stat["month"].strftime("%Y-%m-%d")
+            stat["revenue"] = float(stat["revenue"]) if stat["revenue"] else 0
+
+        # Doctor revenue
+        doctor_revenue = list(
+            completed_bookings.values("doctor__first_name", "doctor__last_name")
+            .annotate(
+                revenue=Sum("doctor__profile__price_per_consultation"),
+                appointments=Count("id"),
+            )
+            .order_by("-revenue")
+        )
+
+        # Convert Decimal to float for JSON
+        for stat in doctor_revenue:
+            stat["revenue"] = float(stat["revenue"]) if stat["revenue"] else 0
+
+        # Add summary statistics
+        context.update(
+            {
+                "total_appointments": completed_bookings.count(),
+                "average_revenue_per_appointment": (
+                    completed_bookings.aggregate(
+                        avg=Avg("doctor__profile__price_per_consultation")
+                    )["avg"]
+                    or 0
+                ),
+                "highest_revenue_day": completed_bookings.annotate(
+                    day=TruncDay("appointment_date")
+                )
+                .values("day")
+                .annotate(total=Sum("doctor__profile__price_per_consultation"))
+                .order_by("-total")
+                .first(),
+                "monthly_revenue_stats": json.dumps(monthly_revenue),
+                "monthly_revenue": monthly_revenue,
+                "doctor_revenue": doctor_revenue,
+                "total_revenue": completed_bookings.aggregate(
+                    total=Sum("doctor__profile__price_per_consultation")
+                )["total"]
+                or 0,
+            }
+        )
+
+        # Add revenue by specialization
+        # specialization_revenue = completed_bookings.values(
+        #     "doctor__profile__specialization__name"
+        # ).annotate(
+        #     revenue=Sum("doctor__profile__price_per_consultation"),
+        #     appointments=Count("id")
+        # ).order_by("-revenue")
+
+        context["specialization_revenue"] = 0  # specialization_revenue
+
         return context

@@ -67,7 +67,9 @@ class User(AbstractUser):
 
     @property
     def average_rating(self):
-        return self.reviews_received.aggregate(Avg('rating'))['rating__avg'] or 0
+        return (
+            self.reviews_received.aggregate(Avg("rating"))["rating__avg"] or 0
+        )
 
     @property
     def rating_count(self):
@@ -76,7 +78,7 @@ class User(AbstractUser):
     @property
     def rating_distribution(self):
         distribution = {i: 0 for i in range(1, 6)}
-        for rating in self.reviews_received.values_list('rating', flat=True):
+        for rating in self.reviews_received.values_list("rating", flat=True):
             distribution[rating] += 1
         return distribution
 

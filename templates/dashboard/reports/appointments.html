@@ -1,0 +1,174 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}Appointment Reports{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Appointment Reports</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Summary Cards -->
+    <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <div class="dash-count">
+                        <h3>{{ total_appointments }}</h3>
+                        <h6>Total Appointments</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <div class="dash-count">
+                        <h3>{{ completed_appointments }}</h3>
+                        <h6>Completed</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <div class="dash-count">
+                        <h3>{{ cancelled_appointments }}</h3>
+                        <h6>Cancelled</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Monthly Trend Chart -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Monthly Appointment Trends</h4>
+                <div style="width: 100%; height: 100%;">
+                    <canvas id="appointmentTrends"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Status Distribution -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Status Distribution</h4>
+                <div style="width: 50%; height: 20%;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Doctor Performance -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Doctor Performance</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Total</th>
+                                <th>Completed</th>
+                                <th>Cancelled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in doctor_stats %}
+                            <tr>
+                                <td>Dr. {{ stat.doctor__first_name }} {{ stat.doctor__last_name }}</td>
+                                <td>{{ stat.total }}</td>
+                                <td>{{ stat.completed }}</td>
+                                <td>{{ stat.cancelled }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Monthly Trends Chart
+    const monthlyData = JSON.parse('{{ monthly_stats|safe }}');
+    console.log(monthlyData);
+    new Chart(document.getElementById('appointmentTrends'), {
+        type: 'line',
+        data: {
+            labels: monthlyData.map(d => {
+                const date = new Date(d.month);
+                return date.toLocaleDateString('default', { month: 'long', year: 'numeric' });
+            }),
+            datasets: [{
+                label: 'Total',
+                data: monthlyData.map(d => d.total),
+                borderColor: '#20c0f3'
+            }, {
+                label: 'Completed',
+                data: monthlyData.map(d => d.completed),
+                borderColor: '#28a745'
+            }, {
+                label: 'Cancelled',
+                data: monthlyData.map(d => d.cancelled),
+                borderColor: '#dc3545'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // Status Distribution Chart
+    const statusData = JSON.parse('{{ status_stats|safe }}');
+    new Chart(document.getElementById('statusChart'), {
+        type: 'pie',
+        data: {
+            labels: statusData.map(d => d.status.charAt(0).toUpperCase() + d.status.slice(1)),
+            datasets: [{
+                data: statusData.map(d => d.count),
+                backgroundColor: ['#20c0f3', '#28a745', '#dc3545', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %} 

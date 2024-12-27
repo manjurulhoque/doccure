@@ -14,10 +14,16 @@ class DoctorProfileForm(forms.ModelForm):
 class PrescriptionForm(forms.ModelForm):
     class Meta:
         model = Prescription
-        fields = ['symptoms', 'diagnosis', 'medications', 'notes']
+        fields = ["symptoms", "diagnosis", "medications", "notes"]
         widgets = {
-            'symptoms': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
-            'diagnosis': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
-            'medications': CKEditorWidget(config_name='default'),
-            'notes': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            "symptoms": forms.Textarea(
+                attrs={"rows": 3, "class": "form-control"}
+            ),
+            "diagnosis": forms.Textarea(
+                attrs={"rows": 3, "class": "form-control"}
+            ),
+            "medications": CKEditorWidget(config_name="default"),
+            "notes": forms.Textarea(
+                attrs={"rows": 3, "class": "form-control"}
+            ),
         }

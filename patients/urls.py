@@ -39,5 +39,9 @@ urlpatterns = [
         ChangePasswordView.as_view(),
         name="change-password",
     ),
-    path('appointment/<int:booking_id>/review/', AddReviewView.as_view(), name='add-review'),
+    path(
+        "appointment/<int:booking_id>/review/",
+        AddReviewView.as_view(),
+        name="add-review",
+    ),
 ]
