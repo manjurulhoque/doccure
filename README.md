@@ -12,6 +12,7 @@ DocCure is a modern healthcare appointment booking system that connects patients
 - Digital appointment records/patient history
 - Personal health profile management
 - View booking history and invoices
+- Submit reviews and ratings for doctors
 
 ### For Doctors
 - Professional profile management
@@ -21,14 +22,33 @@ DocCure is a modern healthcare appointment booking system that connects patients
 - View patient history
 - Manage consultation fees
 - Track appointments and bookings
+- Write digital prescriptions
+- View earnings and statistics
+
+### For Administrators
+- Comprehensive dashboard
+- User management (doctors & patients)
+- Appointment oversight
+- Revenue tracking and analysis
+- Advanced reporting features:
+  - Appointment analytics
+  - Revenue statistics
+  - Doctor performance metrics
+  - Monthly trends visualization
+  - Financial summaries
+- Specialization management
+- Review moderation
+- Prescription monitoring
 
 ### General Features
 - User authentication and authorization
 - Responsive design
 - Secure data handling
-- Email notifications // not done yet
 - Digital invoicing
-- Rating and review system // not done yet
+- Rating and review system
+- Interactive charts and statistics
+- Real-time data visualization
+- Role-based access control
 
 ## Tech Stack
 
@@ -42,12 +62,14 @@ DocCure is a modern healthcare appointment booking system that connects patients
 - HTML5, CSS3, JavaScript
 - Bootstrap 4
 - jQuery
+- Chart.js for analytics
 - HTMX for dynamic content
 - Font Awesome icons
 
 ### Additional Tools
 - Pillow for image handling
 - Django Crispy Forms
+- CKEditor for rich text editing
 
 ## Installation
 
@@ -145,10 +167,14 @@ DocCure aims to modernize healthcare access in Bangladesh by:
 - Online payment integration
 - AI-powered doctor recommendations
 - Multi-language support
+- Advanced analytics and reporting
+- Email notification system
+- Patient feedback system
+- Appointment reminder system
 
 ### Project Status
 
-This project is actively maintained and open for contributions. While core features are implemented, we welcome improvements and new feature additions from the community.
+This project is actively maintained and open for contributions. Core features are implemented including the new reporting system, but we welcome improvements and new feature additions from the community.
 
 ---
 Built with ❤️ for better healthcare access
