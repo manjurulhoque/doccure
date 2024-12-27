@@ -146,8 +146,38 @@ For support, email support@doccure.com or create an issue in the repository.
 
 ## 📸 Screenshots
 
+![Doctors Page](screenshots/home.png)
+*Home page*
+
 ![Doctors Page](screenshots/doctors.png)
 *Doctors page with pagination*
+
+![Appointment review Page](screenshots/appointment-review.png)
+*Appointment review page*
+
+![Doctor profile Page](screenshots/doctor-profile.png)
+*Doctor profile page*
+
+![Doctor schedules Page](screenshots/doctor-schedules.png)
+*Doctor schedules page*
+
+![Doctor appointments Page](screenshots/doctor-appointments.png)
+*Doctor appointments*
+
+![Doctor appointments Page](screenshots/doctor-schedule-timings.png)
+*Doctor schedule timings*
+
+![Doctor add prescription Page](screenshots/add-prescription.png)
+*Doctor add prescription*
+
+![Admin dashboard Page](screenshots/admin.png)
+*Admin dashboard page*
+
+![Admin report Page](screenshots/report.png)
+*Admin report page*
+
+![Admin appointments Page](screenshots/admin-appointments.png)
+*Admin appointments page*
 
 ## Conclusion
 
