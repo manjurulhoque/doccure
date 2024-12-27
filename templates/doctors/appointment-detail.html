@@ -126,6 +126,17 @@
                                 </form>
                             </div>
                         {% endif %}
+
+                        {% if appointment.status == 'confirmed' %}
+                            <div class="mt-4">
+                                <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'completed' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm bg-info-light" onclick="return confirm('Are you sure you want to mark this appointment as completed?')">
+                                        <i class="fas fa-check"></i> Mark as Completed
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 

@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="appointment-action">
-                    <span class="badge badge-pill mb-2
+                    <span class="badge badge-pill mr-2 mb-2
                         {% if appointment.status == 'confirmed' %}bg-success-light{% endif %}
                         {% if appointment.status == 'pending' %}bg-warning-light{% endif %}
                         {% if appointment.status == 'cancelled' %}bg-danger-light{% endif %}
@@ -90,6 +90,19 @@
                                     <i class="fas fa-times"></i> Cancel
                                 </button>
                             </form>
+                        {% endif %}
+                        {% if appointment.status == 'confirmed' %}
+                            <form method="post" action="{% url 'doctors:appointment-action' appointment.pk 'completed' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm bg-info-light" onclick="return confirm('Are you sure you want to mark this appointment as completed?')">
+                                    <i class="fas fa-check"></i> Mark as Completed
+                                </button>
+                            </form>
+                        {% endif %}
+                        {% if appointment.status == 'completed' and not appointment.prescription %}
+                            <a href="{% url 'doctors:add-prescription' appointment.pk %}" class="btn btn-sm bg-success-light ml-2">
+                                <i class="fas fa-file-medical"></i> Create Prescription
+                            </a>
                         {% endif %}
                     </div>
                 </div>

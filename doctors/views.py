@@ -513,6 +513,9 @@ class AppointmentActionView(DoctorRequiredMixin, View):
         elif action == "cancel":
             appointment.status = "cancelled"
             messages.success(request, "Appointment cancelled successfully")
+        elif action == "completed":
+            appointment.status = "completed"
+            messages.success(request, "Appointment marked as completed successfully")
 
         appointment.save()
         return redirect("doctors:dashboard")
