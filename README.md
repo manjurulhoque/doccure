@@ -2,6 +2,8 @@
 
 DocCure is a modern healthcare appointment booking system that connects patients with doctors. The platform streamlines the process of finding doctors, booking appointments, and managing medical consultations.
 
+Live: [Demo](http://doccure.manjurulhoque.com/en/)
+
 ## Features
 
 ### For Patients
