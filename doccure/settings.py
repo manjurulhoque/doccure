@@ -129,3 +129,6 @@ CKEDITOR_CONFIGS = {
 }
 
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+DEBUG_TOOLBAR_CONFIG = {
+    "IS_RUNNING_TESTS": False,
+}

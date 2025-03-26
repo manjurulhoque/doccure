@@ -125,7 +125,8 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
     def put(self, request, *args, **kwargs):
         try:
             user = request.user
-            data = request.POST
+            # Handle both JSON and form data
+            data = request.data if hasattr(request, 'data') else request.POST
             files = request.FILES
 
             # Update user information
