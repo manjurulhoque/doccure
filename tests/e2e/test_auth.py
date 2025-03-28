@@ -86,3 +86,64 @@ class UserLoginTest(LiveServerTestCase):
         self.assertIn("Login", self.driver.page_source)
         self.assertIn("You are now logged out", self.driver.page_source)
 
+
+class PatientRegisterTest(LiveServerTestCase):
+    def setUp(self):
+        """Initialize WebDriver and create test user"""
+        self.driver = webdriver.Chrome()
+        self.driver.implicitly_wait(10)
+        
+    def tearDown(self):
+        """Close the WebDriver"""
+        self.driver.quit()
+
+    def test_patient_register(self):
+        """Test patient registration functionality"""
+        self.driver.get(f"{self.live_server_url}/accounts/patient/register/")
+
+        # Fill in the registration form
+        first_name_input = self.driver.find_element(By.NAME, "first_name")
+        last_name_input = self.driver.find_element(By.NAME, "last_name")
+        username_input = self.driver.find_element(By.NAME, "username")
+        password1_input = self.driver.find_element(By.NAME, "password1")
+        password2_input = self.driver.find_element(By.NAME, "password2")
+        register_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
+        
+        first_name_input.send_keys("John")
+        last_name_input.send_keys("Doe")
+        username_input.send_keys("testuser")
+        password1_input.send_keys("password123")
+        password2_input.send_keys("password123")
+        register_button.click()
+
+        time.sleep(2)  # Wait for page transition
+        
+        # Verify registration success
+        self.assertIn("Login", self.driver.page_source)
+
+    def test_patient_register_with_existing_username(self):
+        """Test patient registration with existing username"""
+        # Create a test user with the same username
+        User.objects.create_user(username="testuser", password="password123")
+
+        self.driver.get(f"{self.live_server_url}/accounts/patient/register/")
+
+        # Fill in the registration form
+        first_name_input = self.driver.find_element(By.NAME, "first_name")
+        last_name_input = self.driver.find_element(By.NAME, "last_name")
+        username_input = self.driver.find_element(By.NAME, "username")
+        password1_input = self.driver.find_element(By.NAME, "password1")
+        password2_input = self.driver.find_element(By.NAME, "password2")
+        register_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
+        
+        first_name_input.send_keys("John")
+        last_name_input.send_keys("Doe")
+        username_input.send_keys("testuser")
+        password1_input.send_keys("password123")
+        password2_input.send_keys("password123")
+        register_button.click()
+
+        time.sleep(2)  # Wait for page transition
+
+        # Verify registration failure
+        self.assertIn("Username already exists", self.driver.page_source)
