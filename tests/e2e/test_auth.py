@@ -69,9 +69,9 @@ class UserLoginTest(LiveServerTestCase):
         login_button.click()
 
         time.sleep(2)  # Wait for page transition
-
+        
         # Click the user menu dropdown
-        user_menu = self.driver.find_element(By.CLASS_NAME, "dropdown-toggle")
+        user_menu = self.driver.find_element(By.CLASS_NAME, "logged-item")
         user_menu.click()
 
         time.sleep(1)  # Wait for dropdown to open
