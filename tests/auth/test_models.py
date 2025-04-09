@@ -6,6 +6,7 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 
 from accounts.models import User, Profile
+from doctors.models import Specialty
 from core import factories
 
 
@@ -42,9 +43,18 @@ class UserModelTests(TestCase):
         }
         doctor = User.objects.create_user(**doctor_data)
         
+        # Create a specialty and associate it with the doctor
+        specialty = Specialty.objects.create(
+            name="Cardiology",
+            description="Heart specialist"
+        )
+        specialty.doctors.add(doctor)
+        
         self.assertEqual(doctor.role, "doctor")
         self.assertEqual(doctor.registration_number, 12345)
         self.assertTrue(doctor.check_password(doctor_data["password"]))
+        self.assertEqual(doctor.specialties.count(), 1)
+        self.assertEqual(doctor.specialties.first().name, "Cardiology")
 
     def test_get_full_name(self):
         """Test get_full_name method"""

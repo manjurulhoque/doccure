@@ -9,7 +9,7 @@ class Education(models.Model):
     )
     college = models.CharField(max_length=300)
     degree = models.CharField(max_length=100)
-    year_of_completion = models.IntegerField()
+    year_of_completion = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Education"
@@ -26,8 +26,8 @@ class Experience(models.Model):
         User, on_delete=models.CASCADE, related_name="experiences"
     )
     institution = models.CharField(max_length=300)
-    from_year = models.IntegerField()
-    to_year = models.IntegerField()
+    from_year = models.IntegerField(null=True, blank=True)
+    to_year = models.IntegerField(null=True, blank=True)
     working_here = models.BooleanField("Currently working here", default=False)
     designation = models.CharField(max_length=200, null=True, blank=True)
 

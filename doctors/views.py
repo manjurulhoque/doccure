@@ -436,6 +436,8 @@ class DoctorsListView(ListView):
                 queryset = queryset.order_by("-rating")
             elif sort_by == "experience":
                 queryset = queryset.order_by("-profile__experience")
+        else:
+            queryset = queryset.order_by("-pk")
 
         return queryset
 
