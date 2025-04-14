@@ -13,10 +13,15 @@ class DoctorFactory(DjangoModelFactory):
     first_name = Faker("first_name")
     last_name = Faker("last_name")
     username = Faker("user_name")
-    password = Faker("password")
     email = Faker("email")
     registration_number = Faker("random_int", min=100000, max=999999)
     is_active = True
+
+    @post_generation
+    def create_password(self, create, extracted, **kwargs):
+        if not create:
+            return
+        self.set_password("password")
 
     @post_generation
     def create_profile(self, create, extracted, **kwargs):

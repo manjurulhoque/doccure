@@ -462,7 +462,7 @@ class DoctorsListView(ListView):
         return context
 
 
-class AppointmentListView(ListView):
+class AppointmentListView(DoctorRequiredMixin, ListView):
     model = Booking
     context_object_name = "appointments"
     template_name = "doctors/appointments.html"
