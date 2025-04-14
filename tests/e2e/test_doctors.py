@@ -33,7 +33,9 @@ class DoctorTest(LiveServerTestCase):
         )
 
     def test_doctor_profile(self):
-        self.driver.get(f"{self.live_server_url}/doctors/{self.doctor.username}/profile/")
+        self.driver.get(
+            f"{self.live_server_url}/doctors/{self.doctor.username}/profile/"
+        )
         self.assertIn(
             self.doctor.first_name,
             self.driver.page_source,
@@ -48,4 +50,19 @@ class DoctorTest(LiveServerTestCase):
             "Doctor Profile",
             self.driver.page_source,
             "Doctor profile should be in the list",
+        )
+
+    def test_doctor_appointments(self):
+        self.driver.get(
+            f"{self.live_server_url}/doctors/appointments/"
+        )
+        self.assertIn(
+            "Appointments",
+            self.driver.page_source,
+            "Appointments should be in the list",
+        )
+        self.assertIn(
+            "Appointment Date",
+            self.driver.page_source,
+            "Appointment date should be in the list",
         )
