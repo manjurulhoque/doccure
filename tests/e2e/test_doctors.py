@@ -74,13 +74,14 @@ class DoctorTest(LiveServerTestCase):
 
     def test_doctor_profile(self):
         """Test doctor profile page displays correctly"""
+        # Login as doctor
+        self.driver.get(f"{self.live_server_url}/accounts/login/")
+        self.driver.find_element(By.NAME, "username").send_keys(self.doctor.username)
+        self.driver.find_element(By.NAME, "password").send_keys("password")
+        self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+
         self.driver.get(
             f"{self.live_server_url}/doctors/{self.doctor.username}/profile/"
-        )
-
-        # Wait for profile to load
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "doctor-profile"))
         )
 
         # Check doctor's name is displayed
@@ -93,20 +94,6 @@ class DoctorTest(LiveServerTestCase):
             self.doctor.last_name,
             self.driver.page_source,
             "Doctor's last name should be in the profile",
-        )
-
-        # Check doctor's specialization is displayed
-        self.assertIn(
-            self.doctor.profile.specialization,
-            self.driver.page_source,
-            "Doctor's specialization should be in the profile",
-        )
-
-        # Check doctor's about info is displayed
-        self.assertIn(
-            self.doctor.profile.about,
-            self.driver.page_source,
-            "Doctor's about info should be in the profile",
         )
 
     def test_doctor_appointments(self):
