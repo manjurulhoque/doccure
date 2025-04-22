@@ -91,6 +91,12 @@
                                             <span>Schedule Timings</span>
                                         </a>
                                     </li>
+                                    <li class="{% if request.resolver_match.url_name == 'booking-list' %}active{% endif %}">
+                                        <a href="{% url 'bookings:booking-list' %}">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Bookings</span>
+                                        </a>
+                                    </li>
                                     <li class="{% if request.resolver_match.url_name == 'profile-setting' %}active{% endif %}">
                                         <a href="{% url 'doctors:profile-setting' %}">
                                             <i class="fas fa-user-cog"></i>
