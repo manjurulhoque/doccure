@@ -196,3 +196,28 @@ class BookingInvoiceView(LoginRequiredMixin, TemplateView):
         )
 
         return context
+
+
+class BookingListView(LoginRequiredMixin, View):
+    template_name = "bookings/booking-list.html"
+    
+    def get(self, request: HttpRequest, *args, **kwargs):
+        # Get all bookings for the logged-in user
+        if request.user.role == User.RoleChoices.DOCTOR:
+            bookings = Booking.objects.filter(doctor=request.user)
+        else:
+            bookings = Booking.objects.filter(patient=request.user)
+            
+        # Prefetch related data to avoid N+1 queries
+        bookings = bookings.select_related(
+            'doctor', 
+            'doctor__profile',
+            'patient', 
+            'patient__profile'
+        ).order_by('-appointment_date', '-appointment_time')
+        
+        context = {
+            'bookings': bookings,
+        }
+        
+        return render(request, self.template_name, context)

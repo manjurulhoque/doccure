@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">My Appointments</h1>
+            
+            {% if bookings %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                {% if user.role == 'doctor' %}
+                                    <th>Patient</th>
+                                {% else %}
+                                    <th>Doctor</th>
+                                {% endif %}
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                    <td>{{ booking.appointment_date|date:"D, d M Y" }}</td>
+                                    <td>{{ booking.appointment_time|time:"g:i A" }}</td>
+                                    {% if user.role == 'doctor' %}
+                                        <td>{{ booking.patient.get_full_name }}</td>
+                                    {% else %}
+                                        <td>Dr. {{ booking.doctor.get_full_name }}</td>
+                                    {% endif %}
+                                    <td>
+                                        <span class="badge {% if booking.status == 'confirmed' %}badge-success
+                                                          {% elif booking.status == 'pending' %}badge-warning
+                                                          {% elif booking.status == 'completed' %}badge-info
+                                                          {% elif booking.status == 'cancelled' %}badge-danger
+                                                          {% else %}badge-secondary{% endif %}">
+                                            {{ booking.status|title }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'bookings:booking-invoice' booking.id %}" class="btn btn-sm btn-primary">
+                                            View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    You don't have any appointments yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

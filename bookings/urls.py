@@ -5,6 +5,7 @@ from .views import (
     BookingCreateView,
     BookingSuccessView,
     BookingInvoiceView,
+    BookingListView,
 )
 
 app_name = "bookings"
@@ -29,5 +30,10 @@ urlpatterns = [
         "<int:booking_id>/invoice/",
         BookingInvoiceView.as_view(),
         name="booking-invoice",
+    ),
+    path(
+        "list/",
+        BookingListView.as_view(),
+        name="booking-list",
     ),
 ]
