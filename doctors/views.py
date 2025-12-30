@@ -459,6 +459,13 @@ class DoctorsListView(ListView):
             list(filter(None, specializations))
         )
 
+        # Add selected filters to context
+        context["selected_specializations"] = self.request.GET.getlist(
+            "specialization"
+        )
+        context["selected_genders"] = self.request.GET.getlist("gender")
+        context["selected_sort"] = self.request.GET.get("sort")
+
         return context
 
 
