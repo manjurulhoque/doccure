@@ -57,13 +57,13 @@
                                 <h4>Gender</h4>
                                 <div>
                                     <label class="custom_check">
-                                        <input type="checkbox" name="gender" value="male" {% if 'male' in request.GET.gender %}checked{% endif %}>
+                                        <input type="checkbox" name="gender" value="male" {% if 'male' in selected_genders %}checked{% endif %}>
                                         <span class="checkmark"></span> Male Doctor
                                     </label>
                                 </div>
                                 <div>
                                     <label class="custom_check">
-                                        <input type="checkbox" name="gender" value="female" {% if 'female' in request.GET.gender %}checked{% endif %}>
+                                        <input type="checkbox" name="gender" value="female" {% if 'female' in selected_genders %}checked{% endif %}>
                                         <span class="checkmark"></span> Female Doctor
                                     </label>
                                 </div>
@@ -73,8 +73,8 @@
                                 {% for specialization in specializations %}
                                     <div>
                                         <label class="custom_check">
-                                            <input type="checkbox" name="specialization" value="{{ specialization }}" 
-                                                {% if specialization in request.GET.specialization %}checked{% endif %}>
+                                            <input type="checkbox" name="specialization" value="{{ specialization }}"
+                                                {% if specialization in selected_specializations %}checked{% endif %}>
                                             <span class="checkmark"></span> {{ specialization }}
                                         </label>
                                     </div>
@@ -143,7 +143,7 @@
                             <div class="col-md-12">
                                 <div class="pagination justify-content-center">
                                     {% if page_obj.has_previous %}
-                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary prev-arrow mr-1">
+                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for s in selected_specializations %}specialization={{ s }}&{% endfor %}{% for g in selected_genders %}gender={{ g }}&{% endfor %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary prev-arrow mr-1">
                                             <i class="fas fa-chevron-left"></i> Previous
                                         </a>
                                     {% endif %}
@@ -152,12 +152,12 @@
                                         {% if page_obj.number == num %}
                                             <a href="#" class="btn btn-primary mx-1">{{ num }}</a>
                                         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ num }}" class="btn btn-outline-primary mx-1">{{ num }}</a>
+                                            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for s in selected_specializations %}specialization={{ s }}&{% endfor %}{% for g in selected_genders %}gender={{ g }}&{% endfor %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ num }}" class="btn btn-outline-primary mx-1">{{ num }}</a>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if page_obj.has_next %}
-                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.next_page_number }}" class="btn btn-outline-primary next-arrow ml-1">
+                                        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for s in selected_specializations %}specialization={{ s }}&{% endfor %}{% for g in selected_genders %}gender={{ g }}&{% endfor %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}page={{ page_obj.next_page_number }}" class="btn btn-outline-primary next-arrow ml-1">
                                             Next <i class="fas fa-chevron-right"></i>
                                         </a>
                                     {% endif %}
@@ -181,18 +181,15 @@
 {% block scripts %}
 <script>
     function updateSort(value) {
-        // Get current URL and parameters
         const url = new URL(window.location.href);
         const params = new URLSearchParams(url.search);
-        
-        // Update or add sort parameter
+
         if (value) {
             params.set('sort', value);
         } else {
             params.delete('sort');
         }
-        
-        // Redirect with updated parameters
+
         window.location.href = `${url.pathname}?${params.toString()}`;
     }
 
