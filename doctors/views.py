@@ -490,6 +490,13 @@ class AppointmentDetailView(DoctorRequiredMixin, DetailView):
     template_name = "doctors/appointment-detail.html"
     context_object_name = "appointment"
 
+    def get_queryset(self):
+        # Restrict to appointments assigned to the requesting doctor so
+        # one doctor cannot read another doctor's patient medical details.
+        return Booking.objects.select_related(
+            "doctor", "doctor__profile", "patient", "patient__profile"
+        ).filter(doctor=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         patient = self.object.patient
